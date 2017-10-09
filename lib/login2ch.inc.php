@@ -23,8 +23,8 @@ function login2ch()
         return false;
     }
 
-    $url = http_build_url(array(
-        "scheme" => $_conf['2ch_ssl.maru'] ? "https" : "http",
+    $auth2ch_url= http_build_url(array(
+        "scheme" => $_conf['2ch_ssl.maru']?"https":"http",
         "host" => "2chv.tora3.net",
         "path" => "futen.cgi"));
 
