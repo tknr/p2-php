@@ -457,7 +457,7 @@ EOS;
 <script type="text/javascript" src="js/iphone.js?{$_conf['p2_version_id']}"></script>
 EOS;
 }
-
+/*
 // AndroidではJavaScript-XPathを使う
 if ($_conf['iphone'] && UA::isAndroidWebKit()) {
     $_conf['extra_headers_ht'] .= <<<EOS
@@ -465,7 +465,7 @@ if ($_conf['iphone'] && UA::isAndroidWebKit()) {
 <script type="text/javascript" src="js/javascript-xpath.js?{$_conf['p2_version_id']}"></script>
 EOS;
 }
-
+*/
 // iPhone用スキン
 if ($_conf['iphone'] && isset($_conf['expack.iphone.skin'])) {
     if (strpos($_conf['expack.iphone.skin'], DIRECTORY_SEPARATOR) === false) {

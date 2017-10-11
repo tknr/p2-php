@@ -183,7 +183,7 @@ class UA
 
         // iPod touch
         // Mozilla/5.0 (iPod; U; CPU like Mac OS X; ja-jp) AppleWebKit/420.1 (KHTML, like Gecko) Version/3.0 Mobile/3A110a Safari/419.3
-        if (preg_match('/iP(?:hone|[ao]d)/', $ua) || self::isAndroidWebKit($ua)) {
+        if (preg_match('/iP(?:hone|[ao]d)/', $ua) || self::isAndroid($ua)) {
             $isiPhoneGroup = true;
         }
 
@@ -458,6 +458,34 @@ class UA
     }
 
     // }}}
+    // {{{ isAndroid()
+
+    /**
+     * UAがAndroidならtrueを返す。
+     *
+     * @param   string   $ua  UAを指定するなら
+     * @return  boolean
+     */
+    static public function isAndroid($ua = null)
+    {
+        if (is_null($ua) and isset($_SERVER['HTTP_USER_AGENT'])) {
+            $ua = $_SERVER['HTTP_USER_AGENT'];
+        }
+        if (!$ua) {
+            return false;
+        }
+        // シミュレータ
+        // Mozilla/5.0 (Linux; U; Android 1.0; en-us; generic) AppleWebKit/525.10+ (KHTML, like Gecko) Version/3.0.4 Mobile Safari/523.12.2
+        // T-mobile G1
+        // Mozilla/5.0 (Linux; U; Android 1.0; en-us; dream) AppleWebKit/525.10+ (KHTML, like Gecko) Version/3.0.4 Mobile Safari/523.12.2
+        // genericとdreamが異なる
+        if (false !== strpos($ua, 'Android')) {
+            return true;
+        }
+        return false;
+    }
+
+    // }}}
     // {{{ isAndroidWebKit()
 
     /**
@@ -480,6 +508,29 @@ class UA
         // Mozilla/5.0 (Linux; U; Android 1.0; en-us; dream) AppleWebKit/525.10+ (KHTML, like Gecko) Version/3.0.4 Mobile Safari/523.12.2
         // genericとdreamが異なる
         if (false !== strpos($ua, 'Android') && false !== strpos($ua, 'WebKit')) {
+            return true;
+        }
+        return false;
+    }
+
+    // }}}
+    // {{{ isAndroidWebKit()
+
+    /**
+     * UAがAndroid（でFirefox）ならtrueを返す。
+     *
+     * @param   string   $ua  UAを指定するなら
+     * @return  boolean
+     */
+    static public function isAndroidFirefox($ua = null)
+    {
+        if (is_null($ua) and isset($_SERVER['HTTP_USER_AGENT'])) {
+            $ua = $_SERVER['HTTP_USER_AGENT'];
+        }
+        if (!$ua) {
+            return false;
+        }
+        if (false !== strpos($ua, 'Android') && false !== strpos($ua, 'Firefox')) {
             return true;
         }
         return false;

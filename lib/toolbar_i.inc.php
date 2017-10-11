@@ -497,7 +497,7 @@ function _toolbar_i_client_type()
 
     switch ($_conf['client_type']) {
         case 'i':
-            $type = UA::isAndroidWebKit() ? 'android' : 'iphone';
+            $type = UA::isAndroid() ? 'android' : 'iphone';
             break;
         case 'i':
             $type = 'mobile';
