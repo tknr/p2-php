@@ -405,14 +405,14 @@ $conf_user_sel['2chapi_ua.auth'] = array(
     'DOLIB/1.00'       => '1 DOLIB/1.00',
     'Monazilla/1.3'     => '2 Monazilla/1.3',
     'Monazilla/1.00 (%s)'    => '3 Monazilla/1.00 (AppName)',
-    'Mozilla/3.0 (compatible; %s)'   => '4 Mozilla/3.0 (compatible; AppName)',
+    'Mozilla/5.0 (compatible; %s)'   => '4 Mozilla/5.0 (compatible; AppName)',
 );
 
 //DAT取得で使用するUser-Agent
 $conf_user_def['2chapi_ua.read'] = "Mozilla/3.0 (compatible; %s)"; // ("Monazilla/1.3")
 $conf_user_sel['2chapi_ua.read'] = array(
     'Monazilla/1.00 (%s)'    => '1 Monazilla/1.00 (AppName)',
-    'Mozilla/3.0 (compatible; %s)'   => '2 Mozilla/3.0 (compatible; AppName)',
+    'Mozilla/5.0 (compatible; %s)'   => '2 Mozilla/5.0 (compatible; AppName)',
 );
 
 // API認証にSSLを使用する
