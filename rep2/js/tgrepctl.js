@@ -27,6 +27,7 @@ tGrep.execRequest = function (uri, menuId) {
 	receiver.innerHTML = 'Now Loading...';
 
 	req.open('get', uri, false);
+	req.withCredentials = true;
 	req.send(null);
 
 	if (req.readyState == 4) {

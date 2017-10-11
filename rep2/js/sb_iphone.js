@@ -390,6 +390,7 @@
 			table.style.display = 'none';
 			req = new XMLHttpRequest();
 			req.open('GET', 'info_js.php?' + sliding.query, true);
+			req.withCredentials = true;
 			req.onreadystatechange = generateOnThreadInfoGet(req, JSON.parse, pop, table);
 			req.send(null);
 

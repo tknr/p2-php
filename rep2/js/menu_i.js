@@ -142,6 +142,7 @@
 
 		req = new XMLHttpRequest();
 		req.open('GET', uri, true);
+		req.withCredentials = true;
 		req.onreadystatechange = generateOnToggle(req, div, toggled);
 		req.send(null);
 	};
@@ -169,6 +170,7 @@
 		toggled = div.getAttribute('toggled') === 'true';
 		req = new XMLHttpRequest();
 		req.open('GET', uri, true);
+		req.withCredentials = true;
 		req.onreadystatechange = generateOnToggle(req, div, toggled);
 		req.send(null);
 	};
@@ -195,6 +197,7 @@
 
 		req = new XMLHttpRequest();
 		req.open('GET', uri, true);
+		req.withCredentials = true;
 		req.onreadystatechange = generateOnToggle(req, div, toggled);
 		req.send(null);
 	};
@@ -546,6 +549,7 @@
 			if (anchor.href.indexOf('?spmode=merge_favita') === -1) {
 				req = new XMLHttpRequest();
 				req.open('GET', 'info_js.php?' + sliding.query, true);
+				req.withCredentials = true;
 				req.onreadystatechange = generateOnBoardInfoGet(req, JSON.parse, pop, table);
 				req.send(null);
 			}
@@ -589,6 +593,7 @@
 			table.style.display = 'none';
 			req = new XMLHttpRequest();
 			req.open('GET', 'info_js.php?' + sliding.query, true);
+			req.withCredentials = true;
 			req.onreadystatechange = generateOnThreadInfoGet(req, JSON.parse, pop, table);
 			req.send(null);
 

@@ -619,6 +619,7 @@ iutil.httpGetText = function(uri) {
 	try {
 		req = new XMLHttpRequest();
 		req.open('GET', uri, false);
+		req.withCredentials = true;
 		req.send(null);
 
 		if (req.readyState == 4) {
@@ -645,6 +646,7 @@ iutil.httpGetText = function(uri) {
 iutil.httpGetAsync = function(uri, callback) {
 	var req = new XMLHttpRequest();
 	req.open('GET', uri, true);
+	req.withCredentials = true;
 	req.onreadystatechange = function() {
 		if (req.readyState == 4) {
 			if (req.status == 200) {

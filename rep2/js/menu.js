@@ -56,6 +56,7 @@ function replaceMenuItem(itemId, qKey, qValue)
 	receiver.innerHTML = 'Now Loading...';
 
 	req.open('get', uri, false);
+	req.withCredentials = true;
 	req.send(null);
 
 	if (req.readyState == 4) {
@@ -95,6 +96,7 @@ function changeSkin(skinName)
 	}
 
 	req.open('get', uri, false);
+	req.withCredentials = true;
 	req.send(null);
 
 	try {
