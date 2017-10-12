@@ -9,8 +9,8 @@ if (PHP_SAPI != 'cli') {
     die('CLI only!');
 }
 
-if (!extension_loaded('http')) {
-    fwrite(STDERR, 'http extension is not loaded.' . PHP_EOL);
+if (!$_conf['expack.use_curl_multi'] && !$_conf['expack.use_pecl_http']) {
+    fwrite(STDERR, 'Setting of expack.use_curl_multi or  expack.use_pecl_http is required.' . PHP_EOL);
     exit(1);
 }
 
