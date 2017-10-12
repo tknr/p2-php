@@ -113,6 +113,7 @@ var _ic2_popinfo_js_onload = function() {
 					+ _uniquery(),
 				 false
 				 );
+		req.withCredentials = true;
 		req.send(null);
 
 		if (req.readyState == 4) {

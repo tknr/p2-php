@@ -33,6 +33,7 @@ if (isset($_GET['ktool_name']) && isset($_GET['ktool_value'])) {
         case 'res_quote':
             $_GET['resnum'] = $ktv;
             $_GET['inyou'] = ($_GET['ktool_name'] == 'res') ? -1 : 1;
+            $_GET['popup'] = 1;
             include $www_dir_s . 'post_form.php';
             exit;
         case 'copy_quote':

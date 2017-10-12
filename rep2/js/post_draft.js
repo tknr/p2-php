@@ -37,6 +37,7 @@ var post_draft = function(host, bbs, key, csrfid, data, fin, err) {
 	if (!req) return;
 
 	req.open('POST', 'post_draft.php', true);
+	req.withCredentials = true;
 	req.onreadystatechange = function (aEvt) {
 		if (req.readyState == 4) {
 			if(req.status == 200)

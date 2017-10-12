@@ -163,6 +163,7 @@ ipoputil.popup = function(url, evt) {
 	var popid = '_respop' + popnum;
 	var req = new XMLHttpRequest();
 	req.open('GET', url + '&ajax=true&respop_id=' + popnum, true);
+	req.withCredentials = true;
 	req.onreadystatechange = function() {
 		if (this.readyState == 4) {
 			if (this.status == 200) {

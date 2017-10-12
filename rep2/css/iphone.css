@@ -1046,6 +1046,21 @@ div.mtoolbar > .ttitle > span.btitle {
     width: 98%;
 }
 
+.popup {
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+div.ntoolbar .disabled a:visited {
+    color: #555;!important
+}
+
+.disabled > a > img{
+    filter: alpha(opacity=20);
+    -ms-filter: "alpha(opacity=20)";
+    -moz-opacity: 0.2;
+    opacity: 0.2;
+}
+
 /* }}} */
 
 /*

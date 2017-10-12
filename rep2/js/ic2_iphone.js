@@ -135,6 +135,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
 		try {
 			req = new XMLHttpRequest();
 			req.open('GET', url, false);
+			req.withCredentials = true;
 			req.send(null);
 
 			res = null;
@@ -177,6 +178,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
 					+ _uniquery(),
 				 false
 				 );
+		req.withCredentials = true;
 		req.send(null);
 
 		if (req.readyState == 4) {

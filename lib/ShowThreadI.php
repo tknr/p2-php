@@ -839,7 +839,7 @@ EOP;
             } else {
                 $link_url = $url;
             }
-            return "<a href=\"{$link_url}\">{$str}</a>";
+            return "<a href=\"{$link_url}\" target=\"_blank\">{$str}</a>";
         }
         return false;
     }
