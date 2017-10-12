@@ -1885,12 +1885,20 @@ ERR;
                 }
 
                 // 2ch or pink by ula.cc(bintan / bekkanko) - http://choco.2ch.net/test/read.cgi/event/1027770702/
-            } elseif (preg_match('<^https?://(?:(?:bintan|same)\\.ula\\.cc|ula\\.2ch\\.net)/test/(?:read\\.(?:cgi|html|so)|r\\.so)
+            } elseif (preg_match('<^https?://(?:(?:bintan|same)\\.ula\\.cc|ula\\.(?:2ch|5ch)\\.net)/test/(?:read\\.(?:cgi|html|so)|r\\.so)
                     /(.+)/(\\w+)/([0-9]+)(?:/([^/]*))>x', $nama_url, $matches)) {
                 $host = $matches[1];
                 $bbs = $matches[2];
                 $key = $matches[3];
                 $ls = (isset($matches[4]) && strlen($matches[4])) ? $matches[4] : '';
+
+                // 2ch or pink by ula.cc(new bintan) - http://choco.2ch.net/test/read.cgi/event/1027770702/
+            } elseif (preg_match('<^https?://(ula\\.(?:2ch|5ch)\\.net)/(?:2ch|5ch)
+                    /(\\w+)/(.+)/(\\d+)(?:/([^/]*))>x', $nama_url, $matches)) {
+                $host = $matches[3];
+                $bbs = $matches[2];
+                $key = $matches[4];
+                $ls = (isset($matches[5]) && strlen($matches[5])) ? $matches[5] : '';
 
                 // 2ch or pink âﬂãéÉçÉOhtml - http://pc.2ch.net/mac/kako/1015/10153/1015358199.html
             } elseif (preg_match('<^(https?://(.+)(?:/[^/]+)?/(\\w+)
