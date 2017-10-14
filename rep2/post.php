@@ -144,8 +144,7 @@ if (!empty($_POST['savedraft'])) {
     // 書き込みを一時的に保存
     $post_backup_key = PostDataStore::getKeyForBackup($host, $bbs, $key, !empty($_REQUEST['newthread']));
     PostDataStore::set($post_backup_key, $post_cache);
-    $reload = empty($_POST['from_read_new']);
-    showPostMsg(false, '下書きを保存しました', $reload);
+    showPostMsg(false, '下書きを保存しました', false); // 書き込みが完了(第一引数がtrue)しないとリロードが効かないのでfalseに変更
     exit;
 }
 
@@ -477,7 +476,10 @@ function postIt($host, $bbs, $key, $post)
 
     // カキコミ成功
     if ($post_seikou || preg_match($kakikonda_match, $body)) {
-        $reload = empty($_POST['from_read_new']);
+        $reload = (bool)$_conf['res_popup_reload'];
+        if (!empty($_POST['from_read_new'])) {
+            $reload = false; //　新着まとめ読みから来た時は強制的にリロード無効
+        }
         showPostMsg(true, '書きこみが終わりました。', $reload);
 
         // +Wiki sambaタイマー
@@ -526,17 +528,21 @@ function showPostMsg($isDone, $result_msg, $reload)
     $ttitle_ht = "<b{$class_ttitle}>{$ttitle}</b>";
 
     $popup_ht = '';
+
+    // 書き込みが完了していたら、リロードする。
     if ($isDone) {
         // 2005/03/01 aki: jigブラウザに対応するため、&amp; ではなく & で
         // 2005/04/25 rsk: <script>タグ内もCDATAとして扱われるため、&amp;にしてはいけない
         $location_noenc = str_replace('&amp;', '&', $location_ht);
+        // ポップアップは自動的に閉じるコードを追加
         if ($popup) {
             $popup_ht = <<<EOJS
 <script type="text/javascript">
 //<![CDATA[
 
 EOJS;
-            if ($_conf['res_popup_reload']) {
+            // リロード有りの時は、親ウインドウをリロード
+            if ($reload) {
                 $popup_ht .= <<<EOJS
     opener.location.href = "{$location_noenc}";
 EOJS;
@@ -548,6 +554,7 @@ EOJS;
 </script>
 EOJS;
         } else {
+        	// ポップアップでは無いときは丸ごとリロード
             $_conf['extra_headers_ht'] .= <<<EOP
 <meta http-equiv="refresh" content="1;URL={$location_noenc}">
 EOP;
@@ -587,15 +594,12 @@ EOP;
             </script>
 EOSCRIPT;
         }
-        if ($reload) {
-            echo $popup_ht;
-        }
+
+        echo $popup_ht;
         $kakunin_ht = '';
     } else {
     	if($_conf['iphone']) {
-            if ($reload) {
-                echo $popup_ht;
-            }
+            echo $popup_ht;
             $kakunin_ht = '';
         } else {
         	$kakunin_ht = <<<EOP
