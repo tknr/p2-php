@@ -62,7 +62,13 @@ function info_js_get_thread_info($host, $bbs, $key)
  */
 function info_js_json_encode($values)
 {
-    mb_convert_variables('UTF-8', 'CP932', $values);
+	// mb_convert_variablesは本来多次元配列での動作を保証していないので
+	// array_walk_recursiveで回す。
+	// array_walk_recursiveも多次元配列対応してないはずだけどとりあえず動く。。。
+	// https://bugs.php.net/bug.php?id=66964
+    array_walk_recursive($values, function(&$value) {
+        mb_convert_variables('UTF-8', 'CP932', $value);
+    }); 
     return json_encode($values);
 }
 

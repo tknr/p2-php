@@ -592,9 +592,16 @@ EOSCRIPT;
         }
         $kakunin_ht = '';
     } else {
-        $kakunin_ht = <<<EOP
+    	if($_conf['iphone']) {
+            if ($reload) {
+                echo $popup_ht;
+            }
+            $kakunin_ht = '';
+        } else {
+        	$kakunin_ht = <<<EOP
 <p><a href="{$location_ht}">Šm”F</a></p>
 EOP;
+        }
     }
 
     echo "</head>\n";

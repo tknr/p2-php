@@ -72,6 +72,13 @@ PHP7での不具合修正を優先するため突然PHP5.xのサポートが終わる可能性があります。
 
 
 ●ChangeLog
+171013.2230
+* スマホ：一部の環境でスワイプメニューが動作しない不具合修正
+* スマホ:res_popup_reloadの設定が反映されない不具合修正
+* PHP7.1でスレタイ検索を使用するとWarningが出る不具合修正
+* cURLMultiが有るのでfetch-subject-txt.phpのPECL_HTTPチェックを削除
+* expack.ic2.enabledを2にした環境でPCからアクセスするとfatal errorが出る不具合修正
+
 171011.1515
 * スマホ用readのツールバーをポップアップメニュー形式に変更
 * スマホ用readの外部リンクにtarget="_blank"を指定
