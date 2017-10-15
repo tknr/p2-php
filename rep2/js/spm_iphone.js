@@ -78,6 +78,29 @@ SPM.hide = (function(evt)
 });
 
 // }}}
+// {{{ SPM.replyTo()
+
+/*
+ * ƒŒƒX‚·‚é
+ *
+ * @param Boolean quote
+ * @return void
+ */
+SPM.replyTo = (function(quote)
+{
+	var uri = 'spm_k.php?ktool_name=res';
+	if (quote) {
+		uri += '_quote';
+	}
+	if (location.href.indexOf('/read_new_k.php?') != -1) {
+		uri += '&from_read_new=1';
+	}
+	uri += '&ktool_value=' + SPM.activeNumber + SPM.activeThread.query;
+
+	window.open(uri);
+});
+
+// }}}
 // {{{ SPM.doAction()
 
 /*

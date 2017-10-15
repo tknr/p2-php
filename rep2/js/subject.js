@@ -125,18 +125,6 @@ rep2.subject.resizeTitleCell = function () {
 };
 
 // }}}
-// {{{ rep2.subject.checkAll()
-
-rep2.subject.checkAll = function () {
-	var checkboxes = $('.threadlist input:checkbox[name!=allbox]');
-	if ($('#allbox').attr('checked')) {
-		checkboxes.attr('checked', 'checked');
-	} else {
-		checkboxes.removeAttr('checked');
-	}
-};
-
-// }}}
 // {{{ rep2.subject.offRecent()
 
 rep2.subject.offRecent = function (anchor) {
@@ -234,9 +222,11 @@ rep2.subject.setup = function (group_number) {
 	});
 
 	// IE対策
+	/* jQuery3.xで削除されたのでコメントアウト
 	if ($.browser.msie) {
 		cells.contents().filter('[nodeType=3]').wrap('<span class="nowrap"></span>');
 	}
+	*/
 };
 
 // }}}
@@ -258,6 +248,10 @@ $(document).ready(function(){
 	if (i == n) {
 		i = 0;
 	}
+
+	$('#allbox').on('change', function() {
+		$('.threadlist input:checkbox[name!=allbox]').prop('checked', this.checked);
+	});
 
 	_.setWindowTitle();
 	_.resizeTitleCell();
