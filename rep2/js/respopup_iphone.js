@@ -142,12 +142,8 @@ ipoputil.callback = function(req, url, popid, yOffset) {
 	//ウインドウ全体をクリックしたとき
 	$(document).on('click.'+popid, function(event) {
 		// レスポップアップと、SPMをクリックしたときは、閉じない
-		if (!$(event.target).closest('.respop').length &&
-		!$(event.target).closest('#spm-header').length &&
-		!$(event.target).closest('.input-group').length) {
-			if(true) {
-				ipoputil.getDeactivator(container, url);
-			}
+		if (!$(event.target).closest('.respop,#spm-header,#ic2-info-body,.input-group').length) {
+			ipoputil.getDeactivator(container, url);
 		}
 	});
 };
