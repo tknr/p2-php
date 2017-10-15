@@ -160,7 +160,7 @@ EOP;
     // チェックボックス
     if ($checkbox_bool) {
         echo <<<EOP
-<th{$class_tc}><input id="allbox" name="allbox" type="checkbox" onclick="rep2.subject.checkAll();" title="すべての項目を選択、または選択解除"></th>\n
+<th{$class_tc}><input id="allbox" name="allbox" type="checkbox" title="すべての項目を選択、または選択解除"></th>\n
 EOP;
     }
     // No.
