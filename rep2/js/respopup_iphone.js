@@ -28,7 +28,7 @@ var ipoputil = {};
  * @param {Element} obj
  * @return {String}
  */
-ipoputil.getZ = function() {
+ipoputil.getZ = function(obj) {
 	return (10 + _IRESPOPG.serial).toString();
 };
 
@@ -58,13 +58,13 @@ ipoputil.getActivator = function(obj) {
  * @param {String} key
  * @return void
  */
-ipoputil.getDeactivator = function($obj, key) {
-	return (function(){
+ipoputil.getDeactivator = function(obj, key) {
+	if(obj!=null &&obj.parentNode !=null) {
+		$(document).off('click.'+obj.id);
 		delete _IRESPOPG.hash[key];
-		//obj.parentNode.removeChild(obj);
-		$obj.remove();
-		delete $obj;
-	});
+		obj.parentNode.removeChild(obj);
+		delete obj;
+	}
 };
 
 // }}}
@@ -81,37 +81,39 @@ ipoputil.getDeactivator = function($obj, key) {
  * @todo use asynchronous request
  */
 ipoputil.callback = function(req, url, popid, yOffset) {
-	var $container = $("<div/>");
-	var $closer = $("<img/>");
+	var container = document.createElement('div');
+	var closer = document.createElement('img');
 
-	$container.attr("id",popid);
-	$container.addClass("respop");
-	$container.html(req.responseText);
-
+	container.id = popid;
+	container.className = 'respop';
+	container.innerHTML = req.responseText;
 	/*
 	var rx = req.responseXML;
 	while (rx.hasChildNodes()) {
 		container.appendChild(document.importNode(rx.removeChild(rx.firstChild), true));
 	}
 	*/
-	$container.css('top',yOffset.toString() + 'px');
-	$container.css('z-index',ipoputil.getZ());
-	//respop自体等を内部扱いにしておく
-	$container.skOuterClick(ipoputil.getDeactivator($container, url),$("[id^=_respop]"),$('.close-button'),$('#ic2-info-body'),$('#ic2-info-closer'),$('#spm'),$('#spm-closer'));
+	container.style.top = yOffset.toString() + 'px';
+	container.style.zIndex = ipoputil.getZ();
+	//container.onclick = ipoputil.getActivator(container);
 
-	$closer.addClass('close-button');
-	$closer.attr('src', 'img/iphone/close.png');
-	$closer.click(ipoputil.getDeactivator($container, url));
+	closer.className = 'close-button';
+	closer.setAttribute('src', 'img/iphone/close.png');
 
-	$container.append($closer);
-	$(document.body).append($container);
+	$(closer).on('click', function(event) {
+		ipoputil.getDeactivator(container, url);
+	});
 
-	iutil.modifyExternalLink($container[0]);
+	container.appendChild(closer);
+	document.body.appendChild(container);
 
-	_IRESPOPG.hash[url] = $container[0];
+	//iutil.modifyInternalLink(container);
+	iutil.modifyExternalLink(container);
+
+	_IRESPOPG.hash[url] = container;
 
 	var lastres = document.evaluate('./div[@class="res" and position() = last()]',
-									$container[0],
+									container,
 									null,
 									XPathResult.ANY_UNORDERED_NODE_TYPE,
 									null
@@ -134,8 +136,20 @@ ipoputil.callback = function(req, url, popid, yOffset) {
 
 	var i;
 	for (i = 0; i < _IRESPOPG.callbacks.length; i++) {
-		_IRESPOPG.callbacks[i]($container[0]);
+		_IRESPOPG.callbacks[i](container);
 	}
+
+	//ウインドウ全体をクリックしたとき
+	$(document).on('click.'+popid, function(event) {
+		// レスポップアップと、SPMをクリックしたときは、閉じない
+		if (!$(event.target).closest('.respop').length &&
+		!$(event.target).closest('#spm-header').length &&
+		!$(event.target).closest('.input-group').length) {
+			if(true) {
+				ipoputil.getDeactivator(container, url);
+			}
+		}
+	});
 };
 
 // }}}
