@@ -24,7 +24,7 @@ function login2ch()
     }
 
     $auth2ch_url= http_build_url(array(
-        "scheme" => $_conf['2chapi_ssl.auth']?"https":"http",
+        "scheme" => 'https',
         "host" => "2chv.tora3.net",
         "path" => "futen.cgi"));
 
