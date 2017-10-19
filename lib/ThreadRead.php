@@ -236,6 +236,8 @@ class ThreadRead extends Thread {
                     return false;
                 } elseif (mb_strpos ($firstmsg, "２ちゃんねる ★<><>2015/03/13(金) 00:00:00.00 ID:????????<> 3月13日より２") === 0) {
                     return $this->_downloadDat2chNotFound ('404');
+                } elseif (mb_strpos ($firstmsg, "5ちゃんねる ★<><>2017/10/01(日) 00:00:00.00 ID:???<> お客様がご") === 0) {
+                    return $this->_downloadDat2chNotFound ('404');
                 }
                 unset ($firstmsg);
 
@@ -422,6 +424,10 @@ class ThreadRead extends Thread {
                     $firstmsg = mb_substr ($body, 0, $posLF === false ? mb_strlen ($body) : $posLF);
 
                     if (mb_strpos ($firstmsg, "２ちゃんねる ★<><>2015/03/13(金) 00:00:00.00 ID:????????<> 3月13日より２") === 0) {
+                        $this->getdat_error_msg_ht .= "<p>rep2 error: 板サーバから接続を拒否されました<br>rep2 info: 2ちゃんねるのDAT提供は終了しました</p>";
+                        $this->diedat = true;
+                        return false;
+                    } elseif (mb_strpos ($firstmsg, "5ちゃんねる ★<><>2017/10/01(日) 00:00:00.00 ID:???<> お客様がご") === 0) {
                         $this->getdat_error_msg_ht .= "<p>rep2 error: 板サーバから接続を拒否されました<br>rep2 info: 2ちゃんねるのDAT提供は終了しました</p>";
                         $this->diedat = true;
                         return false;
