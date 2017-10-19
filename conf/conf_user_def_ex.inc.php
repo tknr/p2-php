@@ -220,6 +220,14 @@ $conf_user_def['expack.ic2.fav_auto_rank_setting'] = '1,1,2,3,4,5';
 $conf_user_def['expack.ic2.fav_auto_rank_override'] = 0; // (0)
 $conf_user_rad['expack.ic2.fav_auto_rank_override'] = array('1' => 'する', '2' => 'ランク0だったらする', '3' => 'ランクが上がるならする', '0' => 'しない');
 
+// サーバに接続する際にタイムアウトするまでの時間（秒）[0 => http_conn_timeout に依存]
+$conf_user_def['expack.ic2.getter_conn_timeout'] = 5;
+$conf_user_rules['expack.ic2.getter_conn_timeout'] = array('notIntExceptMinusToDef');
+
+// ダウンロードがタイムアウトするまでの時間（秒）[0 => http_read_timeout に依存]
+$conf_user_def['expack.ic2.getter_read_timeout'] = 60;
+$conf_user_rules['expack.ic2.getter_read_timeout'] = array('notIntExceptMinusToDef');
+
 // }}}
 // {{{ AAS
 
