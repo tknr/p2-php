@@ -2204,7 +2204,7 @@ ERR;
         }
 
         try {
-            $req = P2Commun::getHTTPRequest2($url, HTTP_Request2::METHOD_POST);
+            $req = P2Commun::createHTTPRequest($url, HTTP_Request2::METHOD_POST);
 
             $req->setHeader('User-Agent', $agent);
             $req->setHeader('X-2ch-UA', $x_2ch_ua);
