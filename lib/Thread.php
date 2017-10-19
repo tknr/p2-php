@@ -456,7 +456,7 @@ class Thread
                 $this->setTtitle($d[4]);
 
                 // be.2ch.net ‚È‚çEUC¨SJIS•ÏŠ·
-                if (P2Util::isHostBe2chNet($this->host)) {
+                if (P2BbsType::isHostBe2chs($this->host)) {
                     $ttitle = mb_convert_encoding($this->ttitle, 'CP932', 'CP51932');
                     $this->setTtitle($ttitle);
                 }

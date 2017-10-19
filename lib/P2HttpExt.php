@@ -931,7 +931,7 @@ class P2HttpRequestPool
 
             $url = 'http://' . $host . '/' . $bbs . '/subject.txt';
 
-            if (P2Util::isHostJbbsShitaraba($host) || P2Util::isHostBe2chNet($host)) {
+            if (P2Util::isHostJbbsShitaraba($host) || P2BbsType::isHostBe2chs($host)) {
                 if ($eucjp2sjis === null) {
                     $eucjp2sjis = new P2HttpCallback_SaveEucjpAsSjis();
                 }

@@ -802,7 +802,7 @@ class P2Util
      */
     static public function isHostExample($host)
     {
-        return (bool)preg_match('/(?:^|\\.)example\\.(?:com|net|org|jp)$/i', $host);
+        return P2BbsType::isHostExample($host);
     }
 
     // }}}
@@ -816,7 +816,7 @@ class P2Util
      */
     static public function isHost2chs($host)
     {
-        return self::isHost2ch($host) || self::isHost5ch($host) || self::isHostBbsPink($host);
+        return P2BbsType::isHost2chs($host);
     }
 
     // }}}
@@ -830,10 +830,7 @@ class P2Util
      */
     static public function isHost2ch($host)
     {
-        if (!array_key_exists($host, self::$_hostIs2ch)) {
-            self::$_hostIs2ch[$host] = (bool)preg_match('<^\\w+\\.(?:2ch\\.net)$>', $host);
-        }
-        return self::$_hostIs2ch[$host];
+        return P2BbsType::isHost2ch($host);
     }
 
     // }}}
@@ -847,10 +844,7 @@ class P2Util
      */
     static public function isHost5ch($host)
     {
-        if (!array_key_exists($host, self::$_hostIs5ch)) {
-            self::$_hostIs5ch[$host] = (bool)preg_match('<^\\w+\\.(?:5ch\\.net)$>', $host);
-        }
-        return self::$_hostIs5ch[$host];
+        return P2BbsType::isHost5ch($host);
     }
 
     // }}}
@@ -864,10 +858,7 @@ class P2Util
      */
     static public function isHostVip2ch($host)
     {
-        if (!array_key_exists($host, self::$_hostIsVip2ch)) {
-            self::$_hostIsVip2ch[$host] = (bool)preg_match('<^\\w+\\.(?:vip2ch\\.com)$>', $host);
-        }
-        return self::$_hostIsVip2ch[$host];
+        return P2BbsType::isHostVip2ch($host);
     }
 
     // }}}
@@ -881,13 +872,7 @@ class P2Util
      */
     static public function isHostBe2chNet($host)
     {
-        return ($host == 'be.2ch.net' || $host == 'be.5ch.net');
-        /*
-        if (!array_key_exists($host, self::$_hostIsBe2chNet)) {
-            self::$_hostIsBe2chNet[$host] = ($host == 'be.2ch.net');
-        }
-        return self::$_hostIsBe2chNet[$host];
-        */
+        return P2BbsType::isHostBe2chNet($host);
     }
 
     // }}}
@@ -901,7 +886,7 @@ class P2Util
      */
     static public function isNotUse2chAPI($host)
     {
-        return ($host == 'qb5.2ch.net' || $host == 'carpenter.2ch.net' || $host == 'qb5.5ch.net' || $host == 'carpenter.5ch.net');
+        return P2BbsType::isNotUse2chAPI($host);
     }
 
     // }}}
@@ -915,10 +900,7 @@ class P2Util
      */
     static public function isHostBbsPink($host)
     {
-        if (!array_key_exists($host, self::$_hostIsBbsPink)) {
-            self::$_hostIsBbsPink[$host] = (bool)preg_match('<^\\w+\\.bbspink\\.com$>', $host);
-        }
-        return self::$_hostIsBbsPink[$host];
+        return P2BbsType::isHostBbsPink($host);
     }
 
     // }}}
@@ -931,23 +913,9 @@ class P2Util
      * @param string $host
      * @return boolean
      */
-    static function isHostTor($host, $isGatewayMode = 99)
+    static public function isHostTor($host, $isGatewayMode = 99)
     {
-        switch ($isGatewayMode) {
-            case 0:
-                $ret = (bool)preg_match('/\\.onion$/', $host);
-                break;
-
-            case 1:
-                $ret = (bool)preg_match('/\\.(onion\\.cab|onion\\.city|onion\\.direct|onion\\.link|onion\\.nu|onion\\.to|onion\\.rip)$/', $host);
-                break;
-
-            default:
-                $ret = (bool)preg_match('/\\.(onion\\.cab|onion\\.city|onion\\.direct|onion\\.link|onion\\.nu|onion\\.to|onion\\.rip|onion)$/', $host);
-                break;
-        }
-
-        return $ret;
+        return P2BbsType::isHostTor($host, $isGatewayMode);
     }
 
     // }}}
@@ -961,14 +929,7 @@ class P2Util
      */
     static public function isHostMachiBbs($host)
     {
-        if ($host === "machi.to") {
-            return true;
-        }
-
-        if (!array_key_exists($host, self::$_hostIsMachiBbs)) {
-            self::$_hostIsMachiBbs[$host] = (bool)preg_match('<^\\w+\\.machi(?:bbs\\.com|\\.to)$>', $host);
-        }
-        return self::$_hostIsMachiBbs[$host];
+        return P2BbsType::isHostMachiBbs($host);
     }
 
     // }}}
@@ -982,10 +943,7 @@ class P2Util
      */
     static public function isHostMachiBbsNet($host)
     {
-        if (!array_key_exists($host, self::$_hostIsMachiBbsNet)) {
-            self::$_hostIsMachiBbsNet[$host] = (bool)preg_match('<^\\w+\\.machibbs\\.net$>', $host);
-        }
-        return self::$_hostIsMachiBbsNet[$host];
+        return P2BbsType::isHostMachiBbsNet($host);
     }
 
     // }}}
@@ -999,16 +957,7 @@ class P2Util
      */
     static public function isHostJbbsShitaraba($in_host)
     {
-        if (!array_key_exists($in_host, self::$_hostIsJbbsShitaraba)) {
-            if ($in_host == 'rentalbbs.livedoor.com') {
-                self::$_hostIsJbbsShitaraba[$in_host] = true;
-            } elseif (preg_match('<^jbbs\\.(?:shitaraba\\.(?:net|com)|livedoor\\.(?:com|jp))(?:/|$)>', $in_host)) {
-                self::$_hostIsJbbsShitaraba[$in_host] = true;
-            } else {
-                self::$_hostIsJbbsShitaraba[$in_host] = false;
-            }
-        }
-        return self::$_hostIsJbbsShitaraba[$in_host];
+        return P2BbsType::isHostJbbsShitaraba($in_host);
     }
 
     // }}}
@@ -1022,8 +971,7 @@ class P2Util
      */
     static public function adjustHostJbbs($in_str)
     {
-        return preg_replace('<(^|/)jbbs\\.(?:shitaraba|livedoor)\\.(?:net|com)(/|$)>', '\\1jbbs.shitaraba.net\\2', $in_str, 1);
-        //return preg_replace('<(^|/)jbbs\\.(?:shitaraba\\.com|livedoor\\.(?:com|jp))(/|$)>', '\\1rentalbbs.livedoor.com\\2', $in_str, 1);
+        return P2BbsType::adjustHostJbbs($in_str);
     }
 
     // }}}
@@ -1037,10 +985,7 @@ class P2Util
      */
     static public function isHost2chSc($host)
     {
-        if (!array_key_exists($host, self::$_hostIs2chSc)) {
-            self::$_hostIs2chSc[$host] = (bool)preg_match('/\\.(2ch\\.sc)$/', $host);
-        }
-        return self::$_hostIs2chSc[$host];
+        return P2BbsType::isHost2chSc($host);
     }
 
     // }}}
@@ -1054,10 +999,7 @@ class P2Util
      */
     static public function isHostOpen2ch($host)
     {
-        if (!array_key_exists($host, self::$_hostIsOpen2ch)) {
-            self::$_hostIsOpen2ch[$host] = (bool)preg_match('/\\.(open2ch\\.net)$/', $host);
-        }
-        return self::$_hostIsOpen2ch[$host];
+        return P2BbsType::isHostOpen2ch($host);
     }
 
     // }}}
@@ -2022,17 +1964,7 @@ ERR;
      */
     static public function getHostGroupName($host)
     {
-        if (self::isHost2chs($host)) {
-            return '2channel';
-        } elseif (self::isHostMachiBbs($host)) {
-            return 'machibbs';
-        } elseif (self::isHostJbbsShitaraba($host)) {
-            return 'shitaraba';
-        } elseif (self::isHostVip2ch($host)) {
-            return 'vip2ch';
-        } else {
-            return $host;
-        }
+        return P2BbsType::getHostGroupName($host);
     }
 
     // }}}

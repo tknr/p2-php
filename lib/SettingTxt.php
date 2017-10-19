@@ -118,7 +118,7 @@ class SettingTxt
                 //var_dump($req->getResponseHeader());
                 $body = $response->getBody();
                 // ‚µ‚½‚ç‚Î or be.2ch.net ‚È‚çEUC‚ðSJIS‚É•ÏŠ·
-                if (P2Util::isHostJbbsShitaraba($this->host) || P2Util::isHostBe2chNet($this->host)) {
+                if (P2Util::isHostJbbsShitaraba($this->host) || P2BbsType::isHostBe2chs($this->host)) {
                     $body = mb_convert_encoding($body, 'CP932', 'CP51932');
                 }
                 if (FileCtl::file_write_contents($this->_setting_txt, $body) === false) {

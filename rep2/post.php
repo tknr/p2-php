@@ -411,7 +411,7 @@ function postIt($host, $bbs, $key, $post)
         }
 
         // be.2ch.net 認証クッキー
-        if (P2Util::isHostBe2chNet($host) || !empty($_REQUEST['beres'])) {
+        if (P2BbsType::isHostBe2chs($host) || !empty($_REQUEST['beres'])) {
             if ($_conf['be_2ch_DMDM'] && $_conf['be_2ch_MDMD']) {
                 $req->addCookie('DMDM', urlencode( rawurldecode( $_conf['be_2ch_DMDM']) ) );
                 $req->addCookie('MDMD', urlencode( rawurldecode( $_conf['be_2ch_MDMD']) ) );
@@ -428,7 +428,7 @@ function postIt($host, $bbs, $key, $post)
         while (list($name, $value) = each($post)) {
 
             // したらば or be.2ch.netなら、EUCに変換
-            if (P2Util::isHostJbbsShitaraba($host) || P2Util::isHostBe2chNet($host)) {
+            if (P2Util::isHostJbbsShitaraba($host) || P2BbsType::isHostBe2chs($host)) {
                 $value = mb_convert_encoding($value, 'CP51932', 'CP932');
             } elseif (P2Util::isHost2chs($host) && ! P2Util::isHostBbsPink($host)) {
                 // 2chはUnicodeの文字列をpostする
@@ -464,7 +464,7 @@ function postIt($host, $bbs, $key, $post)
     }
 
     // be.2ch.net or JBBSしたらば 文字コード変換 EUC→SJIS
-    if (P2Util::isHostBe2chNet($host) || P2Util::isHostJbbsShitaraba($host)) {
+    if (P2BbsType::isHostBe2chs($host) || P2Util::isHostJbbsShitaraba($host)) {
         $body = mb_convert_encoding($body, 'CP932', 'CP51932');
 
         //<META http-equiv="Content-Type" content="text/html; charset=EUC-JP">

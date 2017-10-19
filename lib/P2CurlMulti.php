@@ -65,15 +65,15 @@ class P2CurlMulti
             curl_setopt($this->ch[$key], CURLOPT_MAXCONNECTS, $_conf['expack.curl_per_host']);
 
             // User-Agent
-            if(P2Util::isHost2chs($host) && !P2Util::isNotUse2chAPI($host) && $_conf['2chapi_use']){
+            if(P2BbsType::isHost2chs($host) && !P2BbsType::isNotUse2chsAPI($host) && $_conf['2chapi_use']){
                 $user_agent = sprintf ($_conf['2chapi_ua.read'], $_conf['2chapi_appname']);
             } else {
-                $user_agent = P2Commun::getP2UA(true, P2Util::isHost2chs($purl['host']));
+                $user_agent = P2Commun::getP2UA(true, P2BbsType::isHost2chs($purl['host']));
             }
             curl_setopt($this->ch[$key], CURLOPT_USERAGENT, $user_agent);
 
             // プロキシ
-            if ($_conf['tor_use'] && P2Util::isHostTor($purl['host'], 0)) { // Tor(.onion)はTor用の設定をセット
+            if ($_conf['tor_use'] && P2BbsType::isHostTor($purl['host'], 0)) { // Tor(.onion)はTor用の設定をセット
                 $tor_user_info = sprintf("%s%s@", $_conf['tor_proxy_user'], empty($_conf['tor_proxy_password']) ? "" : ":{$_conf['tor_proxy_password']}");
                 $tor_address   = "{$_conf['tor_proxy_host']}:{$_conf['tor_proxy_port']}";
                 $address = sprintf("http://%s%s", strpos($tor_user_info, "@") === 0 ? "" : $tor_user_info, $tor_address);
@@ -171,7 +171,7 @@ class P2CurlMulti
             $data = curl_multi_getcontent($ch_array);
             $header_size = $tmp['header_size'];
 
-            if (P2Util::isHostJbbsShitaraba($host) || P2Util::isHostBe2chNet($host)) {
+            if (P2BbsType::isHostJbbsShitaraba($host) || P2BbsType::isHostBe2chs($host)) {
                 $data = mb_convert_encoding($data, 'CP932', 'CP51932');
             }
 
