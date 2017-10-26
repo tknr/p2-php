@@ -585,16 +585,8 @@ $conf_user_def['frame_read_width'] = "60%"; // ("60%")
 $conf_user_def['pane_mode'] = 0;  // (0)
 $conf_user_rad['pane_mode'] = array('0' => '標準（に形）', '1' => '横一列（川形）');
 
-// SSL通信(●ログイン等)に使用する関数 ※該当する拡張をインストールする必要がある
-$conf_user_def['ssl_function'] = "curl";  // (socket)
-$conf_user_sel['ssl_function'] = array('socket' => 'OpenSSL', 'curl' => 'cURL');
-
 // SSL通信の接続先を検証するために使用する証明書が格納されたディレクトリ ※検証できない時のみ指定
 $conf_user_def['ssl_capath'] = ""; // ()
-
-// 2ch.netの●ログインにSSLを使用する
-$conf_user_def['2ch_ssl.maru'] = 1;  // (1)
-$conf_user_rad['2ch_ssl.maru'] = array('1' => 'する', '0' => 'しない');
 
 // 2ch.netのsubjec.txtとSETTING.TXTの取得にSSLを使用する
 $conf_user_def['2ch_ssl.subject'] = 0;  // (0)

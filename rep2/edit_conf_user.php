@@ -446,9 +446,7 @@ if ($flags & P2_EDIT_CONF_USER_SKIPPED) {
         array('tor_proxy_password', 'Tor プロキシパスワード (使用する場合のみ)'),
         array('tor_proxy_mode', 'Tor プロキシの種類'),
         'SSL通信設定',
-        array('ssl_function', 'SSL通信(●ログイン等)に使用する関数<br>(関数に該当する拡張をインストールする必要がある)'),
-        array('ssl_capath', 'SSL通信で接続先を検証するための証明書があるディレクトリ ex)&quot;/etc/ssl/certs&quot;<br>設定なして動く場合は設定不要<br>ssl_functionに対応した形式の証明書が必要'),
-        array('2ch_ssl.maru', '2ch.netの●ログインにSSLを使用する'),
+        array('ssl_capath', 'SSL通信で接続先を検証するための証明書があるディレクトリ ex)&quot;/etc/ssl/certs&quot;<br>設定なして動く場合は設定不要'),
         array('2ch_ssl.subject', '2ch.netのsubjec.txtとSETTING.TXTの取得にSSLを使用する'),
         array('2ch_ssl.post', '2ch.netの書き込みにSSLを使用する'),
     );
