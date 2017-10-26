@@ -27,7 +27,7 @@ if (empty($_GET['popup'])) {
     $autoClose = -1;
 } else {
     $isPopUp = 1;
-    if (array_key_exists('close', $_GET) && is_numeric($_GET['close'])) {
+    if (array_key_exists('autoclose', $_GET) && is_numeric($_GET['autoclose'])) {
         $autoClose = (float)$_GET['close'] * 1000.0;
         if ($autoClose > 0.0) {
             $autoClose = (int)$autoClose;
@@ -58,7 +58,7 @@ $qf_defaults = array(
     'to'    => 'to',
     'padding' => '',
     'popup'   => $isPopUp,
-    'close'   => $autoClose,
+    'autoclose'   => $autoClose,
 );
 
 // フォームの固定値
@@ -107,7 +107,7 @@ $qfe = array();
 // 隠し要素
 $qfe['detect_hint'] = $qf->addElement('hidden', '_hint');
 $qfe['popup'] = $qf->addElement('hidden', 'popup');
-$qfe['close'] = $qf->addElement('hidden', 'close');
+$qfe['autoclose'] = $qf->addElement('hidden', 'autoclose');
 
 // URLと連番設定
 $qfe['uri']     = $qf->addElement('text', 'uri', 'URL', $_attr_uri);
@@ -123,7 +123,7 @@ $qfe['memo'] = $qf->addElement('text', 'memo', '　　メモ', $_attr_memo);
 // プレビューの大きさ
 $preview_size = array();
 foreach ($_preview_size as $value => $lavel) {
-    $preview_size[$value] = HTML_QuickForm::createElement('radio', null, null, $lavel, $value);
+    $preview_size[$value] = $qf->createElement('radio', null, null, $lavel, $value);
 }
 $qf->addGroup($preview_size, 'preview_size', 'プレビュー', '&nbsp;');
 if (!isset($_GET['preview_size'])) {
