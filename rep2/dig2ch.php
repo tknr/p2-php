@@ -33,7 +33,13 @@ function dig2chsearch($query)
     // 先方の鯖で何か障害が発生したらJSONにHTMLのコメントが混ざるのでその対策
     if (strpos($body,"<!--") !== false)
     {
-        $body = preg_replace("/<\!--.*?-->/", "", $body);
+        $body = preg_replace("/<\!--[\s\S]*?-->/", "", $body);
+    }
+
+    // formタグが混入することがあるので除去
+    if (strpos($body,"<form") !== false)
+    {
+        $body = preg_replace("/<form[\s\S]*?form>/", "", $body);
     }
 
     $jsontest1 = json_decode($body, true);
