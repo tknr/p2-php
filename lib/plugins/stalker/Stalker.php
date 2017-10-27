@@ -24,7 +24,7 @@ class Stalker
     public function isEnabled()
     {
         if ($this->host) {
-            if (!P2Util::isHost2chs($this->host)) {
+            if (!P2BbsType::isHost2chs($this->host)) {
                 return false;
             }
         }

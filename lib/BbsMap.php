@@ -404,13 +404,13 @@ class BbsMap
      */
     static private function _detectHostType($host)
     {
-        if (P2Util::isHostBbsPink($host)) {
+        if (P2BbsType::isHostBbsPink($host)) {
             $type = 'bbspink';
-        } elseif (P2Util::isHost2chs($host)) {
+        } elseif (P2BbsType::isHost2chs($host)) {
             $type = '2channel';
-        } elseif (P2Util::isHostMachiBbs($host)) {
+        } elseif (P2BbsType::isHostMachiBbs($host)) {
             $type = 'machibbs';
-        } elseif (P2Util::isHostJbbsShitaraba($host)) {
+        } elseif (P2BbsType::isHostJbbsShitaraba($host)) {
             $type = 'jbbs';
         } else {
             $type = $host;

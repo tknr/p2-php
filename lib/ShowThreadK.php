@@ -65,7 +65,7 @@ class ShowThreadK extends ShowThread
             $this->setBbsNonameName();
         }
 
-        if (P2Util::isHost2chs($aThread->host)) {
+        if (P2BbsType::isHost2chs($aThread->host)) {
             $this->_kushiYakiName = ' </b>[Å\{}@{}@{}-]<b> ';
         }
 

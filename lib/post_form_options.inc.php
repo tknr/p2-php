@@ -168,13 +168,13 @@ EOP;
 // {{{ ●/Be 書き込み チェックボックス
 
 //  2ch●書き込み
-if (P2Util::isHost2chs($host) and file_exists($_conf['sid2ch_php'])) {
+if (P2BbsType::isHost2chs($host) and file_exists($_conf['sid2ch_php'])) {
     $htm['maru_post'] = '<span title="2ch●IDの使用"><input type="checkbox" id="maru" name="maru" value="1">'
                       . '<label for="maru">●</label></span>';
 }
 
 // Be
-if (P2Util::isHost2chs($host) and P2Util::isEnableBe2ch()) {
+if (P2BbsType::isHost2chs($host) and P2Util::isEnableBe2ch()) {
     $htm['beres'] = '<input type="checkbox" id="beres" name="beres" value="1"'. $hd['beres_checked'] . '>'
                   . '<label for="beres">Beで書き込む</label>';
 }
@@ -208,7 +208,7 @@ $htm['dpreview']  = '';
 $htm['dpreview2'] = '';
 if (!$_conf['ktai'] && $_conf['expack.editor.dpreview']) {
     $_dpreview_noname = 'null';
-    if (P2Util::isHost2chs($host)) {
+    if (P2BbsType::isHost2chs($host)) {
         $_dpreview_st = new SettingTxt($host, $bbs);
         $_dpreview_st->setSettingArray();
         if (!empty($_dpreview_st->setting_array['BBS_NONAME_NAME'])) {

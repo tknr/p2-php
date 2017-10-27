@@ -35,7 +35,7 @@ class P2Commun
 
         // よく使うヘッダを指定
         // p2のHTTP通信は特に指定の無い限りMonazillaを名乗るようにする
-        $req->setHeader ('User-Agent', self::getP2UA(true,P2Util::isHost2chs($purl['host'])));
+        $req->setHeader ('User-Agent', self::getP2UA(true,P2BbsType::isHost2chs($purl['host'])));
         $req->setHeader ('Accept-Language', 'ja,en-us;q=0.7,en;q=0.3');
         $req->setHeader ('Accept', '*/*');
         $req->setHeader ('Accept-Encoding', 'gzip, deflate');
@@ -47,7 +47,8 @@ class P2Commun
         ));
 
         // 外部との通信は全てcURLを使う
-        $req->setAdapter('curl');
+//      $req->setAdapter('curl');
+        $req->setAdapter('socket');
 
         // SSLの設定
         if($purl['scheme'] == 'https') {
@@ -58,7 +59,7 @@ class P2Commun
         }
 
         // プロキシ
-        if ($_conf['tor_use'] && P2Util::isHostTor($purl['host'], 0)) { // Tor(.onion)はTor用の設定をセット
+        if ($_conf['tor_use'] && P2BbsType::isHostTor($purl['host'], 0)) { // Tor(.onion)はTor用の設定をセット
             $req->setConfig (array (
                     'proxy_host' => $_conf['tor_proxy_host'],
                     'proxy_port' => $_conf['tor_proxy_port'],

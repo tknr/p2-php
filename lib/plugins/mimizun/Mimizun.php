@@ -91,11 +91,11 @@ class Mimizun
         // (ƒZƒbƒg‚³‚ê‚Ä‚¢‚È‚¯‚ê‚Î2ch‚Æ‚İ‚È‚·)
         if ($this->host) {
             // ‚Ü‚¿BBS‚È‚çfalse
-            if (P2Util::isHostMachiBbs($this->host)) {
+            if (P2BbsType::isHostMachiBbs($this->host)) {
                 return false;
             }
             // 2ch‚Å‚È‚¯‚ê‚Îfalse
-            if (!P2Util::isHost2chs($this->host)) {
+            if (!P2BbsType::isHost2chs($this->host)) {
                 return false;
             }
         }

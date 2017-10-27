@@ -347,11 +347,11 @@ abstract class ShowThread
 		$this->_highlight_nums = array();
 		$this->_highlight_msgs = array();
 
-        if (P2Util::isHostBbsPink($this->thread->host)) {
+        if (P2BbsType::isHostBbsPink($this->thread->host)) {
             $this->_redirector = self::REDIRECTOR_PINKTOWER;
-        } elseif (P2Util::isHost2chs($this->thread->host)) {
+        } elseif (P2BbsType::isHost2chs($this->thread->host)) {
             $this->_redirector = self::REDIRECTOR_IMENU;
-        } elseif (P2Util::isHostMachiBbs($this->thread->host)) {
+        } elseif (P2BbsType::isHostMachiBbs($this->thread->host)) {
             $this->_redirector = self::REDIRECTOR_MACHIBBS;
         } else {
             $this->_redirector = self::REDIRECTOR_NONE;

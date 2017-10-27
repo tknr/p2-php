@@ -31,16 +31,16 @@ class SubjectTxt
 
         $this->subject_file = P2Util::datDirOfHostBbs($host, $bbs) . 'subject.txt';
         // 接続先が2ch.netならばSSL通信を行う(pinkは対応していないのでしない)
-        if (P2Util::isHost2chs($host) && ! P2Util::isHostBbsPink($host) && $_conf['2ch_ssl.subject']) {
+        if (P2BbsType::isHost2chs($host) && ! P2BbsType::isHostBbsPink($host) && $_conf['2ch_ssl.subject']) {
             $this->subject_url = 'https://' . $host . '/' . $bbs . '/subject.txt';
         } else {
             $this->subject_url = 'http://' . $host . '/' . $bbs . '/subject.txt';
         }
 
         // したらばのlivedoor移転に対応。読込先をlivedoorとする。
-        if(P2Util::isHostJbbsShitaraba($host))
+        if(P2BbsType::isHostJbbsShitaraba($host))
         {
-            $this->subject_url = P2Util::adjustHostJbbs($this->subject_url);
+            $this->subject_url = P2BbsType::adjustHostJbbs($this->subject_url);
         }
 
         // subject.txtをダウンロード＆セットする
@@ -114,7 +114,7 @@ class SubjectTxt
                 //var_dump($req->getResponseHeader());
                 $body = $response->getBody();
                 // したらば or be.2ch.net ならEUCをSJISに変換
-                if (P2Util::isHostJbbsShitaraba($this->host) || P2BbsType::isHostBe2chs($this->host)) {
+                if (P2BbsType::isHostJbbsShitaraba($this->host) || P2BbsType::isHostBe2chs($this->host)) {
                     $body = mb_convert_encoding($body, 'CP932', 'CP51932');
                 }
                 if (FileCtl::file_write_contents($this->subject_file, $body) === false) {
@@ -184,7 +184,7 @@ class SubjectTxt
         $this->subject_lines = FileCtl::file_read_lines($this->subject_file);
 
         // JBBS@したらばなら重複スレタイを削除する
-        if (P2Util::isHostJbbsShitaraba($this->host)) {
+        if (P2BbsType::isHostJbbsShitaraba($this->host)) {
             $this->subject_lines = array_unique($this->subject_lines);
         }
 

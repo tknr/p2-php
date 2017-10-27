@@ -497,13 +497,13 @@ class Thread
         }
 
         // 2chŒn
-        if (P2Util::isHost2chs($this->host)) {
+        if (P2BbsType::isHost2chs($this->host)) {
             // PC
             if (!$mobile) {
                 $motothre_url = "http://{$this->host}/test/read.cgi/{$this->bbs}/{$this->key}/{$ls}";
             // Œg‘Ñ
             } else {
-                if (P2Util::isHostBbsPink($this->host)) {
+                if (P2BbsType::isHostBbsPink($this->host)) {
                     //$motothre_url = "http://{$this->host}/test/r.i/{$this->bbs}/{$this->key}/{$ls}";
                     $motothre_url = "http://speedo.ula.cc/test/r.so/{$this->host}/{$this->bbs}/{$this->key}/{$ls}"; 
                 } else {
@@ -515,7 +515,7 @@ class Thread
             }
 
         // ‚Ü‚¿BBS
-        } elseif (P2Util::isHostMachiBbs($this->host)) {
+        } elseif (P2BbsType::isHostMachiBbs($this->host)) {
             if ($mobile) {
                 $motothre_url = "http://{$this->host}/bbs/read.pl?IMODE=TRUE&BBS={$this->bbs}&KEY={$this->key}";
             } else {
@@ -523,13 +523,13 @@ class Thread
             }
 
         // ‚Ü‚¿‚Ñ‚Ë‚Á‚Æ
-        } elseif (P2Util::isHostMachiBbsNet($this->host)) {
+        } elseif (P2BbsType::isHostMachiBbsNet($this->host)) {
             $motothre_url = "http://{$this->host}/test/read.cgi?bbs={$this->bbs}&key={$this->key}";
             if ($mobile) { $motothre_url .= '&imode=true'; }
 
         // JBBS‚µ‚½‚ç‚Î
-        } elseif (P2Util::isHostJbbsShitaraba($this->host)) {
-            list($host, $category) = explode('/', P2Util::adjustHostJbbs($this->host), 2);
+        } elseif (P2BbsType::isHostJbbsShitaraba($this->host)) {
+            list($host, $category) = explode('/', P2BbsType::adjustHostJbbs($this->host), 2);
             $bbs_cgi = ($mobile) ? 'i.cgi' : 'read.cgi';
             $motothre_url = "http://{$host}/bbs/{$bbs_cgi}/{$category}/{$this->bbs}/{$this->key}/{$ls}";
 

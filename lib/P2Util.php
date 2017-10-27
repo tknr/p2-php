@@ -389,9 +389,9 @@ class P2Util
         $host = self::normalizeHostName($host);
 
         // 2channel or bbspink
-        if (self::isHost2chs($host)) {
+        if (P2BbsType::isHost2chs($host)) {
             $host_dir = $base_dir . DIRECTORY_SEPARATOR . '2channel';
-        } elseif (self::isHostOpen2ch($host)) {
+        } elseif (P2BbsType::isHostOpen2ch($host)) {
             //互換性維持のため旧式のディレクトリを指定
             $host_dir = $base_dir . DIRECTORY_SEPARATOR . rawurlencode($host);
             if (!file_exists($host_dir)) {
@@ -399,7 +399,7 @@ class P2Util
                 $host_dir = $base_dir . DIRECTORY_SEPARATOR . 'open2ch';
             }
 
-        } elseif (self::isHost2chSc($host)) {
+        } elseif (P2BbsType::isHost2chSc($host)) {
             //互換性維持のため旧式のディレクトリを指定
             $host_dir = $base_dir . DIRECTORY_SEPARATOR . rawurlencode($host);
             if (!file_exists($host_dir)) {
@@ -407,22 +407,22 @@ class P2Util
                 $host_dir = $base_dir . DIRECTORY_SEPARATOR . '2channel_sc';
             }
             // machibbs.com
-        } elseif (self::isHostMachiBbs($host)) {
+        } elseif (P2BbsType::isHostMachiBbs($host)) {
             $host_dir = $base_dir . DIRECTORY_SEPARATOR . 'machibbs.com';
             // tor
-        } elseif (self::isHostTor($host)) {
+        } elseif (P2BbsType::isHostTor($host)) {
             $tor_host = preg_replace('/\.onion\.(\w+)$/', '.onion', $host);
             $host_dir = $base_dir . DIRECTORY_SEPARATOR . $tor_host;
             unset($tor_host);
             // jbbs.livedoor.jp (livedoor レンタル掲示板)
-        } elseif (self::isHostJbbsShitaraba($host)) {
+        } elseif (P2BbsType::isHostJbbsShitaraba($host)) {
             if (DIRECTORY_SEPARATOR == '/') {
                 $host_dir = $base_dir . DIRECTORY_SEPARATOR . $host;
             } else {
                 $host_dir = $base_dir . DIRECTORY_SEPARATOR . str_replace('/', DIRECTORY_SEPARATOR, $host);
             }
             // vip.2ch.com
-        } elseif (self::isHostVip2ch($host)) {
+        } elseif (P2BbsType::isHostVip2ch($host)) {
             $host_dir = $base_dir . DIRECTORY_SEPARATOR . 'ex14.vip2ch.com';
 
             // livedoor レンタル掲示板以外でスラッシュ等の文字を含むとき
@@ -2043,7 +2043,7 @@ ERR;
 
         $url = http_build_url(array(
             "scheme" => $_conf['2ch_ssl.post'] ? "https" : "http",
-            "host" => P2Util::isHost5ch($host) ? "be.5ch.net" : "be.2ch.net",
+            "host" => P2BbsType::isHost5ch($host) ? "be.5ch.net" : "be.2ch.net",
             "path" => "index.php"));
 
         try {
