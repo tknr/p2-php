@@ -240,7 +240,7 @@ function sb_print_k($aThreadList)
         }
 
         // >>1‚Ì‚Ý, >>1‚©‚ç
-        if (P2BbsType::isHost2chs($aThreadList->host) && !$aThread->isKitoku()) {
+        if (P2HostType::isHost2chs($aThreadList->host) && !$aThread->isKitoku()) {
             switch ($_conf['mobile.sb_show_first']) {
             case 1:
                 $thre_url = $onlyone_url;

@@ -1,6 +1,6 @@
 <?php
 
-// {{{ P2BbsType
+// {{{ P2HostType
 
 /**
  * rep2 - p2用のユーティリティクラス
@@ -9,7 +9,7 @@
  * @create  2017/10/19
  * @static
  */
-class P2BbsType
+class P2HostType
 {
     // {{{ properties
 

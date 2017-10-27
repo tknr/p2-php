@@ -247,7 +247,7 @@ class P2HttpGet extends HttpRequest
 
         if (!isset($options['useragent'])) {
             $purl = parse_url($url); // URL•ª‰ð
-            $options['useragent'] = P2Commun::getP2UA(true,P2BbsType::isHost2chs($purl['host']));
+            $options['useragent'] = P2Commun::getP2UA(true,P2HostType::isHost2chs($purl['host']));
             unset($purl);
         }
 
@@ -931,7 +931,7 @@ class P2HttpRequestPool
 
             $url = 'http://' . $host . '/' . $bbs . '/subject.txt';
 
-            if (P2BbsType::isHostJbbsShitaraba($host) || P2BbsType::isHostBe2chs($host)) {
+            if (P2HostType::isHostJbbsShitaraba($host) || P2HostType::isHostBe2chs($host)) {
                 if ($eucjp2sjis === null) {
                     $eucjp2sjis = new P2HttpCallback_SaveEucjpAsSjis();
                 }

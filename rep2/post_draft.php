@@ -44,10 +44,10 @@ foreach ($post_internal_keys as $pk) {
 }
 
 // したらばのlivedoor移転に対応。post先をlivedoorとする。
-$host = P2BbsType::adjustHostJbbs($host);
+$host = P2HostType::adjustHostJbbs($host);
 
 // machibbs、JBBS@したらば なら
-if (P2BbsType::isHostMachiBbs($host) or P2BbsType::isHostJbbsShitaraba($host)) {
+if (P2HostType::isHostMachiBbs($host) or P2HostType::isHostJbbsShitaraba($host)) {
     /* compact() と array_combine() でPOSTする値の配列を作るので、
        $post_param_keys と $post_send_keys の値の順序は揃える！ */
     //$post_param_keys  = array('bbs', 'key', 'time', 'FROM', 'mail', 'MESSAGE', 'subject', 'submit');
