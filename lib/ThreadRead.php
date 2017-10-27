@@ -200,6 +200,17 @@ class ThreadRead extends Thread {
                 P2Util::pushInfoHtml('<p>p2 debug(ThreadRead::API):URL='.$url.' User-Status='.$apiUserStatus.' Thread-Status='.$apiThreadStatus.' HTTP-Status='.$code.'</p>');
             }
 
+            // dat取得不可だった場合
+            if($apiThreadStatus === 0){
+                $this->getdat_error_msg_ht .= "<p>rep2 error: sessionID " . ($apiUserStatus === 0 ? 'が無効だったので':'は有効でしたが') . "スレッド取得に失敗しました。</p>";
+                if($apiUserStatus === 0){
+                    $this->getdat_error_msg_ht .= " [<a href=\"{$_conf['read_php']}?host={$this->host}&amp;bbs={$this->bbs}&amp;key={$this->key}&amp;ls={$this->ls}&amp;relogin2chapi=true\">APIで再取得を試みる</a>]";
+                    $this->getdat_error_msg_ht .= " [<a href=\"{$_conf['read_php']}?host={$this->host}&amp;bbs={$this->bbs}&amp;key={$this->key}&amp;ls={$this->ls}&amp;olddat=true\">旧datで再取得を試みる</a>]";
+                    $this->diedat = true;
+                    return false;
+                }
+            }
+
             // APIの返答が過去ログ(Ronin無)だったら過去ログリンクを表示して終了
             if($apiThreadStatus == '8') {
                 return $this->_downloadDat2chNotFound ('302');
