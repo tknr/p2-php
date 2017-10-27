@@ -180,10 +180,18 @@ class ThreadRead extends Thread {
             //              3 (sessionID有効／API認証時にRoninアカウントを付けて取得したもの)
             //              ※ User-Status: が 2,3 の時はdat落ち/過去ログも取れる
             $apiUserStatus = $response->getHeader('User-Status');
+            if(empty($apiUserStatus)){
+                // ヘッダーに記載されていない場合は 0 とみなす
+                $apiUserStatus = 0;
+            }
 
             // Thread-Status: 0 (dat取得不可) or 1 (現行スレ) or 2 (dat落ち) or 3 (過去ログ) or
             //                8 (dat取得不可／Ronin無しでdat落ち/過去ログを取ろうとしたとき)
             $apiThreadStatus = $response->getHeader('Thread-Status');
+            if(empty($apiThreadStatus)){
+                // ヘッダーに記載されていない場合は 0 とみなす
+                $apiThreadStatus = 0;
+            }
 
             $code = $response->getStatus ();
 
