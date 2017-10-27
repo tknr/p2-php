@@ -1179,7 +1179,7 @@ abstract class ShowThread
             if (strlen($following) > 0) {
                 // ウィキペディア日本語版のURLで、SJISの2バイト文字の上位バイト
                 // (0x81-0x9F,0xE0-0xEF)が続くとき
-                if (P2Util::isUrlWikipediaJa($url)) {
+                if (P2BbsType::isUrlWikipediaJa($url)) {
                     $leading = ord($following);
                     if ((($leading ^ 0x90) < 32 && $leading != 0x80) || ($leading ^ 0xE0) < 16) {
                         $url .= rawurlencode(mb_convert_encoding($following, 'UTF-8', 'CP932'));
@@ -1229,7 +1229,7 @@ abstract class ShowThread
             $purl['host'] == '127.0.0.1' ||
             //HostCheck::isAddressLocal($purl['host']) ||
             //HostCheck::isAddressPrivate($purl['host']) ||
-            P2Util::isHostExample($purl['host']))
+            P2BbsType::isHostExample($purl['host']))
         {
             return $orig;
         }

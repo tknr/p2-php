@@ -834,7 +834,7 @@ EOP;
     {
         global $_conf;
 
-        if (P2Util::isUrlWikipediaJa($url)) {
+        if (P2BbsType::isUrlWikipediaJa($url)) {
             return false;
         }
 
@@ -861,7 +861,7 @@ EOP;
         global $_conf;
         global $pre_thumb_unlimited, $pre_thumb_ignore_limit, $pre_thumb_limit_k;
 
-        if (P2Util::isUrlWikipediaJa($url)) {
+        if (P2BbsType::isUrlWikipediaJa($url)) {
             return false;
         }
 
