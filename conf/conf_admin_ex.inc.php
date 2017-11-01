@@ -26,7 +26,7 @@ $_conf['expack.curl_per_host'] = 2; // (1)
 
 // pecl_http が利用できる場合、HttpRequestPool による並列ダウンロードを有効にする
 // (off:0, on:1, コマンドラインで実行:2)
-$_conf['expack.use_pecl_http'] = 1; // (1)
+$_conf['expack.use_pecl_http'] = 0; // (0)
 
 // expack.use_pecl_http が 2 かつCLI用php.iniでhttpエクステンションを
 // ロードするようになっていない場合のみ 1 にする

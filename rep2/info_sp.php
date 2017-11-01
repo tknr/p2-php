@@ -18,6 +18,7 @@ $ttitle_en = isset($_GET['ttitle_en']) ? $_GET['ttitle_en'] : null;
 $resnum = isset($_GET['resnum']) ? $_GET['resnum'] : null;
 $popup  = isset($_GET['popup']) ? $_GET['popup'] : null;
 $mode   = isset($_GET['mode']) ? $_GET['mode'] : null;
+$bbsonly   = isset($_GET['bbsonly']) ? (int)$_GET['bbsonly'] : 0;
 
 if (isset($_GET['aborn_str_en'])) {
     $aborn_str_en = $_GET['aborn_str_en'];
@@ -100,6 +101,12 @@ if ($popup == 1 || $_conf['expack.spm.ngaborn_confirm'] == 0) {
 if ($popup == 2) {
     // あぼーん/NG/ハイライトワード登録
     if (preg_match('/^(aborn|ng|highlight)_/', $mode) && ($aborn_str = trim($aborn_str)) !== '') {
+
+        // bbsonlyが指定されていた場合は、bbsの指定を追加
+        if(!empty($bbs) && $bbsonly) {
+            $aborn_str = sprintf('<bbs>%s</bbs>%s',$bbs,$aborn_str);
+        }
+
         if (file_exists($path) && ($data = FileCtl::file_read_lines($path))) {
             $data = array_map('trim', $data);
             $data = array_filter($data, create_function('$v', 'return ($v !== "");'));
@@ -382,6 +389,9 @@ if ($popup == 1 && $msg != '') {
         $aborn_id_ht = p2h($aborn_id);
         echo "\t<input type=\"hidden\" name=\"aborn_id\" value=\"{$aborn_id_ht}\">\n";
     }
+
+    echo "\t<p><label><input type=\"checkbox\" name=\"bbsonly\" value=\"1\">{$itaj}板のみ適用する</label></p>\n";
+
     echo "\t<input type=\"submit\" value=\"　Ｏ　Ｋ　\">\n";
     if (!$_conf['ktai']) {
         echo "\t<input type=\"button\" value=\"キャンセル\" onclick=\"window.close();\">\n";
