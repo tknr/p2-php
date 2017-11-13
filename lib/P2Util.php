@@ -1874,8 +1874,15 @@ ERR;
                 $key = $matches[4];
                 $ls = (isset($matches[5]) && strlen($matches[5])) ? $matches[5] : '';
 
+                // itest - https://itest.5ch.net/hayabusa9/test/read.cgi/mnewsplus/1510531889
+            } elseif (preg_match('<^http://itest\.(?:[25])ch.net/(\w+)/test/read\.cgi/(\w+)/(\d+)(?:/(.+$))?>x', $nama_url, $matches)) {
+                $host = $matches[1].'.5ch.net';
+                $bbs = $matches[2];
+                $key = $matches[3];
+                $ls = (isset($matches[4]) && strlen($matches[4])) ? $matches[4] : '';
+
                 // 2ch or pink - http://choco.2ch.net/test/read.cgi/event/1027770702/
-            } elseif (preg_match('<^https?://(.+)/test/read\\.(?:cgi|html|so)
+            } elseif (preg_match('<^https?://(.+)/test/read\\.(?:cgi|html|so|php)
                     /(\\w+)/([0-9]+)(?:/([^/]*))?>x', $nama_url, $matches)) {
                 if (BbsMap::isRegisteredBbs($matches[1], $matches[2])) {
                     $host = $matches[1];

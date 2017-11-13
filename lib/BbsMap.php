@@ -104,6 +104,11 @@ class BbsMap
 
         $type = self::_detectHostType($host);
 
+        // dat”j‘¹–hŽ~‚Ì‚½‚ßitest.[25]ch.net‚Í–â“š–³—p‚Åfalse
+        if($host == 'itest.5ch.net'||$host == 'itest.2ch.net') {
+            return false;
+        }
+
         // “o˜^–³‚µ‚Å‚àrep2‚Åˆµ‚¦‚é”Â‚Íƒ`ƒFƒbƒN–³‚µ‚Åtrue
         if($host != $type) {
             return true;
