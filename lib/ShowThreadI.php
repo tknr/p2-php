@@ -65,7 +65,7 @@ class ShowThreadI extends ShowThread
             $this->setBbsNonameName();
         }
 
-        if (P2Util::isHost2chs($aThread->host)) {
+        if (P2HostType::isHost2chs($aThread->host)) {
             $this->_kushiYakiName = ' </b>[Å\{}@{}@{}-]<b> ';
         }
 
@@ -893,7 +893,7 @@ EOP;
     {
         global $_conf;
 
-        if (P2Util::isUrlWikipediaJa($url)) {
+        if (P2HostType::isUrlWikipediaJa($url)) {
             return false;
         }
 
@@ -920,7 +920,7 @@ EOP;
         global $_conf;
         global $pre_thumb_unlimited, $pre_thumb_ignore_limit, $pre_thumb_limit_k;
 
-        if (P2Util::isUrlWikipediaJa($url)) {
+        if (P2HostType::isUrlWikipediaJa($url)) {
             return false;
         }
 

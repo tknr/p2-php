@@ -283,7 +283,7 @@ if ($_conf['ktai']) {
 }
 
 $motothre_url = $aThread->getMotoThread();
-if (P2Util::isHost2chs($aThread->host)) {
+if (P2HostType::isHost2chs($aThread->host)) {
     $motothre_org_url = $aThread->getMotoThread(true);
 } else {
     $motothre_org_url = $motothre_url;

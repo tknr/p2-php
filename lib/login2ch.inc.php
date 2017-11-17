@@ -23,6 +23,11 @@ function login2ch()
         return false;
     }
 
+    // 浪人の有効性確認(要 ID / PW)
+    if (!empty($login2chID) && !empty($login2chPW)) {
+        P2Util::checkRoninExpiration();
+    }
+
     $auth2ch_url= http_build_url(array(
         "scheme" => 'https',
         "host" => "2chv.tora3.net",

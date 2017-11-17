@@ -24,56 +24,6 @@ class P2Util
     static private $_hostDirs = array();
 
     /**
-     * isHost2ch() のキャッシュ
-     */
-    static private $_hostIs2ch = array();
-
-    /**
-     * isHost5ch() のキャッシュ
-     */
-    static private $_hostIs5ch = array();
-
-    /**
-     * isHostBe2chNet() のキャッシュ
-     */
-    //static private $_hostIsBe2chNet = array();
-
-    /**
-     * isHostBbsPink() のキャッシュ
-     */
-    static private $_hostIsBbsPink = array();
-
-    /**
-     * isHostMachiBbs() のキャッシュ
-     */
-    static private $_hostIsMachiBbs = array();
-
-    /**
-     * isHostMachiBbsNet() のキャッシュ
-     */
-    static private $_hostIsMachiBbsNet = array();
-
-    /**
-     * isHostJbbsShitaraba() のキャッシュ
-     */
-    static private $_hostIsJbbsShitaraba = array();
-
-    /**
-     * isHostVip2ch()のキャッシュ
-     */
-    static private $_hostIsVip2ch = array();
-
-    /**
-     * isHost2chSc()のキャッシュ
-     */
-    static private $_hostIs2chSc = array();
-
-    /**
-     * isHostOpen2ch()のキャッシュ
-     */
-    static private $_hostIsOpen2ch = array();
-
-    /**
      * P2Imeオブジェクト
      *
      * @var P2Ime
@@ -389,9 +339,9 @@ class P2Util
         $host = self::normalizeHostName($host);
 
         // 2channel or bbspink
-        if (self::isHost2chs($host)) {
+        if (P2HostType::isHost2chs($host)) {
             $host_dir = $base_dir . DIRECTORY_SEPARATOR . '2channel';
-        } elseif (self::isHostOpen2ch($host)) {
+        } elseif (P2HostType::isHostOpen2ch($host)) {
             //互換性維持のため旧式のディレクトリを指定
             $host_dir = $base_dir . DIRECTORY_SEPARATOR . rawurlencode($host);
             if (!file_exists($host_dir)) {
@@ -399,7 +349,7 @@ class P2Util
                 $host_dir = $base_dir . DIRECTORY_SEPARATOR . 'open2ch';
             }
 
-        } elseif (self::isHost2chSc($host)) {
+        } elseif (P2HostType::isHost2chSc($host)) {
             //互換性維持のため旧式のディレクトリを指定
             $host_dir = $base_dir . DIRECTORY_SEPARATOR . rawurlencode($host);
             if (!file_exists($host_dir)) {
@@ -407,22 +357,22 @@ class P2Util
                 $host_dir = $base_dir . DIRECTORY_SEPARATOR . '2channel_sc';
             }
             // machibbs.com
-        } elseif (self::isHostMachiBbs($host)) {
+        } elseif (P2HostType::isHostMachiBbs($host)) {
             $host_dir = $base_dir . DIRECTORY_SEPARATOR . 'machibbs.com';
             // tor
-        } elseif (self::isHostTor($host)) {
+        } elseif (P2HostType::isHostTor($host)) {
             $tor_host = preg_replace('/\.onion\.(\w+)$/', '.onion', $host);
             $host_dir = $base_dir . DIRECTORY_SEPARATOR . $tor_host;
             unset($tor_host);
             // jbbs.livedoor.jp (livedoor レンタル掲示板)
-        } elseif (self::isHostJbbsShitaraba($host)) {
+        } elseif (P2HostType::isHostJbbsShitaraba($host)) {
             if (DIRECTORY_SEPARATOR == '/') {
                 $host_dir = $base_dir . DIRECTORY_SEPARATOR . $host;
             } else {
                 $host_dir = $base_dir . DIRECTORY_SEPARATOR . str_replace('/', DIRECTORY_SEPARATOR, $host);
             }
             // vip.2ch.com
-        } elseif (self::isHostVip2ch($host)) {
+        } elseif (P2HostType::isHostVip2ch($host)) {
             $host_dir = $base_dir . DIRECTORY_SEPARATOR . 'ex14.vip2ch.com';
 
             // livedoor レンタル掲示板以外でスラッシュ等の文字を含むとき
@@ -792,6 +742,9 @@ class P2Util
     }
 
     // }}}
+
+// ** Move to P2HostType ***************************************
+
     // {{ isHostExample
 
     /**
@@ -802,7 +755,7 @@ class P2Util
      */
     static public function isHostExample($host)
     {
-        return (bool)preg_match('/(?:^|\\.)example\\.(?:com|net|org|jp)$/i', $host);
+        return P2HostType::isHostExample($host);
     }
 
     // }}}
@@ -816,7 +769,7 @@ class P2Util
      */
     static public function isHost2chs($host)
     {
-        return self::isHost2ch($host) || self::isHost5ch($host) || self::isHostBbsPink($host);
+        return P2HostType::isHost2chs($host);
     }
 
     // }}}
@@ -830,10 +783,7 @@ class P2Util
      */
     static public function isHost2ch($host)
     {
-        if (!array_key_exists($host, self::$_hostIs2ch)) {
-            self::$_hostIs2ch[$host] = (bool)preg_match('<^\\w+\\.(?:2ch\\.net)$>', $host);
-        }
-        return self::$_hostIs2ch[$host];
+        return P2HostType::isHost2ch($host);
     }
 
     // }}}
@@ -847,10 +797,7 @@ class P2Util
      */
     static public function isHost5ch($host)
     {
-        if (!array_key_exists($host, self::$_hostIs5ch)) {
-            self::$_hostIs5ch[$host] = (bool)preg_match('<^\\w+\\.(?:5ch\\.net)$>', $host);
-        }
-        return self::$_hostIs5ch[$host];
+        return P2HostType::isHost5ch($host);
     }
 
     // }}}
@@ -864,10 +811,7 @@ class P2Util
      */
     static public function isHostVip2ch($host)
     {
-        if (!array_key_exists($host, self::$_hostIsVip2ch)) {
-            self::$_hostIsVip2ch[$host] = (bool)preg_match('<^\\w+\\.(?:vip2ch\\.com)$>', $host);
-        }
-        return self::$_hostIsVip2ch[$host];
+        return P2HostType::isHostVip2ch($host);
     }
 
     // }}}
@@ -881,13 +825,7 @@ class P2Util
      */
     static public function isHostBe2chNet($host)
     {
-        return ($host == 'be.2ch.net' || $host == 'be.5ch.net');
-        /*
-        if (!array_key_exists($host, self::$_hostIsBe2chNet)) {
-            self::$_hostIsBe2chNet[$host] = ($host == 'be.2ch.net');
-        }
-        return self::$_hostIsBe2chNet[$host];
-        */
+        return P2HostType::isHostBe2chNet($host);
     }
 
     // }}}
@@ -901,7 +839,7 @@ class P2Util
      */
     static public function isNotUse2chAPI($host)
     {
-        return ($host == 'qb5.2ch.net' || $host == 'carpenter.2ch.net' || $host == 'qb5.5ch.net' || $host == 'carpenter.5ch.net');
+        return P2HostType::isNotUse2chAPI($host);
     }
 
     // }}}
@@ -915,10 +853,7 @@ class P2Util
      */
     static public function isHostBbsPink($host)
     {
-        if (!array_key_exists($host, self::$_hostIsBbsPink)) {
-            self::$_hostIsBbsPink[$host] = (bool)preg_match('<^\\w+\\.bbspink\\.com$>', $host);
-        }
-        return self::$_hostIsBbsPink[$host];
+        return P2HostType::isHostBbsPink($host);
     }
 
     // }}}
@@ -931,23 +866,9 @@ class P2Util
      * @param string $host
      * @return boolean
      */
-    static function isHostTor($host, $isGatewayMode = 99)
+    static public function isHostTor($host, $isGatewayMode = 99)
     {
-        switch ($isGatewayMode) {
-            case 0:
-                $ret = (bool)preg_match('/\\.onion$/', $host);
-                break;
-
-            case 1:
-                $ret = (bool)preg_match('/\\.(onion\\.cab|onion\\.city|onion\\.direct|onion\\.link|onion\\.nu|onion\\.to|onion\\.rip)$/', $host);
-                break;
-
-            default:
-                $ret = (bool)preg_match('/\\.(onion\\.cab|onion\\.city|onion\\.direct|onion\\.link|onion\\.nu|onion\\.to|onion\\.rip|onion)$/', $host);
-                break;
-        }
-
-        return $ret;
+        return P2HostType::isHostTor($host, $isGatewayMode);
     }
 
     // }}}
@@ -961,14 +882,7 @@ class P2Util
      */
     static public function isHostMachiBbs($host)
     {
-        if ($host === "machi.to") {
-            return true;
-        }
-
-        if (!array_key_exists($host, self::$_hostIsMachiBbs)) {
-            self::$_hostIsMachiBbs[$host] = (bool)preg_match('<^\\w+\\.machi(?:bbs\\.com|\\.to)$>', $host);
-        }
-        return self::$_hostIsMachiBbs[$host];
+        return P2HostType::isHostMachiBbs($host);
     }
 
     // }}}
@@ -982,10 +896,7 @@ class P2Util
      */
     static public function isHostMachiBbsNet($host)
     {
-        if (!array_key_exists($host, self::$_hostIsMachiBbsNet)) {
-            self::$_hostIsMachiBbsNet[$host] = (bool)preg_match('<^\\w+\\.machibbs\\.net$>', $host);
-        }
-        return self::$_hostIsMachiBbsNet[$host];
+        return P2HostType::isHostMachiBbsNet($host);
     }
 
     // }}}
@@ -999,16 +910,7 @@ class P2Util
      */
     static public function isHostJbbsShitaraba($in_host)
     {
-        if (!array_key_exists($in_host, self::$_hostIsJbbsShitaraba)) {
-            if ($in_host == 'rentalbbs.livedoor.com') {
-                self::$_hostIsJbbsShitaraba[$in_host] = true;
-            } elseif (preg_match('<^jbbs\\.(?:shitaraba\\.(?:net|com)|livedoor\\.(?:com|jp))(?:/|$)>', $in_host)) {
-                self::$_hostIsJbbsShitaraba[$in_host] = true;
-            } else {
-                self::$_hostIsJbbsShitaraba[$in_host] = false;
-            }
-        }
-        return self::$_hostIsJbbsShitaraba[$in_host];
+        return P2HostType::isHostJbbsShitaraba($in_host);
     }
 
     // }}}
@@ -1022,8 +924,7 @@ class P2Util
      */
     static public function adjustHostJbbs($in_str)
     {
-        return preg_replace('<(^|/)jbbs\\.(?:shitaraba|livedoor)\\.(?:net|com)(/|$)>', '\\1jbbs.shitaraba.net\\2', $in_str, 1);
-        //return preg_replace('<(^|/)jbbs\\.(?:shitaraba\\.com|livedoor\\.(?:com|jp))(/|$)>', '\\1rentalbbs.livedoor.com\\2', $in_str, 1);
+        return P2HostType::adjustHostJbbs($in_str);
     }
 
     // }}}
@@ -1037,10 +938,7 @@ class P2Util
      */
     static public function isHost2chSc($host)
     {
-        if (!array_key_exists($host, self::$_hostIs2chSc)) {
-            self::$_hostIs2chSc[$host] = (bool)preg_match('/\\.(2ch\\.sc)$/', $host);
-        }
-        return self::$_hostIs2chSc[$host];
+        return P2HostType::isHost2chSc($host);
     }
 
     // }}}
@@ -1054,14 +952,24 @@ class P2Util
      */
     static public function isHostOpen2ch($host)
     {
-        if (!array_key_exists($host, self::$_hostIsOpen2ch)) {
-            self::$_hostIsOpen2ch[$host] = (bool)preg_match('/\\.(open2ch\\.net)$/', $host);
-        }
-        return self::$_hostIsOpen2ch[$host];
+        return P2HostType::isHostOpen2ch($host);
     }
 
     // }}}
 
+    // {{{ isUrlWikipediaJa()
+
+    /**
+     * URLがウィキペディア日本語版の記事ならtrueを返す
+     */
+    static public function isUrlWikipediaJa($url)
+    {
+        return P2HostType::isUrlWikipediaJa($url);
+    }
+
+    // }}}
+
+// ** Move to P2HostType ***************************************
 
     // {{{ header_nocache()
 
@@ -1267,17 +1175,7 @@ class P2Util
     }
 
     // }}}
-    // {{{ isUrlWikipediaJa()
 
-    /**
-     * URLがウィキペディア日本語版の記事ならtrueを返す
-     */
-    static public function isUrlWikipediaJa($url)
-    {
-        return (strncmp($url, 'http://ja.wikipedia.org/wiki/', 29) == 0);
-    }
-
-    // }}}
     // {{{ saveIdPw2ch()
 
     /**
@@ -1892,7 +1790,7 @@ ERR;
                 }
 
                 // 2ch or pink by ula.cc(bintan / bekkanko) - http://choco.2ch.net/test/read.cgi/event/1027770702/
-            } elseif (preg_match('<^https?://(?:(?:bintan|same)\\.ula\\.cc|ula\\.(?:2ch|5ch)\\.net)/test/(?:read\\.(?:cgi|html|so)|r\\.so)
+            } elseif (preg_match('<^https?://(?:(?:bintan|same)\\.ula\\.cc|ula\\.(?:(?:2ch|5ch)\\.net|bbspink\\.com))/test/(?:read\\.(?:cgi|html|so)|r\\.so)
                     /(.+)/(\\w+)/([0-9]+)(?:/([^/]*))>x', $nama_url, $matches)) {
                 $host = $matches[1];
                 $bbs = $matches[2];
@@ -1900,7 +1798,7 @@ ERR;
                 $ls = (isset($matches[4]) && strlen($matches[4])) ? $matches[4] : '';
 
                 // 2ch or pink by ula.cc(new bintan) - http://choco.2ch.net/test/read.cgi/event/1027770702/
-            } elseif (preg_match('<^https?://(ula\\.(?:2ch|5ch)\\.net)/(?:2ch|5ch)
+            } elseif (preg_match('<^https?://(ula\\.(?:(?:2ch|5ch)\\.net|bbspink\\.com))/(?:2ch|5ch)
                     /(\\w+)/(.+)/(\\d+)(?:/([^/]*))>x', $nama_url, $matches)) {
                 $host = $matches[3];
                 $bbs = $matches[2];
@@ -2029,17 +1927,7 @@ ERR;
      */
     static public function getHostGroupName($host)
     {
-        if (self::isHost2chs($host)) {
-            return '2channel';
-        } elseif (self::isHostMachiBbs($host)) {
-            return 'machibbs';
-        } elseif (self::isHostJbbsShitaraba($host)) {
-            return 'shitaraba';
-        } elseif (self::isHostVip2ch($host)) {
-            return 'vip2ch';
-        } else {
-            return $host;
-        }
+        return P2HostType::getHostGroupName($host);
     }
 
     // }}}
@@ -2118,7 +2006,7 @@ ERR;
 
         $url = http_build_url(array(
             "scheme" => $_conf['2ch_ssl.post'] ? "https" : "http",
-            "host" => P2Util::isHost5ch($host) ? "be.5ch.net" : "be.2ch.net",
+            "host" => P2HostType::isHost5ch($host) ? "be.5ch.net" : "be.2ch.net",
             "path" => "index.php"));
 
         try {
@@ -2176,6 +2064,112 @@ ERR;
         return 0;
     }
 
+    // }}}
+    // {{{ checkRoninExpiration()
+
+    /**
+     * 浪人 ID の有効性確認
+     *
+     * @return  boolean  浪人 ID があれば true
+     */
+    function checkRoninExpiration()
+    {
+        global $_conf;
+
+        $url = 'https://auth.bbspink.com/auth/timecheck.php';
+
+        if($_conf['2chapi_use'] == 1) {
+            if(empty($_conf['2chapi_appname'])) {
+                self::pushInfoHtml("<p>p2 error: 2chと通信するために必要な情報が設定されていません。</p>");
+                return false;
+            }
+            $agent = sprintf($_conf['2chapi_ua.auth'], $x_2ch_ua);
+            $x_2ch_ua = $_conf['2chapi_appname'];
+        } else {
+            $agent = 'DOLIB/1.00';
+            $x_2ch_ua = self::getP2UA(false,false);
+        }
+
+        // 2ch浪人<●>ID, PW設定を読み込む
+        if ($array = self::readIdPw2ch()) {
+            list($login2chID, $login2chPW, $autoLogin2ch) = $array;
+
+        } else {
+            return false;
+        }
+
+        try {
+            $req = P2Commun::createHTTPRequest($url, HTTP_Request2::METHOD_POST);
+
+            $req->setHeader('User-Agent', $agent);
+            $req->setHeader('X-2ch-UA', $x_2ch_ua);
+
+            $req->addPostParameter('email', $login2chID);
+            $req->addPostParameter('pass',  $login2chPW);
+
+            // POSTデータの送信
+            $res = P2Commun::getHTTPResponse($req);
+
+            $code = $res->getStatus();
+            if ($code != 200) {
+                self::pushInfoHtml("<p>p2 Error: HTTP Error({$code})</p>");
+            } else {
+                $body = $res->getBody();
+            }
+        } catch (Exception $e) {
+            self::pushInfoHtml("<p>p2 Error: 浪人<●>の認証確認サーバに接続出来ませんでした。({$e->getMessage()})</p>");
+        }
+
+        // 接続失敗ならば
+        if (empty($body)) {
+            self::pushInfoHtml('<p>p2 info: 浪人<●>IDに関する確認を行うには、PHPの<a href="'.
+                    self::throughIme("http://www.php.net/manual/ja/ref.curl.php").
+                    '">cURL関数</a>又は<a href="'.
+                    self::throughIme("http://www.php.net/manual/ja/ref.openssl.php").
+                    '">OpenSSL関数</a>が有効である必要があります。</p>');
+
+            self::pushInfoHtml("<p>p2 error: 浪人<●>の有効性確認に失敗しました。{$curl_msg}</p>");
+            return false;
+        }
+
+        $body = trim($body);
+
+        // エラー検出
+        if (preg_match('/ERROR (\d+): (.*)/', $body, $matches)) {
+            self::pushInfoHtml("<p>p2 error: 浪人<●>の有効性確認に失敗しました。{$matches[2]}[{$matches[1]}]</p>");
+            return false;
+        }
+
+        // アカウントが未登録
+        if (preg_match('/User does not exists/', $body, $matches)) {
+            self::pushInfoHtml("<p>p2 error: 浪人アカウントが登録されていません｡</p>");
+            return false;
+        }
+
+        // 有効期限取得
+        if (!preg_match('/Date of expiration: (\d+)\/(\d+)\/(\d+) (\d+):(\d+):(\d+)/', $body, $matches)) {
+            self::pushInfoHtml("<p>p2 error: 有効期限が取得できませんでした｡</p>");
+            return false;
+        }
+
+        // タイムゾーンを一時変更
+        date_default_timezone_set('America/Los_Angeles');
+        $expiration = mktime ($matches[4], $matches[5], $matches[6], $matches[2], $matches[3], $matches[1]);
+
+        date_default_timezone_set(ini_get('date.timezone'));
+        $date = date("Y/m/d H:i:s", $expiration);
+
+        // 有効期限チェック
+        if (time() >= $expiration) {
+            self::pushInfoHtml("<p>p2 error: 浪人<●>の有効期限切れです｡ 有効期限:{$date}</p>");
+            return true;
+        }
+
+        self::pushInfoHtml("<p>p2 info: 浪人<●>の有効期限は {$date} です｡</p>");
+        return true;
+    }
+
+    // }}}
     // {{{ debug()
     /*
     static public function debug()
@@ -2183,12 +2177,6 @@ ERR;
         echo PHP_EOL;
         echo '/', '*', '<pre>', PHP_EOL;
         echo p2h(print_r(self::$_hostDirs, true)), PHP_EOL;
-        echo p2h(print_r(array_map('intval', self::$_hostIs2chs), true)), PHP_EOL;
-        //echo p2h(print_r(array_map('intval', self::$_hostIsBe2chNet), true)), PHP_EOL;
-        echo p2h(print_r(array_map('intval', self::$_hostIsBbsPink), true)), PHP_EOL;
-        echo p2h(print_r(array_map('intval', self::$_hostIsMachiBbs), true)), PHP_EOL;
-        echo p2h(print_r(array_map('intval', self::$_hostIsMachiBbsNet), true)), PHP_EOL;
-        echo p2h(print_r(array_map('intval', self::$_hostIsJbbsShitaraba), true)), PHP_EOL;
         echo '</pre>', '*', '/', PHP_EOL;
     }
     */

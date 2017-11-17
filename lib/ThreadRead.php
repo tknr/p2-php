@@ -47,10 +47,10 @@ class ThreadRead extends Thread {
         global $_conf;
 
         // まちBBS
-        if (P2Util::isHostMachiBbs ($this->host)) {
+        if (P2HostType::isHostMachiBbs ($this->host)) {
             return DownloadDatMachiBbs::invoke ($this);
             // JBBS@したらば
-        } elseif (P2Util::isHostJbbsShitaraba ($this->host)) {
+        } elseif (P2HostType::isHostJbbsShitaraba ($this->host)) {
             if (! function_exists ('shitarabaDownload')) {
                 include P2_LIB_DIR . '/read_shitaraba.inc.php';
             }
@@ -70,7 +70,7 @@ class ThreadRead extends Thread {
                 return $this->_downloadDat2chKako ($_GET['kakolog'], $ext);
 
             // 2ch はAPI経由で落とす
-            } elseif (P2Util::isHost2chs ($this->host) && !P2Util::isNotUse2chAPI ($this->host) && $_conf['2chapi_use'] && empty ($_GET['olddat'])) {
+            } elseif (P2HostType::isHost2chs ($this->host) && !P2HostType::isNotUse2chsAPI ($this->host) && $_conf['2chapi_use'] && empty ($_GET['olddat'])) {
 
                 // ログインしてなければ or ログイン後、設定した時間経過していたら自動再ログイン
                 if (! file_exists ($_conf['sid2chapi_php']) || ! empty ($_REQUEST['relogin2chapi']) || (filemtime ($_conf['sid2chapi_php']) < time () - 60 * 60 * $_conf['2chapi_interval'])) {
@@ -141,7 +141,7 @@ class ThreadRead extends Thread {
 
         $url= http_build_url(array(
             "scheme" => $_conf['2chapi_ssl.read']?"https":"http",
-            "host" => P2Util::isHost5ch($this->host)?"api.5ch.net":"api.2ch.net",
+            "host" => P2HostType::isHost5ch($this->host)?"api.5ch.net":"api.2ch.net",
             "path" => "v1/".$serverName[0] . '/' . $this->bbs . '/' . $this->key));
 
         $message = '/v1/' . $serverName[0] . '/' . $this->bbs . '/' . $this->key . $SID2ch . $AppKey;
@@ -180,16 +180,35 @@ class ThreadRead extends Thread {
             //              3 (sessionID有効／API認証時にRoninアカウントを付けて取得したもの)
             //              ※ User-Status: が 2,3 の時はdat落ち/過去ログも取れる
             $apiUserStatus = $response->getHeader('User-Status');
+            if(empty($apiUserStatus)){
+                // ヘッダーに記載されていない場合は 0 とみなす
+                $apiUserStatus = 0;
+            }
 
             // Thread-Status: 0 (dat取得不可) or 1 (現行スレ) or 2 (dat落ち) or 3 (過去ログ) or
             //                8 (dat取得不可／Ronin無しでdat落ち/過去ログを取ろうとしたとき)
             $apiThreadStatus = $response->getHeader('Thread-Status');
+            if(empty($apiThreadStatus)){
+                // ヘッダーに記載されていない場合は 0 とみなす
+                $apiThreadStatus = 0;
+            }
 
             $code = $response->getStatus ();
 
             if($_conf['2chapi_debug_print']==1)
             {
                 P2Util::pushInfoHtml('<p>p2 debug(ThreadRead::API):URL='.$url.' User-Status='.$apiUserStatus.' Thread-Status='.$apiThreadStatus.' HTTP-Status='.$code.'</p>');
+            }
+
+            // dat取得不可だった場合
+            if($apiThreadStatus === 0){
+                $this->getdat_error_msg_ht .= "<p>rep2 error: sessionID " . ($apiUserStatus === 0 ? 'が無効だったので':'は有効でしたが') . "スレッド取得に失敗しました。</p>";
+                if($apiUserStatus === 0){
+                    $this->getdat_error_msg_ht .= " [<a href=\"{$_conf['read_php']}?host={$this->host}&amp;bbs={$this->bbs}&amp;key={$this->key}&amp;ls={$this->ls}&amp;relogin2chapi=true\">APIで再取得を試みる</a>]";
+                    $this->getdat_error_msg_ht .= " [<a href=\"{$_conf['read_php']}?host={$this->host}&amp;bbs={$this->bbs}&amp;key={$this->key}&amp;ls={$this->ls}&amp;olddat=true\">旧datで再取得を試みる</a>]";
+                    $this->diedat = true;
+                    return false;
+                }
             }
 
             // APIの返答が過去ログ(Ronin無)だったら過去ログリンクを表示して終了
@@ -235,6 +254,8 @@ class ThreadRead extends Thread {
                     $this->diedat = true;
                     return false;
                 } elseif (mb_strpos ($firstmsg, "２ちゃんねる ★<><>2015/03/13(金) 00:00:00.00 ID:????????<> 3月13日より２") === 0) {
+                    return $this->_downloadDat2chNotFound ('404');
+                } elseif (mb_strpos ($firstmsg, "5ちゃんねる ★<><>2017/10/01(日) 00:00:00.00 ID:???<> お客様がご") === 0) {
                     return $this->_downloadDat2chNotFound ('404');
                 }
                 unset ($firstmsg);
@@ -416,12 +437,16 @@ class ThreadRead extends Thread {
                 $this->modified = $response->getHeader ('Last-Modified');
 
                 // ホストが2chの時にDATを利用できない旨のメッセージが出たらエラーとする（DAT破損対策）
-                if (P2Util::isHost2chs ($this->host)) {
+                if (P2HostType::isHost2chs ($this->host)) {
                     // 1行目を切り出す
                     $posLF = mb_strpos ($body, "\n");
                     $firstmsg = mb_substr ($body, 0, $posLF === false ? mb_strlen ($body) : $posLF);
 
                     if (mb_strpos ($firstmsg, "２ちゃんねる ★<><>2015/03/13(金) 00:00:00.00 ID:????????<> 3月13日より２") === 0) {
+                        $this->getdat_error_msg_ht .= "<p>rep2 error: 板サーバから接続を拒否されました<br>rep2 info: 2ちゃんねるのDAT提供は終了しました</p>";
+                        $this->diedat = true;
+                        return false;
+                    } elseif (mb_strpos ($firstmsg, "5ちゃんねる ★<><>2017/10/01(日) 00:00:00.00 ID:???<> お客様がご") === 0) {
                         $this->getdat_error_msg_ht .= "<p>rep2 error: 板サーバから接続を拒否されました<br>rep2 info: 2ちゃんねるのDAT提供は終了しました</p>";
                         $this->diedat = true;
                         return false;
@@ -599,7 +624,7 @@ class ThreadRead extends Thread {
         }
 
         $reason = null;
-        if (P2Util::isHost2chs ($this->host) || P2Util::isHostVip2ch ($this->host)) {
+        if (P2HostType::isHost2chs ($this->host) || P2HostType::isHostVip2ch ($this->host)) {
             if ($code == '302') {
                 $body203 = $this->_get2ch203Body();
                 if ($body203 !== false && preg_match('/過去ログ ★/', $body203)) {
@@ -623,7 +648,7 @@ class ThreadRead extends Thread {
             try {
                 $req = P2Commun::createHTTPRequest ($read_url.'1', HTTP_Request2::METHOD_GET);
                 // ヘッダ
-                $req->setHeader ('User-Agent', P2Commun::getP2UA(false,P2Util::isHost2chs($this->host))); // ここは、"Monazilla/" をつけるとNG
+                $req->setHeader ('User-Agent', P2Commun::getP2UA(false,P2HostType::isHost2chs($this->host))); // ここは、"Monazilla/" をつけるとNG
 
                 // Requestの送信
                 $response = P2Commun::getHTTPResponse($req);
@@ -777,7 +802,7 @@ class ThreadRead extends Thread {
             fclose ($fd);
 
             // be.2ch.net ならEUC→SJIS変換
-            if (P2Util::isHostBe2chNet ($this->host)) {
+            if (P2HostType::isHostBe2chNet ($this->host)) {
                 $first_line = mb_convert_encoding ($first_line, 'CP932', 'CP51932');
             }
 
@@ -827,7 +852,7 @@ class ThreadRead extends Thread {
 
         $this->diedat = true;
         // 2ch, bbspink, vip2ch ならread.cgiで確認
-        if (P2Util::isHost2chs ($this->host) || P2Util::isHostVip2ch ($this->host)) {
+        if (P2HostType::isHost2chs ($this->host) || P2HostType::isHostVip2ch ($this->host)) {
             $this->getdat_error_msg_ht = $this->get2chDatError ($code);
             if (count ($this->datochi_residuums)) {
                 if ($_conf['ktai']) {
@@ -991,7 +1016,7 @@ class ThreadRead extends Thread {
                 // be.2ch.net ならEUC→SJIS変換
                 // 念のためSJISとUTF-8も文字コード判定の候補に入れておく
                 // ・・・が、文字化けしたタイトルのスレッドで誤判定があったので、指定しておく
-                if (P2Util::isHostBe2chNet ($this->host)) {
+                if (P2HostType::isHostBe2chNet ($this->host)) {
                     // mb_convert_variables('CP932', 'CP51932,CP932,UTF-8', $this->datlines);
                     mb_convert_variables ('CP932', 'CP51932', $this->datlines);
                 }
@@ -1074,7 +1099,7 @@ class ThreadRead extends Thread {
      * @return array
      */
     public function scanOriginalHosts() {
-        if (P2Util::isHost2chs ($this->host) && file_exists ($this->keydat) && ($dat = file_get_contents ($this->keydat))) {
+        if (P2HostType::isHost2chs ($this->host) && file_exists ($this->keydat) && ($dat = file_get_contents ($this->keydat))) {
             $bbs_re = preg_quote ($this->bbs, '@');
             $pattern = "@/(\\w+\\.(?:2ch\\.net|bbspink\\.com))(?:/test/read\\.cgi)?/{$bbs_re}\\b@";
             if (preg_match_all ($pattern, $dat, $matches, PREG_PATTERN_ORDER)) {

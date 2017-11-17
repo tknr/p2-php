@@ -36,9 +36,9 @@ function shitarabaDownload(ThreadRead $aThread)
     }
 
     // JBBS@‚µ‚½‚ç‚Î
-    if (P2Util::isHostJbbsShitaraba($aThread->host)) {
+    if (P2HostType::isHostJbbsShitaraba($aThread->host)) {
         // ‚µ‚½‚ç‚Î‚ÌlivedoorˆÚ“]‚É‘Î‰žB“Çžæ‚ðlivedoor‚Æ‚·‚éB
-        $host = P2Util::adjustHostJbbs($aThread->host);
+        $host = P2HostType::adjustHostJbbs($aThread->host);
         list($host, $category, ) = explode('/', $host);
         $machiurl = "http://{$host}/bbs/rawmode.cgi/{$category}/{$aThread->bbs}/{$aThread->key}/{$START}-";
     }
@@ -55,7 +55,7 @@ function shitarabaDownload(ThreadRead $aThread)
     unset($machiurl_res);
 
     // {{{ ‚µ‚½‚ç‚Î‚È‚çEUC‚ðSJIS‚É•ÏŠ·
-    if (P2Util::isHostJbbsShitaraba($aThread->host)) {
+    if (P2HostType::isHostJbbsShitaraba($aThread->host)) {
         $temp_data = FileCtl::file_read_contents($tempfile);
         $temp_data = mb_convert_encoding($temp_data, 'CP932', 'CP51932');
         if (FileCtl::file_write_contents($tempfile, $temp_data) === false) {

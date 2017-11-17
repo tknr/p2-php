@@ -69,7 +69,7 @@ class Samba
 
     public function getSambaTime($host, $bbs)
     {
-        if (!P2Util::isHost2chs($host)) {
+        if (!P2HostType::isHost2chs($host)) {
             return false;
         }
         // samba‚ðŽæ“¾
@@ -105,7 +105,7 @@ class Samba
     // Žc‚èŽžŠÔ‚ðŽæ“¾
     public function getSamba($host, $bbs)
     {
-        if (!P2Util::isHost2chs($host)) {
+        if (!P2HostType::isHost2chs($host)) {
             return -1;
         }
 

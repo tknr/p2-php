@@ -1318,7 +1318,7 @@ EOJS;
         global $_conf;
         global $pre_thumb_unlimited, $pre_thumb_limit;
 
-        if (P2Util::isUrlWikipediaJa($url)) {
+        if (P2HostType::isUrlWikipediaJa($url)) {
             return false;
         }
 

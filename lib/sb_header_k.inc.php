@@ -21,8 +21,8 @@ if (!$aThreadList->spmode) {
         $ptitle_url = $p2_subject_url;
 
     // 2chŒn
-    } elseif (P2Util::isHost2chs($aThreadList->host)) {
-        if (P2Util::isHostBbsPink($aThreadList->host)) {
+    } elseif (P2HostType::isHost2chs($aThreadList->host)) {
+        if (P2HostType::isHostBbsPink($aThreadList->host)) {
             //$ptitle_url = "http://{$aThreadList->host}/{$aThreadList->bbs}/i/";
             $ptitle_url = "http://speedo.ula.cc/test/p.so/{$aThreadList->host}/{$aThreadList->bbs}/";
         } else {

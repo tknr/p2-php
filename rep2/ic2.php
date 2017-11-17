@@ -296,10 +296,10 @@ if (!$force && $ini['Getter']['checkerror']) {
 // {{{ init http-client
 
 // Ý’è‚ðŠm”F
-$conn_timeout = (isset($ini['Getter']['conn_timeout']) && $ini['Getter']['conn_timeout'] > 0)
-    ? $ini['Getter']['conn_timeout'] : $_conf['http_conn_timeout'];
-$read_timeout = (isset($ini['Getter']['read_timeout']) && $ini['Getter']['read_timeout'] > 0)
-    ? $ini['Getter']['read_timeout'] : $_conf['http_read_timeout'];
+$conn_timeout = (isset($_conf['expack.ic2.getter_conn_timeout']) && $_conf['expack.ic2.getter_conn_timeout'] > 0)
+    ? $_conf['expack.ic2.getter_conn_timeout'] : $_conf['http_conn_timeout'];
+$read_timeout = (isset($_conf['expack.ic2.getter_read_timeout']) && $_conf['expack.ic2.getter_read_timeout'] > 0)
+    ? $_conf['expack.ic2.getter_read_timeout'] : $_conf['http_read_timeout'];
 $ic2_ua = (!empty($_conf['expack.user_agent']))
     ? $_conf['expack.user_agent'] : $_SERVER['HTTP_USER_AGENT'];
 

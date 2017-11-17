@@ -456,7 +456,7 @@ class Thread
                 $this->setTtitle($d[4]);
 
                 // be.2ch.net ‚È‚çEUC¨SJIS•ÏŠ·
-                if (P2Util::isHostBe2chNet($this->host)) {
+                if (P2HostType::isHostBe2chs($this->host)) {
                     $ttitle = mb_convert_encoding($this->ttitle, 'CP932', 'CP51932');
                     $this->setTtitle($ttitle);
                 }
@@ -497,13 +497,13 @@ class Thread
         }
 
         // 2chŒn
-        if (P2Util::isHost2chs($this->host)) {
+        if (P2HostType::isHost2chs($this->host)) {
             // PC
             if (!$mobile) {
                 $motothre_url = "http://{$this->host}/test/read.cgi/{$this->bbs}/{$this->key}/{$ls}";
             // Œg‘Ñ
             } else {
-                if (P2Util::isHostBbsPink($this->host)) {
+                if (P2HostType::isHostBbsPink($this->host)) {
                     //$motothre_url = "http://{$this->host}/test/r.i/{$this->bbs}/{$this->key}/{$ls}";
                     $motothre_url = "http://speedo.ula.cc/test/r.so/{$this->host}/{$this->bbs}/{$this->key}/{$ls}"; 
                 } else {
@@ -515,7 +515,7 @@ class Thread
             }
 
         // ‚Ü‚¿BBS
-        } elseif (P2Util::isHostMachiBbs($this->host)) {
+        } elseif (P2HostType::isHostMachiBbs($this->host)) {
             if ($mobile) {
                 $motothre_url = "http://{$this->host}/bbs/read.pl?IMODE=TRUE&BBS={$this->bbs}&KEY={$this->key}";
             } else {
@@ -523,13 +523,13 @@ class Thread
             }
 
         // ‚Ü‚¿‚Ñ‚Ë‚Á‚Æ
-        } elseif (P2Util::isHostMachiBbsNet($this->host)) {
+        } elseif (P2HostType::isHostMachiBbsNet($this->host)) {
             $motothre_url = "http://{$this->host}/test/read.cgi?bbs={$this->bbs}&key={$this->key}";
             if ($mobile) { $motothre_url .= '&imode=true'; }
 
         // JBBS‚µ‚½‚ç‚Î
-        } elseif (P2Util::isHostJbbsShitaraba($this->host)) {
-            list($host, $category) = explode('/', P2Util::adjustHostJbbs($this->host), 2);
+        } elseif (P2HostType::isHostJbbsShitaraba($this->host)) {
+            list($host, $category) = explode('/', P2HostType::adjustHostJbbs($this->host), 2);
             $bbs_cgi = ($mobile) ? 'i.cgi' : 'read.cgi';
             $motothre_url = "http://{$host}/bbs/{$bbs_cgi}/{$category}/{$this->bbs}/{$this->key}/{$ls}";
 
