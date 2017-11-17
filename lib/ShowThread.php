@@ -1227,8 +1227,6 @@ abstract class ShowThread
         if (!$purl || !array_key_exists('host', $purl) ||
             strpos($purl['host'], '.') === false ||
             $purl['host'] == '127.0.0.1' ||
-            //HostCheck::isAddressLocal($purl['host']) ||
-            //HostCheck::isAddressPrivate($purl['host']) ||
             P2HostType::isHostExample($purl['host']))
         {
             return $orig;

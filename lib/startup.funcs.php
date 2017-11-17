@@ -21,7 +21,6 @@ function p2_load_class($name)
             DownloadDat[0-9A-Z][0-9A-Za-z]* |
             FavSetManager |
             FileCtl |
-            HostCheck |
             JStyle |
             Login |
             MD5Crypt |
