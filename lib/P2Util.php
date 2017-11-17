@@ -1875,7 +1875,7 @@ ERR;
                 $ls = (isset($matches[5]) && strlen($matches[5])) ? $matches[5] : '';
 
                 // itest - https://itest.5ch.net/hayabusa9/test/read.cgi/mnewsplus/1510531889
-            } elseif (preg_match('<^http://itest\.(?:[25])ch.net/(\w+)/test/read\.cgi/(\w+)/(\d+)(?:/(.+$))?>x', $nama_url, $matches)) {
+            } elseif (preg_match('<^https?://itest\.(?:[25])ch.net/(\w+)/test/read\.cgi/(\w+)/(\d+)(?:/(.+$))?>x', $nama_url, $matches)) {
                 $host = $matches[1].'.5ch.net';
                 $bbs = $matches[2];
                 $key = $matches[3];
