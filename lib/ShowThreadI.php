@@ -65,7 +65,7 @@ class ShowThreadI extends ShowThread
             $this->setBbsNonameName();
         }
 
-        if (P2HostType::isHost2chs($aThread->host)) {
+        if (P2HostMgr::isHost2chs($aThread->host)) {
             $this->_kushiYakiName = ' </b>[\{}@{}@{}-]<b> ';
         }
 
@@ -856,7 +856,7 @@ EOP;
 
         if (preg_match('{^https?://(.+)/(.+)/$}', $purl[0], $m)) {
             //rep2‚É“o˜^‚³‚ê‚Ä‚¢‚é”Â‚È‚ç‚ÎƒŠƒ“ƒN‚·‚é
-            if (BbsMap::isRegisteredBbs($m[1], $m[2])) {
+            if (P2HostMgr::isRegisteredBbs($m[1], $m[2])) {
                 $subject_url = "{$_conf['subject_php']}?host={$m[1]}&amp;bbs={$m[2]}";
                 return "<a href=\"{$url}\">{$str}</a> [<a href=\"{$subject_url}{$_conf['k_at_a']}\">”Â‚ğp2‚ÅŠJ‚­</a>]";
             }
@@ -893,7 +893,7 @@ EOP;
     {
         global $_conf;
 
-        if (P2HostType::isUrlWikipediaJa($url)) {
+        if (P2HostMgr::isUrlWikipediaJa($url)) {
             return false;
         }
 
@@ -920,7 +920,7 @@ EOP;
         global $_conf;
         global $pre_thumb_unlimited, $pre_thumb_ignore_limit, $pre_thumb_limit_k;
 
-        if (P2HostType::isUrlWikipediaJa($url)) {
+        if (P2HostMgr::isUrlWikipediaJa($url)) {
             return false;
         }
 

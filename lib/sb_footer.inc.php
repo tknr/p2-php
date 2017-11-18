@@ -82,11 +82,11 @@ if ($have_sb_footer_links) {
 // スペシャルモードでなければフォーム入力補完========================
 $ini_url_text = '';
 if (!$aThreadList->spmode) {
-    if (P2HostType::isHostJbbsShitaraba($aThreadList->host)) { // したらば
+    if (P2HostMgr::isHostJbbsShitaraba($aThreadList->host)) { // したらば
         $ini_url_text = "http://{$aThreadList->host}/bbs/read.cgi?BBS={$aThreadList->bbs}&KEY=";
-    } elseif (P2HostType::isHostMachiBbs($aThreadList->host)) { // まちBBS
+    } elseif (P2HostMgr::isHostMachiBbs($aThreadList->host)) { // まちBBS
         $ini_url_text = "http://{$aThreadList->host}/bbs/read.pl?BBS={$aThreadList->bbs}&KEY=";
-    } elseif (P2HostType::isHostMachiBbsNet($aThreadList->host)) { // まちビねっと
+    } elseif (P2HostMgr::isHostMachiBbsNet($aThreadList->host)) { // まちビねっと
         $ini_url_text = "http://{$aThreadList->host}/test/read.cgi?bbs={$aThreadList->bbs}&key=";
     } else {
         $ini_url_text = "http://{$aThreadList->host}/test/read.cgi/{$aThreadList->bbs}/";

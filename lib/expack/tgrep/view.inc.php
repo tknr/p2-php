@@ -148,7 +148,7 @@ foreach ($threads as $o => $t) {
     $new = '';
     $turl = sprintf('%s?host=%s&amp;bbs=%s&amp;key=%d', $_conf['read_php'], $t->host, $t->bbs, $t->tkey);
     $burl = sprintf('%s?host=%s&amp;bbs=%s&amp;itaj_en=%s&amp;word=%s', $_conf['subject_php'], $t->host, $t->bbs, UrlSafeBase64::encode($t->ita), $htm['query_en']);
-    if (P2HostType::isHostMachiBbs($t->host)) {
+    if (P2HostMgr::isHostMachiBbs($t->host)) {
         $ourl = sprintf('http://%s/bbs/read.cgi/%s/%s/', $t->host, $t->bbs, $t->tkey);
     } else {
         $ourl = sprintf('http://%s/test/read.cgi/%s/%s/', $t->host, $t->bbs, $t->tkey);

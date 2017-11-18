@@ -47,10 +47,10 @@ class ThreadRead extends Thread {
         global $_conf;
 
         // まちBBS
-        if (P2HostType::isHostMachiBbs ($this->host)) {
+        if (P2HostMgr::isHostMachiBbs ($this->host)) {
             return DownloadDatMachiBbs::invoke ($this);
             // JBBS@したらば
-        } elseif (P2HostType::isHostJbbsShitaraba ($this->host)) {
+        } elseif (P2HostMgr::isHostJbbsShitaraba ($this->host)) {
             if (! function_exists ('shitarabaDownload')) {
                 include P2_LIB_DIR . '/read_shitaraba.inc.php';
             }
@@ -70,7 +70,7 @@ class ThreadRead extends Thread {
                 return $this->_downloadDat2chKako ($_GET['kakolog'], $ext);
 
             // 2ch はAPI経由で落とす
-            } elseif (P2HostType::isHost2chs ($this->host) && !P2HostType::isNotUse2chsAPI ($this->host) && $_conf['2chapi_use'] && empty ($_GET['olddat'])) {
+            } elseif (P2HostMgr::isHost2chs ($this->host) && !P2HostMgr::isNotUse2chsAPI ($this->host) && $_conf['2chapi_use'] && empty ($_GET['olddat'])) {
 
                 // ログインしてなければ or ログイン後、設定した時間経過していたら自動再ログイン
                 if (! file_exists ($_conf['sid2chapi_php']) || ! empty ($_REQUEST['relogin2chapi']) || (filemtime ($_conf['sid2chapi_php']) < time () - 60 * 60 * $_conf['2chapi_interval'])) {
@@ -141,7 +141,7 @@ class ThreadRead extends Thread {
 
         $url= http_build_url(array(
             "scheme" => $_conf['2chapi_ssl.read']?"https":"http",
-            "host" => P2HostType::isHost5ch($this->host)?"api.5ch.net":"api.2ch.net",
+            "host" => P2HostMgr::isHost5ch($this->host)?"api.5ch.net":"api.2ch.net",
             "path" => "v1/".$serverName[0] . '/' . $this->bbs . '/' . $this->key));
 
         $message = '/v1/' . $serverName[0] . '/' . $this->bbs . '/' . $this->key . $SID2ch . $AppKey;
@@ -309,7 +309,7 @@ class ThreadRead extends Thread {
                 return true;
             } elseif ($code == '302') { // Found
                                         // ホストの移転を追跡
-                $new_host = BbsMap::getCurrentHost ($this->host, $this->bbs);
+                $new_host = P2HostMgr::getCurrentHost ($this->host, $this->bbs);
                 if ($new_host != $this->host) {
                     $this->old_host = $this->host;
                     $this->host = $new_host;
@@ -437,7 +437,7 @@ class ThreadRead extends Thread {
                 $this->modified = $response->getHeader ('Last-Modified');
 
                 // ホストが2chの時にDATを利用できない旨のメッセージが出たらエラーとする（DAT破損対策）
-                if (P2HostType::isHost2chs ($this->host)) {
+                if (P2HostMgr::isHost2chs ($this->host)) {
                     // 1行目を切り出す
                     $posLF = mb_strpos ($body, "\n");
                     $firstmsg = mb_substr ($body, 0, $posLF === false ? mb_strlen ($body) : $posLF);
@@ -499,7 +499,7 @@ class ThreadRead extends Thread {
                 return true;
             } elseif ($code == '302') { // Found
                                         // ホストの移転を追跡
-                $new_host = BbsMap::getCurrentHost ($this->host, $this->bbs);
+                $new_host = P2HostMgr::getCurrentHost ($this->host, $this->bbs);
                 if ($new_host != $this->host) {
                     $this->old_host = $this->host;
                     $this->host = $new_host;
@@ -624,7 +624,7 @@ class ThreadRead extends Thread {
         }
 
         $reason = null;
-        if (P2HostType::isHost2chs ($this->host) || P2HostType::isHostVip2ch ($this->host)) {
+        if (P2HostMgr::isHost2chs ($this->host) || P2HostMgr::isHostVip2ch ($this->host)) {
             if ($code == '302') {
                 $body203 = $this->_get2ch203Body();
                 if ($body203 !== false && preg_match('/過去ログ ★/', $body203)) {
@@ -648,7 +648,7 @@ class ThreadRead extends Thread {
             try {
                 $req = P2Commun::createHTTPRequest ($read_url.'1', HTTP_Request2::METHOD_GET);
                 // ヘッダ
-                $req->setHeader ('User-Agent', P2Commun::getP2UA(false,P2HostType::isHost2chs($this->host))); // ここは、"Monazilla/" をつけるとNG
+                $req->setHeader ('User-Agent', P2Commun::getP2UA(false,P2HostMgr::isHost2chs($this->host))); // ここは、"Monazilla/" をつけるとNG
 
                 // Requestの送信
                 $response = P2Commun::getHTTPResponse($req);
@@ -802,7 +802,7 @@ class ThreadRead extends Thread {
             fclose ($fd);
 
             // be.2ch.net ならEUC→SJIS変換
-            if (P2HostType::isHostBe2chNet ($this->host)) {
+            if (P2HostMgr::isHostBe2chNet ($this->host)) {
                 $first_line = mb_convert_encoding ($first_line, 'CP932', 'CP51932');
             }
 
@@ -852,7 +852,7 @@ class ThreadRead extends Thread {
 
         $this->diedat = true;
         // 2ch, bbspink, vip2ch ならread.cgiで確認
-        if (P2HostType::isHost2chs ($this->host) || P2HostType::isHostVip2ch ($this->host)) {
+        if (P2HostMgr::isHost2chs ($this->host) || P2HostMgr::isHostVip2ch ($this->host)) {
             $this->getdat_error_msg_ht = $this->get2chDatError ($code);
             if (count ($this->datochi_residuums)) {
                 if ($_conf['ktai']) {
@@ -1016,7 +1016,7 @@ class ThreadRead extends Thread {
                 // be.2ch.net ならEUC→SJIS変換
                 // 念のためSJISとUTF-8も文字コード判定の候補に入れておく
                 // ・・・が、文字化けしたタイトルのスレッドで誤判定があったので、指定しておく
-                if (P2HostType::isHostBe2chNet ($this->host)) {
+                if (P2HostMgr::isHostBe2chNet ($this->host)) {
                     // mb_convert_variables('CP932', 'CP51932,CP932,UTF-8', $this->datlines);
                     mb_convert_variables ('CP932', 'CP51932', $this->datlines);
                 }
@@ -1099,7 +1099,7 @@ class ThreadRead extends Thread {
      * @return array
      */
     public function scanOriginalHosts() {
-        if (P2HostType::isHost2chs ($this->host) && file_exists ($this->keydat) && ($dat = file_get_contents ($this->keydat))) {
+        if (P2HostMgr::isHost2chs ($this->host) && file_exists ($this->keydat) && ($dat = file_get_contents ($this->keydat))) {
             $bbs_re = preg_quote ($this->bbs, '@');
             $pattern = "@/(\\w+\\.(?:2ch\\.net|bbspink\\.com))(?:/test/read\\.cgi)?/{$bbs_re}\\b@";
             if (preg_match_all ($pattern, $dat, $matches, PREG_PATTERN_ORDER)) {

@@ -91,7 +91,7 @@ class FavSetManager
                     $key   = $lar[1];
                     $host  = $lar[10];
                     $bbs   = $lar[11];
-                    $group = P2Util::getHostGroupName($host);
+                    $group = P2HostMgr::getHostGroupName($host);
                     $_conf['favlists'][$i][] = array('group' => $group, 'host' => $host, 'bbs' => $bbs, 'key' => $key);
                 }
             }
@@ -107,7 +107,7 @@ class FavSetManager
                     $host  = $lar[1];
                     $bbs   = $lar[2];
                     $itaj  = $lar[3];
-                    $group = P2Util::getHostGroupName($host);
+                    $group = P2HostMgr::getHostGroupName($host);
                     $_conf['favitas'][$i][] = array('group' => $group, 'host' => $host, 'bbs' => $bbs, 'itaj' => $itaj);
                 }
             }

@@ -39,12 +39,12 @@ class SettingTxt
         $this->_setting_srd = $dat_host_bbs_dir_s . 'p2_kb_setting.srd';
 
         // 接続先が2ch.netならばSSL通信を行う(pinkは対応していないのでしない)
-        if (P2HostType::isHost2chs($host) && ! P2HostType::isHostBbsPink($host) && $_conf['2ch_ssl.subject']) {
+        if (P2HostMgr::isHost2chs($host) && ! P2HostMgr::isHostBbsPink($host) && $_conf['2ch_ssl.subject']) {
             $this->_url = 'https://' . $host . '/' . $bbs . '/SETTING.TXT';
         } else {
             $this->_url = 'http://' . $host . '/' . $bbs . '/SETTING.TXT';
         }
-        //$this->_url = P2HostType::adjustHostJbbs($this->_url); // したらばのlivedoor移転に対応。読込先をlivedoorとする。
+        //$this->_url = P2HostMgr::adjustHostJbbs($this->_url); // したらばのlivedoor移転に対応。読込先をlivedoorとする。
 
         $this->setting_array = array();
 
@@ -80,7 +80,7 @@ class SettingTxt
         global $_conf;
 
         // まちBBS・したらば は SETTING.TXT が存在しないものとする
-        if (P2HostType::isHostMachiBbs($this->_host) || P2HostType::isHostJbbsShitaraba($this->_host)) {
+        if (P2HostMgr::isHostMachiBbs($this->_host) || P2HostMgr::isHostJbbsShitaraba($this->_host)) {
             return false;
         }
 
@@ -109,7 +109,7 @@ class SettingTxt
             $code = $response->getStatus();
             if ($code == 302) {
                 // ホストの移転を追跡
-                $new_host = BbsMap::getCurrentHost($this->host, $this->bbs);
+                $new_host = P2HostMgr::getCurrentHost($this->host, $this->bbs);
                 if ($new_host != $this->host) {
                     $aNewSettingTxt = new SettingTxt($new_host, $this->_bbs);
                     return $aNewSettingTxt->downloadSettingTxt();
@@ -118,7 +118,7 @@ class SettingTxt
                 //var_dump($req->getResponseHeader());
                 $body = $response->getBody();
                 // したらば or be.2ch.net ならEUCをSJISに変換
-                if (P2HostType::isHostJbbsShitaraba($this->host) || P2HostType::isHostBe2chs($this->host)) {
+                if (P2HostMgr::isHostJbbsShitaraba($this->host) || P2HostMgr::isHostBe2chs($this->host)) {
                     $body = mb_convert_encoding($body, 'CP932', 'CP51932');
                 }
                 if (FileCtl::file_write_contents($this->_setting_txt, $body) === false) {

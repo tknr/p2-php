@@ -14,7 +14,6 @@
 function p2_load_class($name)
 {
     if (preg_match('/^(?:
-            BbsMap |
             BrdCtl |
             BrdMenu(?:Cate|Ita)? |
             DataPhp |

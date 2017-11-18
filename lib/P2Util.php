@@ -299,7 +299,7 @@ class P2Util
 
         // 板名Longの取得
         if (!isset($p2_setting['itaj'])) {
-            $itaj = BbsMap::getBbsName($host, $bbs);
+            $itaj = P2HostMgr::getBbsName($host, $bbs);
             if ($itaj != $bbs) {
                 self::$_itaNames[$id] = $p2_setting['itaj'] = $itaj;
 
@@ -339,9 +339,9 @@ class P2Util
         $host = self::normalizeHostName($host);
 
         // 2channel or bbspink
-        if (P2HostType::isHost2chs($host)) {
+        if (P2HostMgr::isHost2chs($host)) {
             $host_dir = $base_dir . DIRECTORY_SEPARATOR . '2channel';
-        } elseif (P2HostType::isHostOpen2ch($host)) {
+        } elseif (P2HostMgr::isHostOpen2ch($host)) {
             //互換性維持のため旧式のディレクトリを指定
             $host_dir = $base_dir . DIRECTORY_SEPARATOR . rawurlencode($host);
             if (!file_exists($host_dir)) {
@@ -349,7 +349,7 @@ class P2Util
                 $host_dir = $base_dir . DIRECTORY_SEPARATOR . 'open2ch';
             }
 
-        } elseif (P2HostType::isHost2chSc($host)) {
+        } elseif (P2HostMgr::isHost2chSc($host)) {
             //互換性維持のため旧式のディレクトリを指定
             $host_dir = $base_dir . DIRECTORY_SEPARATOR . rawurlencode($host);
             if (!file_exists($host_dir)) {
@@ -357,22 +357,22 @@ class P2Util
                 $host_dir = $base_dir . DIRECTORY_SEPARATOR . '2channel_sc';
             }
             // machibbs.com
-        } elseif (P2HostType::isHostMachiBbs($host)) {
+        } elseif (P2HostMgr::isHostMachiBbs($host)) {
             $host_dir = $base_dir . DIRECTORY_SEPARATOR . 'machibbs.com';
             // tor
-        } elseif (P2HostType::isHostTor($host)) {
+        } elseif (P2HostMgr::isHostTor($host)) {
             $tor_host = preg_replace('/\.onion\.(\w+)$/', '.onion', $host);
             $host_dir = $base_dir . DIRECTORY_SEPARATOR . $tor_host;
             unset($tor_host);
             // jbbs.livedoor.jp (livedoor レンタル掲示板)
-        } elseif (P2HostType::isHostJbbsShitaraba($host)) {
+        } elseif (P2HostMgr::isHostJbbsShitaraba($host)) {
             if (DIRECTORY_SEPARATOR == '/') {
                 $host_dir = $base_dir . DIRECTORY_SEPARATOR . $host;
             } else {
                 $host_dir = $base_dir . DIRECTORY_SEPARATOR . str_replace('/', DIRECTORY_SEPARATOR, $host);
             }
             // vip.2ch.com
-        } elseif (P2HostType::isHostVip2ch($host)) {
+        } elseif (P2HostMgr::isHostVip2ch($host)) {
             $host_dir = $base_dir . DIRECTORY_SEPARATOR . 'ex14.vip2ch.com';
 
             // livedoor レンタル掲示板以外でスラッシュ等の文字を含むとき
@@ -1553,7 +1553,7 @@ ERR;
                 // 2ch or pink - http://choco.2ch.net/test/read.cgi/event/1027770702/
             } elseif (preg_match('<^https?://(.+)/test/read\\.(?:cgi|html|so|php)
                     /(\\w+)/([0-9]+)(?:/([^/]*))?>x', $nama_url, $matches)) {
-                if (BbsMap::isRegisteredBbs($matches[1], $matches[2])) {
+                if (P2HostMgr::isRegisteredBbs($matches[1], $matches[2])) {
                     $host = $matches[1];
                     $bbs = $matches[2];
                     $key = $matches[3];
@@ -1579,7 +1579,7 @@ ERR;
                 // 2ch or pink 過去ログhtml - http://pc.2ch.net/mac/kako/1015/10153/1015358199.html
             } elseif (preg_match('<^(https?://(.+)(?:/[^/]+)?/(\\w+)
                     /kako/\\d+(?:/\\d+)?/(\\d+)).html>x', $nama_url, $matches)) {
-                if (BbsMap::isRegisteredBbs($matches[2], $matches[3])) {
+                if (P2HostMgr::isRegisteredBbs($matches[2], $matches[3])) {
                     $host = $matches[2];
                     $bbs = $matches[3];
                     $key = $matches[4];
@@ -1698,7 +1698,7 @@ ERR;
      */
     static public function getHostGroupName($host)
     {
-        return P2HostType::getHostGroupName($host);
+        return P2HostMgr::getHostGroupName($host);
     }
 
     // }}}
@@ -1777,7 +1777,7 @@ ERR;
 
         $url = http_build_url(array(
             "scheme" => $_conf['2ch_ssl.post'] ? "https" : "http",
-            "host" => P2HostType::isHost5ch($host) ? "be.5ch.net" : "be.2ch.net",
+            "host" => P2HostMgr::isHost5ch($host) ? "be.5ch.net" : "be.2ch.net",
             "path" => "index.php"));
 
         try {

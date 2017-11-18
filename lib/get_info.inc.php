@@ -16,7 +16,7 @@ function get_board_info($host, $bbs)
 {
     global $_conf;
 
-    $group = P2Util::getHostGroupName($host);
+    $group = P2HostMgr::getHostGroupName($host);
 
     $info = new stdClass();
     $info->type = 'board';
@@ -59,7 +59,7 @@ function get_board_info($host, $bbs)
             foreach ($favlines as $l) {
                 $lar = explode("\t", $l);
                 $favitas[0][] = array(
-                    'group' => P2Util::getHostGroupName($lar[1]),
+                    'group' => P2HostMgr::getHostGroupName($lar[1]),
                     'host'  => $lar[1],
                     'bbs'   => $lar[2],
                     'itaj'  => $lar[3]
@@ -97,7 +97,7 @@ function get_thread_info($host, $bbs, $key)
 {
     global $_conf;
 
-    $group = P2Util::getHostGroupName($host);
+    $group = P2HostMgr::getHostGroupName($host);
 
     $info = new stdClass();
     $info->type = 'thread';
@@ -163,7 +163,7 @@ function get_thread_info($host, $bbs, $key)
         foreach ($pallines as $l) {
             $palarray = explode('<>', $l);
             if ($aThread->key == $palarray[1] && $aThread->bbs == $palarray[11]) {
-                if (P2Util::getHostGroupName($palarray[10]) == $group) {
+                if (P2HostMgr::getHostGroupName($palarray[10]) == $group) {
                     $info->palace = true;
                     break;
                 }

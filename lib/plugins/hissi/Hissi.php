@@ -83,7 +83,7 @@ class Hissi
     public function isEnabled()
     {
         if ($this->host) {
-            if (!P2HostType::isHost2chs($this->host)) {
+            if (!P2HostMgr::isHost2chs($this->host)) {
                 return false;
             }
         }
