@@ -57,7 +57,7 @@ if (!empty($_GET['newthread'])) {
     $ptitle = "{$itaj_hd} - 新規スレッド作成";
 
     // machibbs、JBBS@したらば なら
-    if (P2HostType::isHostMachiBbs($host) or P2HostType::isHostJbbsShitaraba($host)) {
+    if (P2HostMgr::isHostMachiBbs($host) or P2HostMgr::isHostJbbsShitaraba($host)) {
         $submit_value = '新規書き込み';
     // 2chなら
     } else {

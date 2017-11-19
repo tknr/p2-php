@@ -84,13 +84,13 @@ if (isset($_POST['sync'])) {
 
     foreach ($sync_boards as $brd) {
         if (file_exists($brd)) {
-            BbsMap::syncBrd($brd);
+            P2HostMgr::syncBrd($brd);
         }
     }
 
     foreach ($sync_indexes as $idx) {
         if (file_exists($idx)) {
-            BbsMap::syncIdx($idx);
+            P2HostMgr::syncIdx($idx);
         }
     }
 

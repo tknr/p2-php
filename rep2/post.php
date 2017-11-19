@@ -84,13 +84,13 @@ if (!empty($_POST['fix_source'])) {
 // }}}
 
 // machibbs、JBBS@したらば なら
-if (P2HostType::isHostMachiBbs($host) or P2HostType::isHostJbbsShitaraba($host)) {
+if (P2HostMgr::isHostMachiBbs($host) or P2HostMgr::isHostJbbsShitaraba($host)) {
     $bbs_cgi = '/bbs/write.cgi';
 
     // JBBS@したらば なら
-    if (P2HostType::isHostJbbsShitaraba($host)) {
+    if (P2HostMgr::isHostJbbsShitaraba($host)) {
         // したらばの移転に対応。post先を現行に合わせる。
-        $host = P2HostType::adjustHostJbbs($host);
+        $host = P2HostMgr::adjustHostJbbs($host);
         $bbs_cgi = '../../bbs/write.cgi';
         preg_match('/\\/(\\w+)$/', $host, $ar);
         $dir = $ar[1];
@@ -148,13 +148,13 @@ if (!empty($_POST['savedraft'])) {
     exit;
 }
 
-if (P2HostType::isHostJbbsShitaraba($host)) {
+if (P2HostMgr::isHostJbbsShitaraba($host)) {
     $post[$dir_k] = $dir;
 }
 
 // {{{ 2chで●ログイン中ならsid追加
 
-if (!empty($_POST['maru']) and P2HostType::isHost2chs($host)) {
+if (!empty($_POST['maru']) and P2HostMgr::isHost2chs($host)) {
 	$maru_time = 0;
 
     if (file_exists($_conf['sid2ch_php'])) {
@@ -212,7 +212,7 @@ PostDataStore::set($post_config_key, array(
 PostDataStore::set($post_backup_key, $post_cache);
 
 // cookie 読み込み
-$cookie_key = $_login->user_u . '/' . P2Util::normalizeHostName(P2HostType::isHostBbsPink($host) ? 'www.bbspink.com' : P2HostType::isHost2chs($host) ? 'www.2ch.net' : $host); // 忍法帳対応
+$cookie_key = $_login->user_u . '/' . P2Util::normalizeHostName(P2HostMgr::isHostBbsPink($host) ? 'www.bbspink.com' : P2HostMgr::isHost2chs($host) ? 'www.2ch.net' : $host); // 忍法帳対応
 if ($p2cookies = CookieDataStore::get($cookie_key)) {
     if (is_array($p2cookies)) {
         if (array_key_exists('expires', $p2cookies)) {
@@ -389,7 +389,7 @@ function postIt($host, $bbs, $key, $post)
     global $bbs_cgi;
 
     // 接続先が2ch.netならばSSL通信を行う(pinkは対応していないのでしない)
-    if (P2HostType::isHost2chs($host) && ! P2HostType::isHostBbsPink($host) && $_conf['2ch_ssl.post']) {
+    if (P2HostMgr::isHost2chs($host) && ! P2HostMgr::isHostBbsPink($host) && $_conf['2ch_ssl.post']) {
         $bbs_cgi_url = 'https://' . $host . $bbs_cgi;
     } else {
         $bbs_cgi_url = 'http://' . $host . $bbs_cgi;
@@ -411,7 +411,7 @@ function postIt($host, $bbs, $key, $post)
         }
 
         // be.2ch.net 認証クッキー
-        if (P2HostType::isHostBe2chs($host) || !empty($_REQUEST['beres'])) {
+        if (P2HostMgr::isHostBe2chs($host) || !empty($_REQUEST['beres'])) {
             if ($_conf['be_2ch_DMDM'] && $_conf['be_2ch_MDMD']) {
                 $req->addCookie('DMDM', urlencode( rawurldecode( $_conf['be_2ch_DMDM']) ) );
                 $req->addCookie('MDMD', urlencode( rawurldecode( $_conf['be_2ch_MDMD']) ) );
@@ -428,9 +428,9 @@ function postIt($host, $bbs, $key, $post)
         while (list($name, $value) = each($post)) {
 
             // したらば or be.2ch.netなら、EUCに変換
-            if (P2HostType::isHostJbbsShitaraba($host) || P2HostType::isHostBe2chs($host)) {
+            if (P2HostMgr::isHostJbbsShitaraba($host) || P2HostMgr::isHostBe2chs($host)) {
                 $value = mb_convert_encoding($value, 'CP51932', 'CP932');
-            } elseif (P2HostType::isHost2chs($host) && ! P2HostType::isHostBbsPink($host)) {
+            } elseif (P2HostMgr::isHost2chs($host) && ! P2HostMgr::isHostBbsPink($host)) {
                 // 2chはUnicodeの文字列をpostする
                 $value = html_entity_decode(mb_convert_encoding($value, 'UTF-8', 'CP932'),ENT_QUOTES,'UTF-8');
             }
@@ -464,7 +464,7 @@ function postIt($host, $bbs, $key, $post)
     }
 
     // be.2ch.net or JBBSしたらば 文字コード変換 EUC→SJIS
-    if (P2HostType::isHostBe2chs($host) || P2HostType::isHostJbbsShitaraba($host)) {
+    if (P2HostMgr::isHostBe2chs($host) || P2HostMgr::isHostJbbsShitaraba($host)) {
         $body = mb_convert_encoding($body, 'CP932', 'CP51932');
 
         //<META http-equiv="Content-Type" content="text/html; charset=EUC-JP">

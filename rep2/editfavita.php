@@ -18,7 +18,7 @@ if (isset($_GET['setfavita']) || isset($_POST['setfavita']) || isset($_POST['sub
 }
 // お気に板のホストを同期
 if (isset($_GET['syncfavita']) || isset($_POST['syncfavita'])) {
-    BbsMap::syncBrd($_conf['favita_brd']);
+    P2HostMgr::syncBrd($_conf['favita_brd']);
 }
 
 

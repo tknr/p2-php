@@ -1036,7 +1036,7 @@ function matchSbFilter(Thread $aThread)
         if (file_exists($aThread->keydat)) {
             $subject = file_get_contents($aThread->keydat);
             // be.2ch.net ‚ÍEUC
-            if (P2HostType::isHostBe2chs($aThread->host)) {
+            if (P2HostMgr::isHostBe2chs($aThread->host)) {
                 $subject = mb_convert_encoding($subject, 'CP932', 'CP51932');
             }
         } else {
