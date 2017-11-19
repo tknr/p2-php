@@ -46,9 +46,8 @@ class P2Commun
                 'timeout' => $_conf['http_read_timeout'],
         ));
 
-        // 外部との通信は全てcURLを使う
-//      $req->setAdapter('curl');
-        $req->setAdapter('socket');
+        // 外部との通信は全てcURLを使う（socketはopenSSL絡みで地雷踏むので絶対使用禁止！）
+        $req->setAdapter('curl');
 
         // SSLの設定
         if($purl['scheme'] == 'https') {
