@@ -179,44 +179,6 @@ case 'setreadnum':
     break;
 
 // }}}
-// {{{ ブックマーク
-
-case 'bookmark':
-    if (isset($host) && isset($bbs) && isset($key) && isset($_REQUEST['resnum']) && isset($_REQUEST['bookmark'])) {
-        
-        if (!function_exists('setbookmark')) {
-            include P2_LIB_DIR . '/setbookmark.inc.php';
-        }
-
-        if (is_numeric($_REQUEST['resnum'])) {
-            $resnum = intval($_REQUEST['resnum']);
-        } else {
-            $resnum = null;
-        }
-        $set = (bool)$_REQUEST['bookmark'];
-        if (isset($_REQUEST['ttitle_en'])) {
-            $ttitle = UrlSafeBase64::decode($_REQUEST['ttitle_en']);
-        } elseif (isset($_REQUEST['ttitle'])) {
-            $ttitle = $_REQUEST['ttitle'];
-        } else {
-            $ttitle = null;
-        }
-        if (isset($_REQUEST['memo'])) {
-            $memo = $_REQUEST['memo'];
-        } else {
-            $memo = null;
-        }
-
-        $r = setbookmark($host, $bbs, $key, $resnum, $set, $ttitle, $memo);
-        if (empty($r)) {
-            $r_msg = '0'; // 失敗
-        } elseif ($r == 1) {
-            $r_msg = '1'; // 完了
-        }
-    }
-    break;
-
-// }}}
 // {{{ オフライン購読用にJSONエンコード
 
 case 'offline':

@@ -1,24 +1,6 @@
 <?php
 // 例えば、クエリーが b=k なら isK() がtrueとなるので、携帯向け表示にしたりする
 
-// {{{ このクラスでのみ利用するグローバル変数（_UA_*）
-// over PHP5に限定できるならプライベートなクラス変数にしたいところのもの
-
-// @see getQueryKey()
-$GLOBALS['_UA_query_key'] = 'b';
-
-// @see setPCQuery() // b=pc
-$GLOBALS['_UA_PC_query'] = 'pc';
-
-// @see setMobileQuery() // b=k
-$GLOBALS['_UA_mobile_query'] = 'k';
-
-// @see setIPhoneGroupQuery() // b=i
-$GLOBALS['_UA_iphonegroup_query'] = 'i';
-
-$GLOBALS['_UA_force_mode'] = null;
-
-// }}}
 // {{{ UA
 
 // [todo] enableJS() や enableAjax() も欲しいかも
@@ -28,6 +10,20 @@ $GLOBALS['_UA_force_mode'] = null;
  */
 class UA
 {
+    // @see getQueryKey()
+    static private $_query_key = 'b';
+
+	// @see setPCQuery() // b=pc
+    static private $_pc_query = 'pc';
+
+    // @see setMobileQuery() // b=k
+    static private $_mobile_query = 'k';
+    
+    // @see setIPhoneGroupQuery() // b=i
+    static private $_iphonegroup_query = 'i';
+
+    static private $_force_mode = null;
+
     // {{{ setForceMode()
 
     /**
@@ -36,7 +32,7 @@ class UA
      */
     static public function setForceMode($v)
     {
-        $GLOBALS['_UA_force_mode'] = $v;
+        self::$_force_mode = $v;
     }
 
     // }}}
@@ -86,9 +82,9 @@ class UA
         static $cache_ = null;
 
         // 強制指定があれば
-        if (isset($GLOBALS['_UA_force_mode'])) {
+        if (isset(self::$_force_mode)) {
             // ここはキャッシュしない
-            return ($GLOBALS['_UA_force_mode'] == $GLOBALS['_UA_mobile_query']);
+            return (self::$_force_mode == self::$_mobile_query);
         }
 
         // 引数のUAが無指定なら、クエリー指定を参照
@@ -144,10 +140,10 @@ class UA
         static $cache_ = null;
 
         // 強制指定があればチェック
-        if (isset($GLOBALS['_UA_force_mode'])) {
+        if (isset(self::$_force_mode)) {
             // 移行の便宜上、効力を弱めている
             // return ($GLOBALS['_UA_force_mode'] == $GLOBALS['_UA_iphonegroup_query']);
-            if ($GLOBALS['_UA_force_mode'] == $GLOBALS['_UA_iphonegroup_query']) {
+            if (self::$_force_mode == self::$_iphonegroup_query) {
                 return true;
             }
         }
@@ -275,7 +271,7 @@ class UA
      */
     static public function getQueryKey()
     {
-        return $GLOBALS['_UA_query_key'];
+        return self::$_query_key;
     }
 
     // }}}
@@ -287,7 +283,7 @@ class UA
      */
     static public function setPCQuery($pc)
     {
-        $GLOBALS['_UA_PC_query'] = $pc;
+        self::$_pc_query = $pc;
     }
 
     // }}}
@@ -298,7 +294,7 @@ class UA
      */
     static public function getPCQuery()
     {
-        return $GLOBALS['_UA_PC_query'];
+        return self::$_pc_query;
     }
 
     // }}}
@@ -310,7 +306,7 @@ class UA
      */
     static public function setMobileQuery($k)
     {
-        $GLOBALS['_UA_mobile_query'] = $k;
+        self::$_mobile_query = $k;
     }
 
     // }}}
@@ -321,7 +317,7 @@ class UA
      */
     static public function getMobileQuery()
     {
-        return $GLOBALS['_UA_mobile_query'];
+        return self::$_mobile_query;
     }
 
     // }}}
@@ -333,7 +329,7 @@ class UA
      */
     static public function setIPhoneGroupQuery($i)
     {
-        $GLOBALS['_UA_iphonegroup_query'] = $i;
+        self::$_iphonegroup_query = $i;
     }
 
     // }}}
@@ -344,7 +340,7 @@ class UA
      */
     static public function getIPhoneGroupQuery()
     {
-        return $GLOBALS['_UA_iphonegroup_query'];
+        return self::$_iphonegroup_query;
     }
 
     // }}}

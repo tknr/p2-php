@@ -43,7 +43,6 @@ function Invite(title, url, host, bbs, key, resnum)
 	invite.document.writeln('<br>');
 	invite.document.writeln('<input type="button" value="•Â‚¶‚é" onclick="window.close();">');
 	invite.document.writeln('</center>');
-	invite.document.writeln('</head>');
 	invite.document.writeln('</html>');
 	invite.document.close();
 	invite.resizeTo(winWidth, winHeight);
