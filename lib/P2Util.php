@@ -1012,9 +1012,11 @@ EOP;
             }
 
             $autoLogin2ch = (bool)$rec_autoLogin2ch;
+
+            return array($login2chID, $login2chPW, $autoLogin2ch);
         }
 
-        return array($login2chID, $login2chPW, $autoLogin2ch);
+        return false;
     }
 
     // }}}
