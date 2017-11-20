@@ -1497,23 +1497,23 @@ ERR;
             $ls = null;
 
             // Ç‹ÇøBBS - http://kanto.machi.to/bbs/read.cgi/kanto/1241815559/
-            if (preg_match('<^http://(\\w+\\.machi(?:bbs\\.com|\\.to))/bbs/read\\.cgi
-                    /(\\w+)/([0-9]+)(?:/([^/]*))?>x', $nama_url, $matches)) {
+            if (preg_match('<^https?://(\\w+\\.machi(?:bbs\\.com|\\.to))/bbs/read\\.cgi
+                    /(\\w+)/(\\d+)(?:/([^/]*))?>x', $nama_url, $matches)) {
                 $host = $matches[1];
                 $bbs = $matches[2];
                 $key = $matches[3];
                 $ls = (isset($matches[4]) && strlen($matches[4])) ? $matches[4] : '';
 
                 // Ç‹ÇøBBS(ÉhÉÅÉCÉìÇÃÇ›) - http://machi.to/bbs/read.cgi/kanto/1241815559/
-            } elseif (preg_match('<^http?://(machi\\.to)/bbs/read\\.cgi
-                    /(\\w+)/([0-9]+)(?:/([^/]*))?>x', $nama_url, $matches)) {
+            } elseif (preg_match('<^https?://(machi\\.to)/bbs/read\\.cgi
+                    /(\\w+)/(\\d+)(?:/([^/]*))?>x', $nama_url, $matches)) {
                 $host = $matches[1];
                 $bbs = $matches[2];
                 $key = $matches[3];
                 $ls = (isset($matches[4]) && strlen($matches[4])) ? $matches[4] : '';
 
                 // ÇµÇΩÇÁÇŒJBBS - http://jbbs.livedoor.com/bbs/read.cgi/computer/2999/1081177036/-100
-            } elseif (preg_match('<^http://(jbbs\\.(?:livedoor\\.(?:jp|com)|shitaraba\\.(?:net|com)))/(?:bbs|bbs/lite)/read\\.cgi
+            } elseif (preg_match('<^https?://(jbbs\\.(?:livedoor\\.(?:jp|com)|shitaraba\\.(?:net|com)))/(?:bbs|bbs/lite)/read\\.cgi
                     /(\\w+)/(\\d+)/(\\d+)/((?:\\d+)?-(?:\\d+)?)?[^"]*>x', $nama_url, $matches)) {
                 $host = $matches[1] . '/' . $matches[2];
                 $bbs = $matches[3];
@@ -1521,36 +1521,36 @@ ERR;
                 $ls = isset($matches[5]) ? $matches[5] : '';
 
                 // ãåéÆÇ‹ÇøÅïÇµÇΩÇÁÇŒJBBS - http://kanto.machibbs.com/bbs/read.pl?BBS=kana&KEY=1034515019
-            } elseif (preg_match('<^http://(\\w+\\.machi(?:bbs\\.com|\\.to))/bbs/read\\.(?:pl|cgi)\\?(.+)>',
+            } elseif (preg_match('<^https?://(\\w+\\.machi(?:bbs\\.com|\\.to))/bbs/read\\.(?:pl|cgi)\\?(.+)>',
                 $nama_url, $matches)) {
                 $host = $matches[1];
                 list($bbs, $key, $ls) = self::parseMachiQuery($matches[2]);
 
-            } elseif (preg_match('<^http://((jbbs\\.(?:livedoor\\.(?:jp|com)|shitaraba\\.(?:net|com)))(?:/(\\w+))?)/bbs/read\\.(?:pl|cgi)\\?(.+)>',
+            } elseif (preg_match('<^https?://((jbbs\\.(?:livedoor\\.(?:jp|com)|shitaraba\\.(?:net|com)))(?:/(\\w+))?)/bbs/read\\.(?:pl|cgi)\\?(.+)>',
                 $nama_url, $matches)) {
                 $host = $matches[1];
                 list($bbs, $key, $ls) = self::parseMachiQuery($matches[4]);
 
                 // vip2ch.com - http://ex14.vip2ch.com/test/read.cgi/news4ssnip/1450958506/
-            } elseif (preg_match('<^https?://((\\w+)\\.vip2ch\\.com)/(?:test|i)/(?:read\\.(?:cgi|html|so)|mread\\.cgi|read)/(\\w+)/([0-9]+)(?:/([^/]*))?>x', $nama_url, $matches)) {
+            } elseif (preg_match('<^https?://((\\w+)\\.vip2ch\\.com)/(?:test|i)/(?:read\\.(?:cgi|html|so)|mread\\.cgi|read)/(\\w+)/(\\d+)(?:/([^/]*))?>x', $nama_url, $matches)) {
                 $host = $matches[1];
                 $bbs = $matches[3];
                 $key = $matches[4];
                 $ls = (isset($matches[5]) && strlen($matches[5])) ? $matches[5] : '';
 
                 // vip2ch.com - http://ex14.vip2ch.com/i/responce.html?bbs=news4ssnip&dat=1450958506
-            } elseif (preg_match('<^https?://((\\w+)\\.vip2ch\\.com)/i/(?:responce|responce_r18)\\.html\\?bbs=(\\w+)&dat=([0-9]+)(?:/([^/]*))?>x', $nama_url, $matches)) {
+            } elseif (preg_match('<^https?://((\\w+)\\.vip2ch\\.com)/i/(?:responce|responce_r18)\\.html\\?bbs=(\\w+)&dat=(\\d+)(?:/([^/]*))?>x', $nama_url, $matches)) {
                 $host = $matches[1];
                 $bbs = $matches[3];
                 $key = $matches[4];
                 $ls = (isset($matches[5]) && strlen($matches[5])) ? $matches[5] : '';
 
                 // itest - https://itest.5ch.net/hayabusa9/test/read.cgi/mnewsplus/1510531889
-            } elseif (preg_match('<^https?://itest\\.(?:[25])ch\\.net/(\\w+)/test/read\\.cgi/(\\w+)/(\\d+)(?:/(.+$))?>x', $nama_url, $matches)) {
-                $host = $matches[1].'.5ch.net';
-                $bbs = $matches[2];
-                $key = $matches[3];
-                $ls = (isset($matches[4]) && strlen($matches[4])) ? $matches[4] : '';
+            } elseif (preg_match('<^https?://(itest\\.(?:[25]ch\\.net|bbspink\\.com))/(\\w+)/test/read\\.cgi/(\\w+)/(\\d+)(?:/(.+$))?>x', $nama_url, $matches)) {
+                $host = str_replace("itest", $matches[2], $matches[1]);
+                $bbs = $matches[3];
+                $key = $matches[4];
+                $ls = (isset($matches[5]) && strlen($matches[5])) ? $matches[5] : '';
 
                 // 2ch or pink - http://choco.2ch.net/test/read.cgi/event/1027770702/
             } elseif (preg_match('<^https?://(.+)/test/read\\.(?:cgi|html|so|php)
@@ -1562,20 +1562,20 @@ ERR;
                     $ls = (isset($matches[4]) && strlen($matches[4])) ? $matches[4] : '';
                 }
 
-                // 2ch or pink by ula.cc(bintan / bekkanko) - http://choco.2ch.net/test/read.cgi/event/1027770702/
-            } elseif (preg_match('<^https?://(?:(?:bintan|same)\\.ula\\.cc|ula\\.(?:(?:2ch|5ch)\\.net|bbspink\\.com))/test/(?:read\\.(?:cgi|html|so)|r\\.so)
+                // 2ch or pink by ula.cc(bintan / bekkanko) - http://bintan.ula.cc/test/read.cgi/lavender.2ch.net/chakumelo/1509563851/
+            } elseif (preg_match('<^https?://(?:(?:bintan|same)\\.ula\\.cc|ula\\.(?:[25]ch\\.net|bbspink\\.com))/test/(?:read\\.(?:cgi|html|so)|r\\.so)
                     /(.+)/(\\w+)/([0-9]+)(?:/([^/]*))>x', $nama_url, $matches)) {
                 $host = $matches[1];
                 $bbs = $matches[2];
                 $key = $matches[3];
                 $ls = (isset($matches[4]) && strlen($matches[4])) ? $matches[4] : '';
 
-                // 2ch or pink by ula.cc(new bintan) - http://choco.2ch.net/test/read.cgi/event/1027770702/
-            } elseif (preg_match('<^https?://(ula\\.(?:(?:2ch|5ch)\\.net|bbspink\\.com))/(?:2ch|5ch)
+                // 2ch or pink by ula.cc(new bintan) - http://bintan.ula.cc/2ch/chakumelo/lavender.2ch.net/1509563851/
+            } elseif (preg_match('<^https?://(?:(?:bintan|same)\\.ula\\.cc|ula\\.(?:[25]ch\\.net|bbspink\\.com))/[25]ch
                     /(\\w+)/(.+)/(\\d+)(?:/([^/]*))>x', $nama_url, $matches)) {
-                $host = $matches[3];
-                $bbs = $matches[2];
-                $key = $matches[4];
+                $host = $matches[2];
+                $bbs = $matches[1];
+                $key = $matches[3];
                 $ls = (isset($matches[5]) && strlen($matches[5])) ? $matches[5] : '';
 
                 // 2ch or pink âﬂãéÉçÉOhtml - http://pc.2ch.net/mac/kako/1015/10153/1015358199.html
