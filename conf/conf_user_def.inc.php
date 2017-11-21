@@ -596,6 +596,15 @@ $conf_user_rad['2ch_ssl.subject'] = array('1' => 'する', '0' => 'しない');
 $conf_user_def['2ch_ssl.post'] = 0;  // (0)
 $conf_user_rad['2ch_ssl.post'] = array('1' => 'する', '0' => 'しない');
 
+// 浪人の有効期限表示
+$conf_user_def['disp_ronin_expiration'] = 0;  // (0)
+$conf_user_sel['disp_ronin_expiration'] = array(
+    '0' => 'する',
+    '1' => 'エラー･期限切れの場合のみ表示',
+    '2' => 'タイトル画面のみ表示',
+    '3' => 'しない'
+);
+
 // }}}
 // {{{ 拡張パックとiPhone
 

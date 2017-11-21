@@ -449,6 +449,8 @@ if ($flags & P2_EDIT_CONF_USER_SKIPPED) {
         array('ssl_capath', 'SSL通信で接続先を検証するための証明書があるディレクトリ ex)&quot;/etc/ssl/certs&quot;<br>設定なして動く場合は設定不要'),
         array('2ch_ssl.subject', '2ch.netのsubjec.txtとSETTING.TXTの取得にSSLを使用する'),
         array('2ch_ssl.post', '2ch.netの書き込みにSSLを使用する'),
+        '浪人設定',
+        array('disp_ronin_expiration', '浪人の有効期限を表示設定'),
     );
     printEditConfGroupHtml($groupname, $conflist, $flags);
 }

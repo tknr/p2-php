@@ -1849,6 +1849,10 @@ ERR;
     {
         global $_conf;
 
+        if($_conf['disp_ronin_expiration'] === "3"){
+            return true;
+        }
+
         $url = 'https://auth.bbspink.com/auth/timecheck.php';
 
         if($_conf['2chapi_use'] == 1) {
@@ -1935,6 +1939,13 @@ ERR;
         // 有効期限チェック
         if (time() >= $expiration) {
             self::pushInfoHtml("<p>p2 error: 浪人<●>の有効期限切れです｡ 有効期限:{$date}</p>");
+            return true;
+        }
+
+        if(
+            $_conf['disp_ronin_expiration'] === "1" 
+        || ($_conf['disp_ronin_expiration'] === "2" && basename($_SERVER["SCRIPT_NAME"]) !== $_conf['title_php'])
+        ){
             return true;
         }
 

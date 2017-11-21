@@ -80,6 +80,7 @@ function p2_init()
     $_conf['expack.tgrep_url']      = 'http://page2.xrea.jp/tgrep/search';
     $_conf['test.dig2ch_url']       = 'https://dig.5ch.net/';
     $_conf['expack.gate_php']       = '//open774.github.io/p2-php/gate.html';
+    $_conf['title_php']             = 'title.php';
     $_conf['menu_php']              = 'menu.php';
     $_conf['subject_php']           = 'subject.php';
     $_conf['read_php']              = 'read.php';
