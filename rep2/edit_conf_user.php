@@ -450,7 +450,7 @@ if ($flags & P2_EDIT_CONF_USER_SKIPPED) {
         array('2ch_ssl.subject', '2ch.netのsubjec.txtとSETTING.TXTの取得にSSLを使用する'),
         array('2ch_ssl.post', '2ch.netの書き込みにSSLを使用する'),
         '浪人設定',
-        array('disp_ronin_expiration', '浪人の有効期限を表示設定'),
+        array('disp_ronin_expiration', '浪人の有効期限を表示'),
     );
     printEditConfGroupHtml($groupname, $conflist, $flags);
 }
