@@ -71,15 +71,11 @@ $_conf['session_save'] = 'p2';      // ('p2')
 // Cookie IDの有効期限日数
 $_conf['cid_expire_day'] = 30;      // (30)
 
-// ネットワーク接続タイムアウト時間 (秒)
-// @deprecated use $_conf['http_conn_timeout'] and $_conf['http_read_timeout']
-$_conf['fsockopen_time_limit'] = 7; // (7)
-
 // HTTP接続タイムアウト時間 (秒)
-$_conf['http_conn_timeout'] = 2; // (2)
+$_conf['http_conn_timeout'] = 5; // (5)
 
 // HTTP読込タイムアウト時間 (秒)
-$_conf['http_read_timeout'] = 8; // (8)
+$_conf['http_read_timeout'] = 10; // (10)
 
 // p2の最新バージョンを自動チェック(する:1, しない:0)
 $_conf['updatan_haahaa'] = 1;       // (1)

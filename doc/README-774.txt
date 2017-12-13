@@ -72,7 +72,7 @@ PHP7での不具合修正を優先するため突然PHP5.xのサポートが終わる可能性があります。
 
 
 ●ChangeLog
-
+171122.1500
 * itest(https://itest.5ch.net/サーバー/test/read.cgi/板/スレ)のリンクを開く機能を追加
 * DAT破損防止のために旧仕様のitestをリンクしないように変更
 * 鏡の国のPHP 2chBBSスクリプト(http://script.s16.xrea.com/)を使用した外部板に対応
