@@ -845,9 +845,9 @@ function showUnexpectedResponse($response, $line = null)
     echo '<html><head><title>p2 ERROR</title></head><body>';
     echo '<h1>p2 ERROR</h1><p>サーバからのレスポンスが変です。';
     if (is_numeric($line)) {
-        echo "({$line})";
+        echo "(行番号：{$line})";
     }
-    echo '</p><pre>';
+    echo '</p><p>レスポンス(報告の際はスレに書く)：</p><pre>';
     echo p2h($response);
     echo '</pre></body></html>';
 }

@@ -322,7 +322,7 @@ class ThreadRead extends Thread {
                 return '304 Not Modified';
             } elseif ($code == '403') {
                 $this->getdat_error_msg_ht .= "<p>rep2 error: CloudFlareに接続を拒否されたため、スレッド取得に失敗しました。設定の変更を検討してください。</p>";
-                $this->getdat_error_msg_ht .= "<p>".$response->getBody ()."</p>";
+                $this->getdat_error_msg_ht .= "<p>".p2h($response->getBody ())."</p>";
                 $this->getdat_error_msg_ht .= " [<a href=\"{$_conf['read_php']}?host={$this->host}&amp;bbs={$this->bbs}&amp;key={$this->key}&amp;ls={$this->ls}&amp;relogin2chapi=true\">APIで再取得を試みる</a>]";
                 $this->getdat_error_msg_ht .= " [<a href=\"{$_conf['read_php']}?host={$this->host}&amp;bbs={$this->bbs}&amp;key={$this->key}&amp;ls={$this->ls}&amp;olddat=true\">旧datで再取得を試みる</a>]";
                 $this->diedat = true;
@@ -342,7 +342,7 @@ class ThreadRead extends Thread {
             } else {
             	if($_conf['2chapi_debug_print']==1)
                 {
-                    P2Util::pushInfoHtml('<p>p2 debug(ThreadRead::API):body='.$response->getBody ().'</p>');
+                    P2Util::pushInfoHtml('<p>p2 debug(ThreadRead::API):body='.p2h($response->getBody ()).'</p>');
                 }
 
                 return $this->_downloadDat2chNotFound ($code);
