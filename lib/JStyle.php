@@ -31,21 +31,6 @@ class JStyle implements ArrayAccess
     }
 
     // }}}
-    // {{{ encode()
-
-    /**
-     * 値をShift_JIS→UTF-8返還してからJSONエンコードする
-     *
-     * @param mixed $value
-     * @return string
-     */
-    static public function encode($value)
-    {
-        mb_convert_variables('UTF-8', 'SJIS-win', $value);
-        return json_encode($value);
-    }
-
-    // }}}
     // {{{ __construct()
 
     /**
@@ -99,7 +84,7 @@ class JStyle implements ArrayAccess
                 sscanf($this->_style[$key], '%u,%u', $width, $height);
                 $this->_cache[$key] = sprintf('%u,%u', $width, $height);
             } else {
-                $this->_cache[$key] = self::encode($this->_style[$key]);
+                $this->_cache[$key] = p2_json_encode($this->_style[$key]);
             }
         }
 

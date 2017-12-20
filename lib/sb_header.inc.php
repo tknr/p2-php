@@ -65,7 +65,7 @@ if ($aThreadList->spmode == 'fav' && $_conf['expack.misc.multi_favs']) {
 } else {
     $ptitle_hd = p2h($aThreadList->ptitle);
 }
-$ptitle_json = JStyle::encode($aThreadList->ptitle);
+$ptitle_json = p2_json_encode($aThreadList->ptitle);
 
 if ($aThreadList->spmode == 'taborn') {
     $ptitle_ht = <<<EOP
