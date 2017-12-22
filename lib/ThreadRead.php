@@ -233,6 +233,11 @@ class ThreadRead extends Thread {
 
                 $this->modified = $response->getHeader ('Last-Modified');
 
+                // DAT データが空の場合
+                if(!$this->onbytes){
+                    return $this->_downloadDat2chNotFound ('404');
+                }
+
                 // 行毎に分割
                 $lines = explode("\n", $body ,3);
 
@@ -656,9 +661,13 @@ class ThreadRead extends Thread {
                 $res_code = $response->getStatus ();
 
                 $test403 = "/403\.dat/";
+                $testsw2 = "/Something went wrong/";
+
                 if ($res_code == '200' || $res_code == '206') { // Partial Content
                     $read_response_html = $response->getBody ();
                 } elseif ($res_code == '302' || preg_match ($test403, $response->getBody (), $test403)) {
+                    $read_response_html = $response->getBody ();
+                } elseif ($res_code == '500' || preg_match ($testsw2, $response->getBody (), $testsw2)) {
                     $read_response_html = $response->getBody ();
                 } else {
                     $url_t = P2Util::throughIme ($read_url);
@@ -692,6 +701,8 @@ class ThreadRead extends Thread {
         $error3939_match = "{<title>２ちゃんねる error 3939</title>}"; // 過去ログ倉庫でhtml化の時（他にもあるかも、よく知らない）
         $error4002_match = "{<title>２ちゃんねる error 4002</title>}"; // 過去ログ倉庫でhtml化の時（他にもあるかも、よく知らない）
 
+        $sw2_match = "/Something went wrong/";
+
         $vip2ch_ssr_match = "/隊長！新設されたSS速報R板にてスレを発見したですよ！/";
 
         // <a href="http://qb5.2ch.net/sec2chd/kako/1091/10916/1091634596.html">
@@ -713,6 +724,7 @@ class ThreadRead extends Thread {
             preg_match ($naidesu_match, $read_response_html, $matches) ||
             preg_match ($error3939_match, $read_response_html, $matches) ||
             preg_match ($error4002_match, $read_response_html, $matches) ||
+            preg_match ($sw2_match, $read_response_html, $matches) ||
             preg_match ($vip2ch_kakosoko_match, $read_response_html, $matches) ||
             preg_match ($vip2ch_ssr_match, $read_response_html, $matches) ||
             preg_match ($soukoni_match, $read_response_html, $matches)) {
@@ -734,6 +746,8 @@ class ThreadRead extends Thread {
                 $kakolog_url_en = rawurlencode ($kakolog_uri);
                 $read_kako_url = "{$_conf['read_php']}?host={$this->host}&amp;bbs={$this->bbs}&amp;key={$this->key}&amp;ls={$this->ls}&amp;kakolog={$kakolog_url_en}&amp;kakoget=1";
                 $dat_response_msg = "<p>2ch info - 隊長! 過去ログ倉庫で、<a href=\"{$kakolog_uri}.html\"{$_conf['bbs_win_target_at']}>スレッド {$this->key}.html</a> を発見しました。 [<a href=\"{$read_kako_url}\">rep2に取り込んで読む</a>]</p>";
+            } elseif (preg_match ($sw2_match, $read_response_html, $matches)) {
+                $dat_response_msg = "<p>2ch info - datが空でした。[$read_response_html]</p>";
             } elseif (preg_match ($waithtml_match, $read_response_html, $matches)) {
                 $dat_response_status = "隊長! スレッドはhtml化されるのを待っているようです。";
                 //$marutori_ht = $this->_generateMarutoriLink ();
