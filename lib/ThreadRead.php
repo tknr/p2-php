@@ -650,37 +650,7 @@ class ThreadRead extends Thread {
 
         $read_response_html = '';
         if (! $reason) {
-            try {
-                $req = P2Commun::createHTTPRequest ($read_url.'1', HTTP_Request2::METHOD_GET);
-                // ヘッダ
-                $req->setHeader ('User-Agent', P2Commun::getP2UA(false,P2HostMgr::isHost2chs($this->host))); // ここは、"Monazilla/" をつけるとNG
-
-                // Requestの送信
-                $response = P2Commun::getHTTPResponse($req);
-
-                $res_code = $response->getStatus ();
-
-                $test403 = "/403\.dat/";
-                $testsw2 = "/Something went wrong/";
-
-                if ($res_code == '200' || $res_code == '206') { // Partial Content
-                    $read_response_html = $response->getBody ();
-                } elseif ($res_code == '302' || preg_match ($test403, $response->getBody (), $test403)) {
-                    $read_response_html = $response->getBody ();
-                } elseif ($res_code == '500' || preg_match ($testsw2, $response->getBody (), $testsw2)) {
-                    $read_response_html = $response->getBody ();
-                } else {
-                    $url_t = P2Util::throughIme ($read_url);
-                    $info_msg_ht = "<p class=\"info-msg\">Error: {$code}<br>";
-                    $info_msg_ht .= "rep2 info: <a href=\"{$url_t}\"{$_conf['ext_win_target_at']}>{$read_url}</a> のHTMLを取得出来ませんでした。</p>";
-                    P2Util::pushInfoHtml ($info_msg_ht);
-                }
-            } catch (Exception $e) {
-                $this->getdat_error_msg_ht .= "<p>サーバ接続エラー: " . $e->getMessage ();
-                $this->getdat_error_msg_ht .= "<br>rep2 error: 板サーバへの接続に失敗しました。</p>";
-                $this->diedat = true;
-            }
-            unset ($req, $response);
+            $read_response_html = self::getReadCGIHtml($read_url);
         }
 
         // }}}
@@ -873,6 +843,50 @@ class ThreadRead extends Thread {
         return $body;
     }
 
+    // }}}
+    // {{{ getReadCGIResponse()
+    /**
+     * read.cgi のレスポンスを取得
+     */
+    public function getReadCGIHtml($read_url) {
+        global $_conf;
+
+        $test403 = "/403\.dat/";
+        $testsw2 = "/Something went wrong/";
+
+        try {
+            $req = P2Commun::createHTTPRequest ($read_url.'1', HTTP_Request2::METHOD_GET);
+            // ヘッダ
+            $req->setHeader ('User-Agent', P2Commun::getP2UA(false,P2HostMgr::isHost2chs($this->host))); // ここは、"Monazilla/" をつけるとNG
+
+            // Requestの送信
+            $response = P2Commun::getHTTPResponse($req);
+
+            $res_code = $response->getStatus ();
+
+            if ($res_code == '200' || $res_code == '206') { // Partial Content
+                $read_response_html = $response->getBody ();
+            } elseif ($res_code == '301' && P2HostMgr::isHost2ch ($this->host)) {
+                $read_response_html = self::getReadCGIHtml($response->getHeader ("Location"));
+            } elseif ($res_code == '302' || preg_match ($test403, $response->getBody (), $test403)) {
+                $read_response_html = $response->getBody ();
+            } elseif ($res_code == '500' || preg_match ($testsw2, $response->getBody (), $testsw2)) {
+                $read_response_html = $response->getBody ();
+            } else {
+                $url_t = P2Util::throughIme ($read_url);
+                $info_msg_ht = "<p class=\"info-msg\">Error: {$code}<br>";
+                $info_msg_ht .= "rep2 info: <a href=\"{$url_t}\"{$_conf['ext_win_target_at']}>{$read_url}</a> のHTMLを取得出来ませんでした。</p>";
+                P2Util::pushInfoHtml ($info_msg_ht);
+            }
+        } catch (Exception $e) {
+            $this->getdat_error_msg_ht .= "<p>サーバ接続エラー: " . $e->getMessage ();
+            $this->getdat_error_msg_ht .= "<br>rep2 error: 板サーバへの接続に失敗しました。</p>";
+            $this->diedat = true;
+        }
+        unset ($req, $response);
+        
+        return $read_response_html;
+    }
     // }}}
     // {{{ previewOneNotFound()
 
