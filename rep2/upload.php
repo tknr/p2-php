@@ -87,6 +87,58 @@ class P2DropboxUploader implements P2UploaderInterface
 }
 
 // }}}
+// {{{ P2ImgurUploader
+
+class P2ImgurUploader implements P2UploaderInterface
+{
+    /**
+     * @var string
+     */
+    private $client_id;
+
+    /**
+     * @param string $authJsonFile
+     * @param string $clientIdentifier
+     * @param string $prefix
+     */
+    public function __construct($client_id)
+    {
+        $this->client_id = $client_id;
+    }
+
+    /**
+     * @param string $localPath
+     * @param string $filename
+     *
+     * @return string URL
+     */
+    public function upload($localPath, $filename)
+    {
+    	$data = fread(fopen($localPath, "rb"), filesize($localPath));
+    	$imgur_api = 'https://api.imgur.com/3/image.json';
+
+    	$req = P2Commun::createHTTPRequest ($imgur_api,HTTP_Request2::METHOD_POST);
+
+        // ƒwƒbƒ_
+        $req->setHeader('Authorization', 'Client-ID ' . $this->client_id);
+        
+        // post‚·‚é“à—e
+        $req->addPostParameter('image', base64_encode($data));
+
+        $response = P2Commun::getHTTPResponse($req);
+        
+        if($response->getStatus() == 200) {
+            $result = json_decode($response->getBody());
+            $image_url = $result->data->link;
+            $delete_url = 'https://imgur.com/delete/' .$result->data->deletehash;
+            return $image_url;
+        }
+
+        return null;
+    }
+}
+
+// }}}
 // {{{ handle_uploaded_file()
 
 /**
