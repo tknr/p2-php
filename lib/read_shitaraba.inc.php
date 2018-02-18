@@ -40,7 +40,7 @@ function shitarabaDownload(ThreadRead $aThread)
         // ‚µ‚½‚ç‚Î‚ÌlivedoorˆÚ“]‚É‘Î‰B“Çæ‚ğlivedoor‚Æ‚·‚éB
         $host = P2HostMgr::adjustHostJbbs($aThread->host);
         list($host, $category, ) = explode('/', $host);
-        $machiurl = "https://{$host}/bbs/rawmode.cgi/{$category}/{$aThread->bbs}/{$aThread->key}/{$START}-";
+        $machiurl = "http://{$host}/bbs/rawmode.cgi/{$category}/{$aThread->bbs}/{$aThread->key}/{$START}-";
     }
 
     $tempfile = $aThread->keydat.'.dat.temp';
