@@ -719,7 +719,7 @@ function p2_json_encode($values)
 	// array_walk_recursiveで回す。
 	// array_walk_recursiveも多次元配列対応してないはずだけどとりあえず動く。。。
 	// https://bugs.php.net/bug.php?id=66964
-    if(is_array($values)){
+    if(is_array($values) || is_object($values)){
         array_walk_recursive($values, function(&$value) {
             mb_convert_variables('UTF-8', 'CP932', $value);
         });
