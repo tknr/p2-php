@@ -11,7 +11,7 @@ function ic2_setcount(key, elem)
     var ic2_getcount = function (key) {
         var url, req, res, err;
 
-        req = getXmlHttp();
+        req = new XMLHttpRequest();
         if (!req) {
             return null;
         }

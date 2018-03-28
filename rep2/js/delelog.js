@@ -9,7 +9,7 @@ function deleLog(tquery, info_pop_width, info_pop_height, page, obj)
 		return false;
 	}
 	
-	var objHTTP = getXmlHttp();
+	var objHTTP = new XMLHttpRequest();
 	
 	if (!objHTTP) {
 		// alert("Error: XMLHTTP 通信オブジェクトの作成に失敗しました。") ;

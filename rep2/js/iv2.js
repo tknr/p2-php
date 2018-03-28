@@ -163,7 +163,7 @@ function getRank(itemId)
 
 function setRank(itemId, rank)
 {
-	var objHTTP = getXmlHttp();
+	var objHTTP = new XMLHttpRequest();
 	if (!objHTTP) {
 		alert("Error: XMLHTTP 通信オブジェクトの作成に失敗しました。") ;
 	}

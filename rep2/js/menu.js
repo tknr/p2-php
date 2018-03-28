@@ -42,7 +42,7 @@ function replaceMenuItem(itemId, qKey, qValue)
 {
 	var uri = 'menu_async.php?' + qKey + '=' + qValue;
 
-	var req = getXmlHttp();
+	var req = new XMLHttpRequest();
 	if (!req) {
 		alert('XMLHttp not available.');
 		return;
@@ -87,7 +87,7 @@ function openFavList(subject_php, set_num, tgt)
 function changeSkin(skinName)
 {
 	var uri = 'menu_async.php?m_skin_set=' + skinName;
-	var req = getXmlHttp();
+	var req = new XMLHttpRequest();
 	var res;
 
 	if (!req) {

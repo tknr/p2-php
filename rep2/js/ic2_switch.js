@@ -13,7 +13,7 @@
  */
 function ic2_switch(onoff, mobile)
 {
-	var objHTTP = getXmlHttp();
+	var objHTTP = new XMLHttpRequest();
 	if (!objHTTP) {
 		alert('Error: XMLHTTP 通信オブジェクトの作成に失敗しました。');
 	}

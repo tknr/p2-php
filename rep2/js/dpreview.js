@@ -217,7 +217,7 @@ function DPSetTrip(tk)
 	if (!dpreview_on) {
 		return;
 	}
-	var objHTTP = getXmlHttp();
+	var objHTTP = new XMLHttpRequest();
 	if (!objHTTP) {
 		DPReplaceInnerText('dp_trip', '◆XMLHTTP Disabled.');
 		return;
@@ -236,7 +236,7 @@ function DPSetTrip(tk)
 // XMLHttpRequestを用いてトリップを取得する
 function DPGetTrip(tk)
 {
-	var objHTTP = getXmlHttp();
+	var objHTTP = new XMLHttpRequest();
 	if (!objHTTP) {
 		return '◆XMLHTTP Disabled.';
 	}

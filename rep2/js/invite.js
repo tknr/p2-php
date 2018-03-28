@@ -16,7 +16,7 @@ function Invite(title, url, host, bbs, key, resnum)
 		winHeight = 280;
 		taRows = 15;
 		var uri = 'read_async.php?host='+host+'&bbs='+bbs+'&key='+key+'&ls='+resnum+'n&q=2&offline=1';
-		var req = getXmlHttp();
+		var req = new XMLHttpRequest();
 		req.open('get', uri, false);
 		req.withCredentials = true;
 		req.send(null);

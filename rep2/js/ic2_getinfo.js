@@ -16,7 +16,7 @@ function ic2_getinfo(type, value, thumb)
 {
 	var url, req, res, err;
 
-	req = getXmlHttp();
+	req = new XMLHttpRequest();
 	if (!req) {
 		return null;
 	}

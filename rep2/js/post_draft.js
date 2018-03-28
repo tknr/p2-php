@@ -33,7 +33,7 @@ var saveDraftForm = function(form) {
 };
 
 var post_draft = function(host, bbs, key, csrfid, data, fin, err) {
-	var req = (typeof getXmlHttp === 'undefined') ? new XMLHttpRequest() : getXmlHttp();
+	var req = new XMLHttpRequest();
 	if (!req) return;
 
 	req.open('POST', 'post_draft.php', true);

@@ -15,7 +15,7 @@ function setFavJs(tquery, favdo, info_pop_width, info_pop_height, page, obj)
 		setnum = '-1';
 	}
 
-	var objHTTP = getXmlHttp();
+	var objHTTP = new XMLHttpRequest();
 	if (!objHTTP) {
 		// alert("Error: XMLHTTP 通信オブジェクトの作成に失敗しました。") ;
 		// XMLHTTP（とinnerHTML） に未対応なら小窓で

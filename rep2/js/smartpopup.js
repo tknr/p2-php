@@ -451,7 +451,7 @@ SPM.httpcmd = function (cmd, aThread, callback) {
 	var num = spmResNum;
 	var url = 'httpcmd.php?host=' + aThread.host + '&bbs=' + aThread.bbs + '&key=' + aThread.key
 	        + '&cmd=' + cmd + '&' + cmd + '=' + num;
-	var result = getResponseTextHttp(getXmlHttp(), url, true);
+	var result = getResponseTextHttp(new XMLHttpRequest(), url, true);
 	if (typeof callback === 'function') {
 		callback(result, cmd, aThread, num, url);
 	}

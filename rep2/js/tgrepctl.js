@@ -13,7 +13,7 @@ var tGrep = {};
  * XmlHttpRequestÇé¿çs
  */
 tGrep.execRequest = function (uri, menuId) {
-	var req = getXmlHttp();
+	var req = new XMLHttpRequest();
 	if (!req) {
 		alert('XMLHttp not available.');
 		return false;

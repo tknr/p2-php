@@ -34,25 +34,6 @@ var setWinTitle = rep2.util.setWindowTitle;
 // DOMオブジェクトを取得
 var p2GetElementById = document.getElementById;
 
-// XMLHttpRequest オブジェクトを取得
-function getXmlHttp()
-{
-	var objHTTP = null ;
-	try {
-		objHTTP = new ActiveXObject("Msxml2.XMLHTTP") ; // Mozilla用
-	} catch (e) {
-		try {
-			objHTTP = new ActiveXObject("Microsoft.XMLHTTP") ; // IE用
-		} catch (oc) {
-			objHTTP = null ;
-		}
-	}
-	if (!objHTTP && typeof XMLHttpRequest != "undefined") {
-		objHTTP = new XMLHttpRequest(); // 他
-	}
-	return objHTTP
-}
-
 /**
  * objHTTP とurlを渡して、結果テキストを取得する
  *
