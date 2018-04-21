@@ -158,6 +158,12 @@ class P2Ime
             }
             break;
         // }}}
+        // {{{ Hawker!(jump.x0.to)
+        case 'hawker':
+            $this->_method = '_throughHawkerGateway';
+            $this->_gateUrl = '//jump.x0.to/';
+            break;
+        // }}}
         default:
             $this->_method = '_passThrough';
             $this->_gateUrl = null;
@@ -246,6 +252,21 @@ class P2Ime
     protected function _throughGoogleGateway($url, $delay)
     {
         return $this->_gateUrl . rawurlencode($url);
+    }
+
+    // }}}
+    // {{{ _throughHawkerGateway()
+
+    /**
+     * Hawker!のURLゲートウェイを通すようにURLを変換する
+     *
+     * @param string $url
+     * @param int $delay (unused)
+     * @return string
+     */
+    protected function _throughHawkerGateway($url, $delay)
+    {
+        return $this->_gateUrl . $url;
     }
 
     // }}}

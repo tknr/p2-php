@@ -476,6 +476,7 @@ $conf_user_sel['through_ime'] = array(
     'exm'    => 'gate.php (手動転送)',
     'expm'   => 'gate.php (pのみ手動転送)',
     'google' => 'Google',
+    'hawker' => 'Hawker!(jump.x0.to)',
 );
 
 // HTTPSでアクセスしているときは外部URLゲートを通さない（HTTPSでは直:1, 常に通す:0）
