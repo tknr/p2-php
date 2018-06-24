@@ -9,16 +9,16 @@ if (PHP_SAPI != 'cli') {
     die('CLI only!');
 }
 
-if (!$_conf['expack.use_curl_multi'] && !$_conf['expack.use_pecl_http']) {
-    fwrite(STDERR, 'Setting of expack.use_curl_multi or  expack.use_pecl_http is required.' . PHP_EOL);
-    exit(1);
-}
-
 define('P2_CLI_RUN', 1);
 define('P2_FETCH_SUBJECT_TXT_DEBUG', 0);
 define('P2_FETCH_SUBJECT_TXT_DEBUG_OUTPUT_FILE', '/tmp/p2_fetch_subject_txt.log');
 
 require __DIR__ . '/../conf/conf.inc.php';
+
+if (!$_conf['expack.use_curl_multi'] && !$_conf['expack.use_pecl_http']) {
+    fwrite(STDERR, 'Setting of expack.use_curl_multi or  expack.use_pecl_http is required.' . PHP_EOL);
+    exit(1);
+}
 
 P2HttpExt::activate();
 
