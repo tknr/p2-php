@@ -654,7 +654,7 @@ class ThreadRead extends Thread {
 
         $read_response_html = '';
         if (! $reason) {
-            $read_response_html = self::getReadCGIHtml($read_url);
+            $read_response_html = $this->getReadCGIHtml($read_url);
         }
 
         // }}}
@@ -667,18 +667,18 @@ class ThreadRead extends Thread {
         $kakosoko_match = "/このスレッドは過去ログ倉庫に格.{1,2}されています/";
         $kakosoko_match2 = "/http:\/\/turing1000\.nttec\.com\/?(403|404|500)\.dat/";
 
-        $naidesu_match = "/<title>そんな板orスレッドないです。<\/title>/";
+        $naidesu_str = "<title>そんな板orスレッドないです。</title>";
 
         // 0ちゃんねるスクリプトに反応するように
-        $soukoni_match = "/<title>隊長！過去ログ倉庫に<\/title>/";
+        $soukoni_str = "<title>隊長！過去ログ倉庫に</title>";
 
-        $error3001_match = "{<title>２ちゃんねる error 3001</title>}"; // 過去ログ倉庫でhtml化の時（他にもあるかも、よく知らない）
-        $error3939_match = "{<title>２ちゃんねる error 3939</title>}"; // 過去ログ倉庫でhtml化の時（他にもあるかも、よく知らない）
-        $error4002_match = "{<title>２ちゃんねる error 4002</title>}"; // 過去ログ倉庫でhtml化の時（他にもあるかも、よく知らない）
+        $error3001_str = "<title>２ちゃんねる error 3001</title>"; // 過去ログ倉庫でhtml化の時（他にもあるかも、よく知らない）
+        $error3939_str = "<title>２ちゃんねる error 3939</title>"; // 過去ログ倉庫でhtml化の時（他にもあるかも、よく知らない）
+        $error4002_str = "<title>２ちゃんねる error 4002</title>"; // 過去ログ倉庫でhtml化の時（他にもあるかも、よく知らない）
 
-        $sw2_match = "/Something went wrong/";
+        $sw2_str = "Something went wrong";
 
-        $vip2ch_ssr_match = "/隊長！新設されたSS速報R板にてスレを発見したですよ！/";
+        $vip2ch_ssr_str = "隊長！新設されたSS速報R板にてスレを発見したですよ！";
 
         // <a href="http://qb5.2ch.net/sec2chd/kako/1091/10916/1091634596.html">
         // <a href="../../../../mac/kako/1004/10046/1004680972.html">
@@ -695,15 +695,15 @@ class ThreadRead extends Thread {
             $dat_response_msg = "<p>2ch info - このスレッドは過去ログ倉庫に格納されています。浪人ログインすると取得出来るかもしれません。{$plugin_ht}</p>";
 
         // <title>がそんな板orスレッドないです。or error 3939
-        } elseif ($reason === 'kakohtml' or
-            preg_match ($naidesu_match, $read_response_html, $matches) ||
-            preg_match ($error3001_match, $read_response_html, $matches) ||
-            preg_match ($error3939_match, $read_response_html, $matches) ||
-            preg_match ($error4002_match, $read_response_html, $matches) ||
-            preg_match ($sw2_match, $read_response_html, $matches) ||
+        } elseif ($reason === 'kakohtml' ||
             preg_match ($vip2ch_kakosoko_match, $read_response_html, $matches) ||
-            preg_match ($vip2ch_ssr_match, $read_response_html, $matches) ||
-            preg_match ($soukoni_match, $read_response_html, $matches)) {
+            mb_strpos ($read_response_html, $naidesu_str) !== false ||
+            mb_strpos ($read_response_html, $error3001_str) !== false ||
+            mb_strpos ($read_response_html, $error3939_str) !== false ||
+            mb_strpos ($read_response_html, $error4002_str) !== false ||
+            mb_strpos ($read_response_html, $sw2_str) !== false ||
+            mb_strpos ($read_response_html, $vip2ch_ssr_str) !== false ||
+            mb_strpos ($read_response_html, $soukoni_str) !== false) {
 
             if ($reason === 'kakohtml' or preg_match ($kakohtml_match, $read_response_html, $matches)) {
                 if ($reason === 'kakohtml') {
@@ -714,7 +714,9 @@ class ThreadRead extends Thread {
                 $kakolog_url_en = rawurlencode ($kakolog_uri);
                 $read_kako_url = "{$_conf['read_php']}?host={$this->host}&amp;bbs={$this->bbs}&amp;key={$this->key}&amp;ls={$this->ls}&amp;kakolog={$kakolog_url_en}&amp;kakoget=1";
                 $dat_response_msg = "<p>2ch info - 隊長! 過去ログ倉庫で、<a href=\"{$kakolog_uri}.html\"{$_conf['bbs_win_target_at']}>スレッド {$matches[3]}.html</a> を発見しました。 [<a href=\"{$read_kako_url}\">rep2に取り込んで読む</a>]</p>";
-            } elseif (preg_match ($error3001_match, $read_response_html, $matches)) {
+            } elseif (mb_strpos ($read_response_html, $error3001_str) !== false ||
+                mb_strpos ($read_response_html, $error3939_str) !== false ||
+                mb_strpos ($read_response_html, $error4002_str) !== false) {
                 $dat_response_status = "隊長! 過去ログ倉庫で、html化されたスレッドを発見しました。";
                 $key4 = substr($this->key, 0, 4);
                 $key5 = substr($this->key, 0, 5);
@@ -722,23 +724,7 @@ class ThreadRead extends Thread {
                 $kakolog_url_en = rawurlencode ($kakolog_uri);
                 $read_kako_url = "{$_conf['read_php']}?host={$this->host}&amp;bbs={$this->bbs}&amp;key={$this->key}&amp;ls={$this->ls}&amp;kakolog={$kakolog_url_en}&amp;kakoget=1";
                 $dat_response_msg = "<p>2ch info - 隊長! 過去ログ倉庫で、<a href=\"{$kakolog_uri}.html\"{$_conf['bbs_win_target_at']}>スレッド {$this->key}.html</a> を発見しました。 [<a href=\"{$read_kako_url}\">rep2に取り込んで読む</a>]</p>";
-            } elseif (preg_match ($error3939_match, $read_response_html, $matches)) {
-                $dat_response_status = "隊長! 過去ログ倉庫で、html化されたスレッドを発見しました。";
-                $key4 = substr($this->key, 0, 4);
-                $key5 = substr($this->key, 0, 5);
-                $kakolog_uri = "http://{$this->host}/{$this->bbs}/kako/{$key4}/{$key5}/{$this->key}";
-                $kakolog_url_en = rawurlencode ($kakolog_uri);
-                $read_kako_url = "{$_conf['read_php']}?host={$this->host}&amp;bbs={$this->bbs}&amp;key={$this->key}&amp;ls={$this->ls}&amp;kakolog={$kakolog_url_en}&amp;kakoget=1";
-                $dat_response_msg = "<p>2ch info - 隊長! 過去ログ倉庫で、<a href=\"{$kakolog_uri}.html\"{$_conf['bbs_win_target_at']}>スレッド {$this->key}.html</a> を発見しました。 [<a href=\"{$read_kako_url}\">rep2に取り込んで読む</a>]</p>";
-            } elseif (preg_match ($error4002_match, $read_response_html, $matches)) {
-                $dat_response_status = "隊長! 過去ログ倉庫で、html化されたスレッドを発見しました。";
-                $key4 = substr($this->key, 0, 4);
-                $key5 = substr($this->key, 0, 5);
-                $kakolog_uri = "http://{$this->host}/{$this->bbs}/kako/{$key4}/{$key5}/{$this->key}";
-                $kakolog_url_en = rawurlencode ($kakolog_uri);
-                $read_kako_url = "{$_conf['read_php']}?host={$this->host}&amp;bbs={$this->bbs}&amp;key={$this->key}&amp;ls={$this->ls}&amp;kakolog={$kakolog_url_en}&amp;kakoget=1";
-                $dat_response_msg = "<p>2ch info - 隊長! 過去ログ倉庫で、<a href=\"{$kakolog_uri}.html\"{$_conf['bbs_win_target_at']}>スレッド {$this->key}.html</a> を発見しました。 [<a href=\"{$read_kako_url}\">rep2に取り込んで読む</a>]</p>";
-            } elseif (preg_match ($sw2_match, $read_response_html, $matches)) {
+            } elseif (mb_strpos ($read_response_html, $sw2_str) !== false) {
                 $dat_response_msg = "<p>2ch info - datが空でした。[$read_response_html]</p>";
             } elseif (preg_match ($waithtml_match, $read_response_html, $matches)) {
                 $dat_response_status = "隊長! スレッドはhtml化されるのを待っているようです。";
@@ -751,7 +737,7 @@ class ThreadRead extends Thread {
                 $kakolog_url_en = rawurlencode ($kakolog_uri);
                 $read_kako_url = "{$_conf['read_php']}?host={$this->host}&amp;bbs={$this->bbs}&amp;key={$this->key}&amp;ls={$this->ls}&amp;kakolog={$kakolog_url_en}&amp;kakoget=1";
                 $dat_response_msg = "<p>2ch info - 隊長! 過去ログ倉庫で、<a href=\"{$kakolog_uri}.html\"{$_conf['bbs_win_target_at']}>スレッド {$this->key}.html</a> を発見しました。 [<a href=\"{$read_kako_url}\">rep2に取り込んで読む</a>]</p>";
-            } elseif (preg_match ($vip2ch_ssr_match, $read_response_html, $matches)) {
+            } elseif (mb_strpos ($read_response_html, $vip2ch_ssr_str) !== false) {
                 $dat_response_status = "隊長! 新設されたSS速報R板にてスレを発見したですよ!";
                 $movelog_uri = str_replace("news4ssnip", "news4ssr", $read_url);
                 $movelog_url_en = rawurlencode ($movelog_uri);
@@ -861,7 +847,9 @@ class ThreadRead extends Thread {
         try {
             $req = P2Commun::createHTTPRequest ($read_url.'1', HTTP_Request2::METHOD_GET);
             // ヘッダ
-            $req->setHeader ('User-Agent', P2Commun::getP2UA(false,P2HostMgr::isHost2chs($this->host))); // ここは、"Monazilla/" をつけるとNG
+            // $req->setHeader ('User-Agent', P2Commun::getP2UA(false,P2HostMgr::isHost2chs($this->host))); // ここは、"Monazilla/" をつけるとNG
+            // read.cgiにrep2のUAでアクセスすると弾かれるサイトがあるので対処
+            $req->setHeader ('User-Agent', $_SERVER['HTTP_USER_AGENT']);
 
             // Requestの送信
             $response = P2Commun::getHTTPResponse($req);
@@ -871,14 +859,14 @@ class ThreadRead extends Thread {
             if ($res_code == '200' || $res_code == '206') { // Partial Content
                 $read_response_html = $response->getBody ();
             } elseif ($res_code == '301' && P2HostMgr::isHost2ch ($this->host)) {
-                $read_response_html = self::getReadCGIHtml($response->getHeader ("Location"));
+                $read_response_html = $this->getReadCGIHtml($response->getHeader ("Location"));
             } elseif ($res_code == '302' || preg_match ($test403, $response->getBody (), $test403)) {
                 $read_response_html = $response->getBody ();
             } elseif ($res_code == '500' || preg_match ($testsw2, $response->getBody (), $testsw2)) {
                 $read_response_html = $response->getBody ();
             } else {
                 $url_t = P2Util::throughIme ($read_url);
-                $info_msg_ht = "<p class=\"info-msg\">Error: {$code}<br>";
+                $info_msg_ht = "<p class=\"info-msg\">Error: {$res_code}<br>";
                 $info_msg_ht .= "rep2 info: <a href=\"{$url_t}\"{$_conf['ext_win_target_at']}>{$read_url}</a> のHTMLを取得出来ませんでした。</p>";
                 P2Util::pushInfoHtml ($info_msg_ht);
             }
