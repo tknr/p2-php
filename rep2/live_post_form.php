@@ -106,6 +106,7 @@ EOHEADER;
 
 if (!$_conf['ktai']) {
     echo <<<EOP
+    <script type="text/javascript" src="js/jquery-{$_conf['jquery_version']}.min.js"></script>
     <link rel="stylesheet" type="text/css" href="css.php?css=style&amp;skin={$skin_en}">
     <link rel="stylesheet" type="text/css" href="css.php?css=post&amp;skin={$skin_en}">\n
 EOP;
