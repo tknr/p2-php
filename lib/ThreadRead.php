@@ -46,6 +46,10 @@ class ThreadRead extends Thread {
     public function downloadDat() {
         global $_conf;
 
+        // 過去ログ扱いの場合何もしない
+        if($this->datochiok) {
+            return true;
+        }
         // まちBBS
         if (P2HostMgr::isHostMachiBbs ($this->host)) {
             return DownloadDatMachiBbs::invoke ($this);
@@ -578,6 +582,9 @@ class ThreadRead extends Thread {
                     p2die ('cannot write file. downloadDat2chMaru()');
                 }
 
+                // 過去ログ扱いフラグを立てる (idxline[12]に保存される)
+                $this->datochiok = true;
+
                 return true;
             } elseif ($code == '304') {
                 return '304 Not Modified';
@@ -844,6 +851,17 @@ class ThreadRead extends Thread {
         $test403 = "/403\.dat/";
         $testsw2 = "/Something went wrong/";
 
+        $cache_file = P2Util::cacheFileForDL($read_url);
+        // メニューの10倍キャッシュする
+        $cache_time = $_conf['menu_dl_interval'] * 36000;
+
+        if (file_exists($cache_file)) {
+            // キャッシュ有効期間ならダウンロードしない
+            if (filemtime($cache_file) > time() - $cache_time) {
+                return FileCtl::file_read_contents($cache_file);
+            }
+        }
+
         try {
             $req = P2Commun::createHTTPRequest ($read_url.'1', HTTP_Request2::METHOD_GET);
             // ヘッダ
@@ -869,6 +887,12 @@ class ThreadRead extends Thread {
                 $info_msg_ht = "<p class=\"info-msg\">Error: {$res_code}<br>";
                 $info_msg_ht .= "rep2 info: <a href=\"{$url_t}\"{$_conf['ext_win_target_at']}>{$read_url}</a> のHTMLを取得出来ませんでした。</p>";
                 P2Util::pushInfoHtml ($info_msg_ht);
+            }
+
+            if(isset($read_response_html)) {
+                if (FileCtl::file_write_contents($cache_file, $read_response_html) === false) {
+                    p2die('cannot write file.'.$cache_file);
+                }
             }
         } catch (Exception $e) {
             $this->getdat_error_msg_ht .= "<p>サーバ接続エラー: " . $e->getMessage ();

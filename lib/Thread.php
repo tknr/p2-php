@@ -32,7 +32,7 @@ class Thread
     public $bbs;        // ex)mac // idxline[11]
     public $itaj;       // 板名 ex)新・mac
 
-    public $datochiok;  // DAT落ち取得権限があればtrue(1) // idxline[12]
+    public $datochiok;  // 過去ログ扱いならtrue(1) // idxline[12]　// 使っている形跡が無いので再利用
 
     public $torder;     // スレッド新しい順番号
     public $unum;       // 未読（新着レス）数
@@ -359,6 +359,7 @@ class Thread
 
         $this->fav = (int)$lar[6]; // あえてboolでなく
 
+        // 過去ログ取り込み済フラグ
         if (isset($lar[12])) {
             $this->datochiok = $lar[12];
         }

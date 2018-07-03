@@ -336,11 +336,15 @@ if (!$_conf['ktai'] || $_conf['iphone']) {
 $upload_form = '';
 $upload_mode = null;
 
+/*
 if (!$_conf['ktai'] || $_conf['iphone']) {
     if (file_exists($_conf['dropbox_auth_json'])) {
         $upload_mode = 'dropbox';
     }
 }
+*/
+
+$upload_mode = 'imgur';
 
 if ($upload_mode !== null) {
     if ($_conf['ktai'] || $_conf['iphone']) {

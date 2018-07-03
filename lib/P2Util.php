@@ -262,6 +262,10 @@ class P2Util
 
         $cachefile = $_conf['cache_dir'] . '/' . $save_uri;
 
+        if(substr($cachefile, -1)=='/') {
+            $cachefile = substr($cachefile,0, -1);
+        }
+
         FileCtl::mkdirFor($cachefile);
 
         return $cachefile;
