@@ -566,6 +566,10 @@ class ThreadRead extends Thread {
         try {
             $req = P2Commun::createHTTPRequest ($url, HTTP_Request2::METHOD_GET);
 
+            if ($this->modified) {
+                $req->setHeader ('If-Modified-Since', $this->modified);
+            }
+
             // Request‚Ì‘—M
             $response = P2Commun::getHTTPResponse($req);
 
