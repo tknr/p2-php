@@ -319,6 +319,11 @@ class ThreadRead extends Thread {
                     // 現行スレの時だけセット
                     $this->isonline = true;
                 }
+                if ($apiThreadStatus == '3') {
+                    // 過去ログ扱いフラグを立てる (idxline[12]に保存される)
+                    $this->datochiok = true;
+                }
+
                 return true;
             } elseif ($code == '302') { // Found
                                         // ホストの移転を追跡
