@@ -337,6 +337,10 @@ class ThreadRead extends Thread {
                 }
             } elseif ($code == '304') {
                 $this->isonline = true;
+                if ($apiThreadStatus == '3') {
+                    // 過去ログ扱いフラグを立てる (idxline[12]に保存される)
+                    $this->datochiok = true;
+                }
                 return '304 Not Modified';
             } elseif ($code == '403') {
                 $this->getdat_error_msg_ht .= "<p>rep2 error: CloudFlareに接続を拒否されたため、スレッド取得に失敗しました。設定の変更を検討してください。</p>";
