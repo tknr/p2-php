@@ -139,7 +139,7 @@ for ($x = 0; $x < $linesize; $x++) {
 
     // ƒXƒŒî•ñŽæ“¾ =============================
     if (isset($subject_txts[$subject_id])) {
-        $it = 1;
+
         $thread_key = (string)$aThread->key;
         $thread_key_len = strlen($thread_key);
         foreach ($subject_txts[$subject_id] as $l) {
@@ -148,7 +148,6 @@ for ($x = 0; $x < $linesize; $x++) {
                 $aThread->getThreadInfoFromSubjectTxtLine($l);
                 break;
             }
-            $it++;
         }
     }
 
