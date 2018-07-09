@@ -889,7 +889,7 @@ class ThreadRead extends Thread {
 
             if ($res_code == '200' || $res_code == '206') { // Partial Content
                 $read_response_html = $response->getBody ();
-            } elseif ($res_code == '301' && P2HostMgr::isHost2ch ($this->host)) {
+            } elseif (!empty($response->getHeader ("Location")) && P2HostMgr::isHost2ch ($this->host)) {
                 $read_response_html = $this->getReadCGIHtml($response->getHeader ("Location"));
             } elseif ($res_code == '302' || preg_match ($test403, $response->getBody (), $test403)) {
                 $read_response_html = $response->getBody ();
