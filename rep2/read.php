@@ -440,6 +440,17 @@ if ($aThread->rescount) {
     }
     $newline = $aThread->readnum + 1; // $newline‚Í”pŽ~—\’è‚¾‚ªA‹ŒŒÝŠ·—p‚É”O‚Ì‚½‚ß
 
+/* 
+
+    ‚Ü‚¾‰¼‚Ì’iŠK‚È‚Ì‚ÅƒRƒƒ“ƒg
+    // Ú‘±æ‚ª 2ch / 5ch / pink ‚Ìê‡‚Í idx ‚É extdat ‚ð•Û‘¶
+    if (!P2HostMgr::isHost2chs($host)) {
+        $aLastmodify = new LastmodifyTxt($host, $bbs);
+        echo "extdat:[". $aLastmodify->getThreadExtend($key) ."]<br />\n";
+    }
+
+ */
+
     $sar = array($aThread->ttitle, $aThread->key, $idx_data[2], $aThread->rescount, '',
                  $aThread->readnum, $idx_data[6], $idx_data[7], $idx_data[8], $newline,
                  $idx_data[10], $idx_data[11], $aThread->datochiok);

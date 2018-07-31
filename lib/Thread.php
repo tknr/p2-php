@@ -27,6 +27,9 @@ class Thread
     */
     public $newline;    // 次の新規取得レス番号 // idxline[9] 廃止予定。旧互換のため残してはいる。
 
+    public $lastmodify; // lastmodify(http://info.5ch.net/index.php/Monazilla/develop/lastmodify.txt)
+    public $extdat;     // VIPQ2 !extend(https://info.5ch.net/index.php/%E6%96%B0%E7%94%9FVIPQ2#.21extend:)
+
     // ※hostとはいうものの、2ch外の場合は、host以下のディレクトリまで含まれていたりする。
     public $host;       // ex)pc.2ch.net // idxline[10]
     public $bbs;        // ex)mac // idxline[11]
@@ -404,7 +407,7 @@ class Thread
     {
         //$GLOBALS['debug'] && $GLOBALS['profiler']->enterSection('getThreadInfoFromSubjectTxtLine()');
 
-        if (preg_match('/^([0-9]+)\\.(?:dat|cgi)(?:,|<>)(.+) ?(?:\\(|（)([0-9]+)(?:\\)|）)/', $l, $matches)) {
+        if (preg_match('/^([0-9]+)\\.(?:dat|cgi)(?:,|<>)(.+) ?(?:\\(|（)([0-9]+)(?:\\)|）)$/', $l, $matches)) {
             $this->isonline = true;
             $this->key = $matches[1];
             $this->setTtitle(rtrim($matches[2]));
@@ -417,6 +420,26 @@ class Thread
                 }
                 $this->nunum = $this->unum;
             }
+
+            //$GLOBALS['debug'] && $GLOBALS['profiler']->leaveSection('getThreadInfoFromSubjectTxtLine()');
+            return true;
+        }
+
+        if (preg_match('/^([0-9]+)\.(?:dat|cgi)<>(.+?)<>(\d+)<>(\d+)<>(\d+)<>(\d+)<>(.+?)<>(.+?)<>/', $l, $matches)) {
+            $this->isonline = true;
+            $this->key = $matches[1];
+            $this->setTtitle(rtrim($matches[2]));
+            $this->rescount = (int)$matches[3];
+            if ($this->readnum) {
+                $this->unum = $this->rescount - $this->readnum;
+                // machi bbs はsageでsubjectの更新が行われないそうなので調整しておく
+                if ($this->unum < 0) {
+                    $this->unum = 0;
+                }
+                $this->nunum = $this->unum;
+            }
+            $this->lastmodify = (int)$matches[6];
+            $this->extdat = $matches[8];
 
             //$GLOBALS['debug'] && $GLOBALS['profiler']->leaveSection('getThreadInfoFromSubjectTxtLine()');
             return true;

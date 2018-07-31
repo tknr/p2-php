@@ -35,6 +35,7 @@ function p2_load_class($name)
             StrCtl |
             StrSjis |
             SubjectTxt |
+            LastmodifyTxt |
             Thread(?:List|Read)? |
             UA |
             UrlSafeBase64 |

@@ -285,6 +285,38 @@ class ThreadList
         default:
             if (!$this->spmode) {
                 $aSubjectTxt = new SubjectTxt($this->host, $this->bbs);
+                if (P2HostMgr::isHost2chs($this->host)) {
+                    // subject.txt を lastmodify.txt 形式に変換つつマージ
+                    //   本来｢subject.txt を lastmodify.txt 形式に変換｣するのは SubjectTxt クラスの中で行ったほうが
+                    //   将来的にいいかもしれないがとりあえずここでやる
+                    foreach($aSubjectTxt->subject_lines as $l){
+                        if (!preg_match('/^(([0-9]+)\\.(?:dat|cgi))(?:,|<>)(.+) ?(?:\\(|（)([0-9]+)(?:\\)|）)/', $l, $matches)) {
+                            continue;
+                        }
+
+                        $threads[$matches[2]]['key']    = $matches[1];      // スレッドID
+                        $threads[$matches[2]]['title']  = $matches[3];      // title
+                        $threads[$matches[2]]['rc']     = $matches[4];      // rescount
+
+                        $threads[$matches[2]]['param']  = implode('<>',array_fill(0, 5, '')); // lastmodify.txt に含まれないスレを表示できるように
+                    }
+
+                    $aLastmodify = new LastmodifyTxt($this->host, $this->bbs);
+                    foreach($aLastmodify->lastmodify_lines as $l){
+                        if (!preg_match('/^(([0-9]+)\.(?:dat|cgi))<>(.+?)<>(\d+)<>(\d+)<>(\d+)<>(\d+)<>(.+?)<>(.+?)<>/', $l, $matches)) {
+                            continue;
+                        }
+
+                        $key = $matches[2];
+                        array_splice($matches, 0, 5); // subject.txt に含まれているデータは捨てる
+                        $threads[$key]['param'] = implode('<>', $matches);  // extend
+                    }
+
+                    unset($aSubjectTxt->subject_lines);
+                    foreach($threads as $l){
+                        $aSubjectTxt->subject_lines[] = implode('<>', $l) . "<>\n";
+                    }
+                }
                 $lines = $aSubjectTxt->subject_lines;
             }
         }
