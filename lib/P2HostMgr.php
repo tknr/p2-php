@@ -64,6 +64,21 @@ class P2HostMgr
     static private $_hostIsOpen2ch = array();
 
     /**
+     * isHostNext2ch()のキャッシュ
+     */
+    static private $_hostIsNext2ch = array();
+
+    /**
+     * isHostSuper2ch()のキャッシュ
+     */
+    static private $_hostIsSuper2ch = array();
+
+    /**
+     * isHostJikkyoOrg()のキャッシュ
+     */
+    static private $_hostIsJikkyoOrg = array();
+
+    /**
      * 板-ホストの対応表
      *
      * @var array
@@ -268,6 +283,48 @@ class P2HostMgr
     }
 
     // }}}
+    // {{{ isHostNext2ch()
+
+    /**
+     * host が next2ch なら true を返す
+     *
+     * @param string $host
+     * @return bool
+     */
+    static public function isHostNext2ch($host)
+    {
+        if ($host === 'next2ch.net') {
+            return true;
+        }
+
+        if (!array_key_exists($host, self::$_hostIsNext2ch)) {
+            self::$_hostIsNext2ch[$host] = (bool)preg_match('/\\.(next2ch\\.net)$/', $host);
+        }
+        return self::$_hostIsNext2ch[$host];
+    }
+
+    // }}}
+    // {{{ isHostSuper2ch()
+
+    /**
+     * host が super2ch なら true を返す
+     *
+     * @param string $host
+     * @return bool
+     */
+    static public function isHostSuper2ch($host)
+    {
+        if ($host === 'super2ch.net') {
+            return true;
+        }
+
+        if (!array_key_exists($host, self::$_hostIsSuper2ch)) {
+            self::$_hostIsSuper2ch[$host] = (bool)preg_match('/\\.(super2ch\\.net)$/', $host);
+        }
+        return self::$_hostIsSuper2ch[$host];
+    }
+
+    // }}}
     // {{{ isHostMachiBbs()
 
     /**
@@ -386,6 +443,27 @@ class P2HostMgr
             self::$_hostIsVip2ch[$host] = (bool)preg_match('<^\\w+\\.(?:vip2ch\\.com)$>', $host);
         }
         return self::$_hostIsVip2ch[$host];
+    }
+
+    // }}}
+    // {{{ isHostJikkyoOrg()
+
+    /**
+     * host が jikkyo.org なら true を返す
+     *
+     * @param string $host
+     * @return bool
+     */
+    static public function isHostJikkyoOrg($host)
+    {
+        if ($host === 'jikkyo.org' || $host === 'livech.sakura.ne.jp') {
+            return true;
+        }
+
+        if (!array_key_exists($host, self::$_hostIsJikkyoOrg)) {
+            self::$_hostIsJikkyoOrg[$host] = (bool)preg_match('/\\.(jikkyo\\.org)$/', $host);
+        }
+        return self::$_hostIsJikkyoOrg[$host];
     }
 
     // }}}

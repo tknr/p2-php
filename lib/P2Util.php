@@ -373,6 +373,12 @@ class P2Util
                 //旧式のディレクトリが無い=無い新規インストール時or鯖移転のため、ディレクトリの指定を変更
                 $host_dir = $base_dir . DIRECTORY_SEPARATOR . '2channel_sc';
             }
+            // next2ch.net
+        } elseif (P2HostMgr::isHostNext2ch($host)) {
+            $host_dir = $base_dir . DIRECTORY_SEPARATOR . 'next2ch.net';
+            // super2ch.net
+        } elseif (P2HostMgr::isHostSuper2ch($host)) {
+            $host_dir = $base_dir . DIRECTORY_SEPARATOR . 'super2ch.net';
             // machibbs.com
         } elseif (P2HostMgr::isHostMachiBbs($host)) {
             $host_dir = $base_dir . DIRECTORY_SEPARATOR . 'machibbs.com';
@@ -388,6 +394,9 @@ class P2Util
             } else {
                 $host_dir = $base_dir . DIRECTORY_SEPARATOR . str_replace('/', DIRECTORY_SEPARATOR, $host);
             }
+            // jikkyo.org
+        } elseif (P2HostMgr::isHostJikkyoOrg($host)) {
+            $host_dir = $base_dir . DIRECTORY_SEPARATOR . 'jikkyo.org';
             // vip.2ch.com
         } elseif (P2HostMgr::isHostVip2ch($host)) {
             $host_dir = $base_dir . DIRECTORY_SEPARATOR . 'ex14.vip2ch.com';
