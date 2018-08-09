@@ -1570,7 +1570,7 @@ ERR;
                 $ls = (isset($matches[5]) && strlen($matches[5])) ? $matches[5] : '';
 
                 // 2ch or pink - http://choco.2ch.net/test/read.cgi/event/1027770702/
-            } elseif (preg_match('<^https?://(.+)/test/read\\.(?:cgi|html|so|php)
+            } elseif (preg_match('<^https?://(.+)/test/(?:read|r)\\.(?:cgi|html|so|php)
                     /(\\w+)/([0-9]+)(?:/([^/]*))?>x', $nama_url, $matches)) {
                 if (P2HostMgr::isRegisteredBbs($matches[1], $matches[2])) {
                     $host = $matches[1];
