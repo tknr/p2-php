@@ -287,10 +287,9 @@ class P2Util
             return self::$_itaNames[$id];
         }
 
+        // 板名Longを p2_setting から取得
         $p2_setting_txt = self::idxDirOfHostBbs($host, $bbs) . 'p2_setting.txt';
-
         if (file_exists($p2_setting_txt)) {
-
             $p2_setting_cont = FileCtl::file_read_contents($p2_setting_txt);
             if ($p2_setting_cont) {
                 $p2_setting = unserialize($p2_setting_cont);
@@ -301,9 +300,9 @@ class P2Util
             }
         }
 
-        // 板名Longの取得
+        // 板名Longをマッピングデータから取得
         if (!isset($p2_setting['itaj'])) {
-            $itaj = P2HostMgr::getBbsName($host, $bbs);
+            $itaj = P2HostMgr::getItaName($host, $bbs);
             if ($itaj != $bbs) {
                 self::$_itaNames[$id] = $p2_setting['itaj'] = $itaj;
 
@@ -313,6 +312,20 @@ class P2Util
                     p2die("{$p2_setting_txt} を更新できませんでした");
                 }
                 return self::$_itaNames[$id];
+            }
+        }
+
+        // 板名Longを p2_kb_setting から取得
+        $p2_setting_srd = self::datDirOfHostBbs($host, $bbs) . 'p2_kb_setting.srd';
+        if (file_exists($p2_setting_srd)) {
+            $p2_setting_cont = file_get_contents($p2_setting_srd);
+
+            if ($p2_setting_cont) {
+                $p2_setting = unserialize($p2_setting_cont);
+                if (isset($p2_setting['BBS_TITLE'])) {
+                    $ita_names[$id] = $p2_setting['BBS_TITLE'];
+                    return $ita_names[$id];
+                }
             }
         }
 

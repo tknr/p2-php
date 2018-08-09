@@ -439,7 +439,7 @@ class P2HostMgr
     }
 
     // }}}
-    // {{{ getBbsName()
+    // {{{ getItaName()
 
     /**
      * 板名LONGを取得する
@@ -448,7 +448,7 @@ class P2HostMgr
      * @param   string  $bbs    板名
      * @return  string  板メニューに記載されている板名
      */
-    static public function getBbsName($host, $bbs)
+    static public function getItaName($host, $bbs)
     {
         // マッピング読み込み
         $map = self::_getMapping();
