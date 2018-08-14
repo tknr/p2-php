@@ -2,8 +2,16 @@ rep2 機能拡張パック 全部入り(expack all in one) by killer
 
 
 ●何？
+
  rep2-expack_allinone https://github.com/open774/p2-php
+
  上記やスレに上げられた修正を取り込みつつ気になったところをゴニョゴニョするバージョンです。
+
+
+●動作環境
+
+ Windows の PHP5.6 + Apache で動作確認しています。
+ が突然､環境を PHP7 系にガラッと変えることがあります｡
 
 
 ●免責
@@ -29,3 +37,4 @@ rep2 機能拡張パック 全部入り(expack all in one) by killer
 ●ChangeLog
 
  https://github.com/killer4989/p2-php/commits/master に書いてあるコミットログでどうぞ(ｺﾗ
+
