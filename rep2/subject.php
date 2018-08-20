@@ -1150,6 +1150,10 @@ function checkThreadTitleAborn(array &$aborn_threads, Thread $aThread)
                 updateThreadTitleAborn($aborn_threads, $k);
                 return true;
             }
+            if (isset($aThread->extdat) && $re_method($v['word'], $aThread->extdat)) {
+                updateThreadTitleAborn($aborn_threads, $k);
+                return true;
+            }
         // ‘å•¶š¬•¶š‚ğ–³‹
         } elseif ($v['ignorecase']) {
             if (stripos($subject, $v['word']) !== false) {
