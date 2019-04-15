@@ -59,6 +59,7 @@ class Login
      */
     public function setdownLoginUser()
     {
+        global $_conf;
         $login_user = null;
 
         // ユーザ名決定の優先順位に沿って
@@ -86,21 +87,9 @@ class Login
         } elseif (isset($_SESSION['login_user']) && preg_match("/^[0-9A-Za-z_{$add_mail}]+\$/", $_SESSION['login_user'])) {
             $login_user = $_SESSION['login_user'];
 
-        /*
-        // Basic認証で指定
-        } elseif (!empty($_REQUEST['basic'])) {
-
-            if (isset($_SERVER['PHP_AUTH_USER']) && (preg_match("/^[0-9A-Za-z_{$add_mail}]+\$/", $_SERVER['PHP_AUTH_USER']))) {
-                $login_user = $_SERVER['PHP_AUTH_USER'];
-
-            } else {
-                header('WWW-Authenticate: Basic realm="zone"');
-                header('HTTP/1.0 401 Unauthorized');
-                echo 'Login Failed. ユーザ認証に失敗しました。';
-                exit;
-            }
-        */
-
+        // 外部認証で指定
+        } elseif ($_conf['external_authentication'] && isset($_SERVER['REMOTE_USER']) && (preg_match("/^[0-9A-Za-z_{$add_mail}]+\$/", $_SERVER['REMOTE_USER']))) {
+            $login_user = $_SERVER['REMOTE_USER'];
         }
 
         return $login_user;
