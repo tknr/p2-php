@@ -175,7 +175,7 @@ if (isset($hashes) && is_array($hashes) && count($hashes)) {
     <li><a href="iv2.php?reset_filter=1" target="_self">画像キャッシュ一覧</a></li>
 <?php } ?>
     <li><a href="#tgrep">スレッド検索</a></li>
-
+    <li><a href="first_cont.php" target="_self">スレURLを入力</a></li>
     <li class="group">管理</li>
     <li><a href="editpref.php" target="_self">設定管理</a></li>
     <li><a href="setting.php" target="_self">ログイン管理</a></li>
