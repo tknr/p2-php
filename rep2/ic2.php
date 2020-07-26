@@ -339,7 +339,7 @@ try {
             }
         }
         if ($send_referer) {
-            $referer = $uri . '.html';
+            $referer = $uri;
         }
     }
 

@@ -47,16 +47,11 @@ switch ($mode) {
         p2die('ImageCache2 - •s³‚ÈƒNƒGƒŠ');
 }
 
-$db = $table->getDatabaseConnection();
 if (isset($_POST['clean'])) {
-    $sql = 'DELETE FROM ' . $db->quoteIdentifier($table->__table);
-    $result = $db->query($sql);
-    if (DB::isError($result)) {
-        p2die($result->getMessage());
-    }
+    $result = (new ImageCache2_DataObject_Errors())->ic2_errlog_clean();
 } elseif (isset($_POST['delete']) && isset($_POST['target']) && is_array($_POST['target'])) {
     foreach ($_POST['target'] as $target) {
-        $delete = clone $table;
+        $delete = new ImageCache2_DataObject_Errors();
         $delete->uri = $target;
         $delete->delete();
     }
