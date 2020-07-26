@@ -282,7 +282,7 @@ $qf->addRule('mode', 'invalid mode.', 'arrayKeyExists', $_mode);
 $qf->addRule('thumbtype', 'invalid thumbtype.', 'arrayKeyExists', $_thumbtype);
 
 // Flexy
-$_flexy_options = &PEAR5::getStaticProperty('HTML_Template_Flexy', 'options');
+$_flexy_options = &PEAR::getStaticProperty('HTML_Template_Flexy', 'options');
 $_flexy_options = array(
     'locale' => 'ja',
     'charset' => 'Shift_JIS',
@@ -1054,7 +1054,7 @@ EOP;
     $flexy->setData('limelight_header', $limelight_header);
     $flexy->output();
 } elseif ($list_template == 'iv2i.tpl.html') {
-    $mobile = Net_UserAgent_Mobile::singleton();
+    $mobile = (new Net_UserAgent_Mobile)->singleton();
     $elements = $flexy->getElements();
     if ($mobile->isDoCoMo()) {
         $elements['page']->setAttributes('istyle="4"');

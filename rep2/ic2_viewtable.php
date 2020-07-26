@@ -65,7 +65,7 @@ if (isset($_POST['clean'])) {
 // }}}
 // {{{ o—Í
 
-$_flexy_options = &PEAR5::getStaticProperty('HTML_Template_Flexy', 'options');
+$_flexy_options = &PEAR::getStaticProperty('HTML_Template_Flexy', 'options');
 $_flexy_options = array(
     'locale' => 'ja',
     'charset' => 'Shift_JIS',

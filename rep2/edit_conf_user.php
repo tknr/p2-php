@@ -252,7 +252,7 @@ if ($flags & P2_EDIT_CONF_USER_SKIPPED) {
 板リストをオンラインURLから自動で読み込む。
 指定先は menu.html 形式、2channel.brd 形式のどちらでもよい。
 <!-- 必要なければ、空白に。 --><br>
-2ch基本 <a href="http://menu.2ch.net/bbsmenu.html" target="_blank">http://menu.2ch.net/bbsmenu.html</a><br>
+2ch基本 <a href="https://menu.5ch.net/bbsmenu.html" target="_blank">https://menu.5ch.net/bbsmenu.html</a><br>
 2ch + 外部BBS <a href="http://azlucky.s25.xrea.com/2chboard/bbsmenu.html" target="_blank">http://azlucky.s25.xrea.com/2chboard/bbsmenu.html</a>',
             P2_EDIT_CONF_USER_LONGTEXT),
     );

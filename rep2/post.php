@@ -212,7 +212,7 @@ PostDataStore::set($post_config_key, array(
 PostDataStore::set($post_backup_key, $post_cache);
 
 // cookie 読み込み
-$cookie_key = $_login->user_u . '/' . P2Util::normalizeHostName(P2HostMgr::isHostBbsPink($host) ? 'www.bbspink.com' : P2HostMgr::isHost2chs($host) ? 'www.2ch.net' : $host); // 忍法帳対応
+$cookie_key = $_login->user_u . '/' . P2Util::normalizeHostName(P2HostMgr::isHostBbsPink($host) ? 'www.bbspink.com' : P2HostMgr::isHost2chs($host) ? 'www.5ch.net' : $host); // 忍法帳対応
 if ($p2cookies = CookieDataStore::get($cookie_key)) {
     if (is_array($p2cookies)) {
         if (array_key_exists('expires', $p2cookies)) {
@@ -425,7 +425,7 @@ function postIt($host, $bbs, $key, $post)
         }
 
         // POSTする内容
-        while (list($name, $value) = each($post)) {
+        foreach ($post as $name => $value) {
 
             // したらば or be.2ch.netなら、EUCに変換
             if (P2HostMgr::isHostJbbsShitaraba($host) || P2HostMgr::isHostBe2chs($host)) {

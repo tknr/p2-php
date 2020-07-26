@@ -133,7 +133,7 @@ if ($hd['mail'] === '') {
 // {{{ textareaの属性
 
 // 参考 クラシック COLS='60' ROWS='8'
-$mobile = Net_UserAgent_Mobile::singleton();
+$mobile = (new Net_UserAgent_Mobile)->singleton();
 $wrap_at = ''; // wrap属性はW3C HTML 4.01仕様に存在しない
 $name_size_at = '';
 $mail_size_at = '';
