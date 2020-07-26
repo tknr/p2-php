@@ -560,7 +560,7 @@ EOJS;
         $msg = $this->transLink($msg);
 
         // Wikipedia‹L–@‚Ö‚Ì©“®ƒŠƒ“ƒN
-        if ($_conf['_linkToWikipeida']) {
+        if ($_conf['link_wikipedia']) {
             $msg = $this->_wikipediaFilter($msg);
         }
 
