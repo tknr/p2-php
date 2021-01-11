@@ -61,6 +61,7 @@
   },
   "suggest": {
     "ext-exif": "Needed to show Exif in IC2",
+    "ext-gd": "Needed to use GD in IC2",
     "ext-pdo_mysql": "Needed to use MySQL in IC2",
     "ext-pdo_pgsql": "Needed to use PostgreSQL in IC2",
     "ext-pdo_sqlite": "Needed to use SQLite in IC2"
