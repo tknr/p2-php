@@ -147,6 +147,8 @@ class ImageCache2_DatabaseManager
                     if ($to_blacklist) {
                         $blacklist = new ImageCache2_DataObject_BlackList();
                         $blacklist->uri = $remover->uri;
+                        $blacklist->size = $remover->size;
+                        $blacklist->md5 = $remover->md5;
                         $blacklist->insert();
                     }
                     // ƒe[ƒuƒ‹‚©‚ç–•Á
