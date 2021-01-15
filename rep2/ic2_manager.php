@@ -55,7 +55,7 @@ if (isset($_POST['action'])) {
         case 'dropAborn':
             if ($_POST['action'] == 'dropZero') {
                 // ƒ‰ƒ“ƒN=0 ‚Ì‰æ‘œ‚ðíœ‚·‚é
-                $where = $db->quote('rank') . ' = 0';
+                $where = $icdc->quoteIdentifier('rank') . ' = 0';
                 if (isset($_POST['dropZeroLimit'])) {
                     // Žæ“¾‚µ‚½ŠúŠÔ‚ðŒÀ’è
                     switch ($_POST['dropZeroSelectTime']) {
