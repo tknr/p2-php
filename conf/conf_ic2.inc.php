@@ -12,9 +12,10 @@ $_conf['expack.ic2.general.cacheuri'] = './ic';
 // DSN (DBに接続するためのデータソース名)
 // @link https://roojs.github.io/PDO_DataObject/docs/index.html#config
 // 例)
-//  MySQL:       'mysql://username:password@localhost:3306/database?charset=utf8'
-//  PostgreSQL:  'pgsql://username:password@localhost:5432/database'
-//  SQLite:     'sqlite:/' . $_conf['db_dir'] . '/imgcache.sqlite'
+//  MySQL: 'mysql://username:password@localhost:3306/database?charset=utf8'
+//  MySQL (via UNIX domain socket): 'mysql://username:password@localhost/database?charset=utf8;unix_socket=/run/mysqld/mysqld.sock'
+//  PostgreSQL: 'pgsql://username:password@localhost:5432/database'
+//  SQLite: 'sqlite:/' . $_conf['db_dir'] . '/imgcache.sqlite'
 // 注1: username,password,databaseは実際のものと読み替える。
 // 注2: MySQL,PosrgreSQLでは予めデータベースを作っておく。
 $_conf['expack.ic2.general.dsn'] = "";
