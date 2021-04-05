@@ -1,12 +1,14 @@
-﻿# rep2 expack 全部入り by open774
+﻿# rep2 expack 全部入り by （´・ω・） ｽ
 
 * rep2-expack https://github.com/rsky/p2-php
 * rep2-expack +live https://github.com/pluslive/p2-php
 * rep2-expack test https://github.com/orzisun/p2-php
+* rep2-expack https://github.com/open774/p2-php
+* rep2-expack https://github.com/junk2ool/p2-php
 
 上記やスレに上げられた修正を取り込んで全部入りを目指す闇鍋バージョンです。
 
-独自の改良も行っています。
+このリポジトリにはrep2をPHP 8.xで動かすためのパッチが含まれています。
 
 - [スクリーンショット](https://open774.github.io/p2-php/screenshots.html)
 - [Wiki](https://github.com/open774/p2-php/wiki)
